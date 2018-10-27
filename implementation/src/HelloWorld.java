@@ -7,3 +7,6 @@ public class HelloWorld {
     //hallo das bin ich
 
 }
+//TODO: klassendiagramm erstellen
+//TODO: grundgerüst/javadoc
+//TODO: PDF erstellen
