@@ -7,6 +7,7 @@ public class HelloWorld {
     //hallo das bin ich
 
 }
-//TODO: klassendiagramm erstellen
-//TODO: grundgerüst/javadoc
-//TODO: PDF erstellen
+//TODO: daniels design implementieren
+//TODO: utz' design implementieren
+//TODO: javadoc/signatures
+//TODO: REST Kommunikation
