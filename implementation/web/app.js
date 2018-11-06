@@ -86,6 +86,14 @@ function getEditAttributes(shape) {
                 strokeWidth: "Stroke Width",
                 fillColor: "Fill Color"
             };
+        case "RECTANGLE":
+            return {
+                width: "Width",
+                height: "Height",
+                strokeColor: "Stroke Color",
+                strokeWidth: "Stroke Width",
+                fillColor: "Fill Color"
+            };
         default:
             alert('Can\'t get Attributes for ' + shape);
     }
@@ -141,6 +149,20 @@ function serverStub(request) {
                         cx: cx,
                         cy: cy,
                         r: r,
+                        strokeColor: "black",
+                        strokeWidth: "2",
+                        fillColor: "transparent"
+                    });
+                    break;
+                case "RECTANGLE":
+                    var width = canvasStateServer.canvasWidth/2;
+                    var height = canvasStateServer.canvasHeight/2;
+                    var id = canvasStateServer.layers.length;
+                    canvasStateServer.layers.push({
+                        id: id,
+                        shape: "RECTANGLE",
+                        width: width,
+                        height: height,
                         strokeColor: "black",
                         strokeWidth: "2",
                         fillColor: "transparent"
@@ -205,6 +227,15 @@ function serverGenerateLayerHTML(layerId) {
                 "stroke-width='" + layer.strokeWidth +  "' " +
                 "fill='" + layer.fillColor + "'>" +
                 "</circle>";
+            break;
+        case "RECTANGLE":
+            html = "<rect id='layer_" + layer.id + "' " +
+                "width='" + layer.width + "' " +
+                "height='" + layer.height + "' " +
+                "stroke='" + layer.strokeColor + "' " +
+                "stroke-width='" + layer.strokeWidth +  "' " +
+                "fill='" + layer.fillColor + "'>" +
+                "</rect>";
             break;
         default:
             alert('Server Returned Error');
