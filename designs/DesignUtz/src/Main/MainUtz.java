@@ -1,3 +1,5 @@
+package Main;
+
 public class MainUtz {
 
     public static void main(String[] args){
