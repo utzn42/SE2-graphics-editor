@@ -1,2 +1,11 @@
-public class LayerState {
+public enum LayerState {
+
+    FULL,
+    FILLED,
+    EMPTY;
+
+    public void update(){
+
+    }
+
 }
