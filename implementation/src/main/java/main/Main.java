@@ -20,7 +20,5 @@ public class Main {
 }
 
 
-//TODO: daniels design implementieren
 //TODO: utz' design implementieren
 //TODO: javadoc/signatures
-//TODO: REST Kommunikation
