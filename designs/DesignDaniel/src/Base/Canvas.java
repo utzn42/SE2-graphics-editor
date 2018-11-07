@@ -3,12 +3,12 @@ package Base;
 import java.util.List;
 
 /**
- * The Management.Canvas class is the container in which all layers with shapes are in.
+ * The Canvas class is the container in which all layers with shapes are in.
  * It is like the coordinate system for the operations which will take place.
  * It manages all layers and shapes. Every object is "registered" in the canvas.
  *
- * The Management.Canvas class uses the Point class and the Management.Layer class. The relation is an aggregation.
- * The Management.Canvas class cannot exist without Layers and Points.
+ * The Canvas class uses the Point class and the Layer class. The relation is an aggregation.
+ * The Canvas class cannot exist without Layers and Points.
  * @see Point
  * @see Layer
  *

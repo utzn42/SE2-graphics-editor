@@ -14,3 +14,7 @@ public class MainUtz {
         System.out.println("hello world!");
     }
 }
+
+//TODO: shape implements sowohl moveBehaviour als auch subject?
+//TODO: observer und update methode noch nicht ganz verstanden
+//TODO: was macht cantmove
