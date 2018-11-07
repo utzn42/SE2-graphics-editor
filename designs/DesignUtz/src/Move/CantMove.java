@@ -1,4 +1,7 @@
 package Move;
 
-public class CantMove {
+public class CantMove implements MoveBehaviour{
+    public void move() {
+
+    }
 }

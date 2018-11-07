@@ -1,3 +1,5 @@
+package Management;
+
 public enum CanvasState {
     FULL,
     FILLED,

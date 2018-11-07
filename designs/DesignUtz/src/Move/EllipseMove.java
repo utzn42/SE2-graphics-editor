@@ -1,4 +1,7 @@
 package Move;
 
-public class EllipseMove {
+public class EllipseMove implements MoveBehaviour{
+    public void move() {
+
+    }
 }

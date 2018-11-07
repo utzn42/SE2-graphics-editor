@@ -1,4 +1,7 @@
 package Move;
 
-public class CircleMove {
+public class CircleMove implements MoveBehaviour{
+    public void move() {
+
+    }
 }

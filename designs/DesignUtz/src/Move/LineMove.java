@@ -1,4 +1,7 @@
 package Move;
 
-public class LineMove {
+public class LineMove implements MoveBehaviour{
+    public void move() {
+
+    }
 }

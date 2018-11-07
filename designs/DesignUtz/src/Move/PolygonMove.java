@@ -1,4 +1,7 @@
 package Move;
 
-public class PolygonMove {
+public class PolygonMove implements MoveBehaviour{
+    public void move() {
+
+    }
 }
