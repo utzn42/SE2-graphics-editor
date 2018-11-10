@@ -24,6 +24,9 @@ public class Layer implements Observer{
 
     }
 
+    /**
+     * Default constructor.
+     */
     public Layer(){
 
     }
@@ -38,6 +41,11 @@ public class Layer implements Observer{
         return super.toString();
     }
 
+
+    /**
+     * Updates the Layer with the shapes.
+     * @param shape contains the added, deleted or edited shape
+     */
     public void update(Shape shape){
 
     }

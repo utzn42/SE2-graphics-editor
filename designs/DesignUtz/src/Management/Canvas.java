@@ -8,7 +8,7 @@ import Shape.Shape;
  * It manages all layers and shapes. Every object is "registered" in the canvas.
  * A canvas can hold up to 150 shapes.
  *
- * The Canvas class uses the Shape class and the CanvasState class. The relation is an aggregation.
+ * The Canvas class uses the Shape class and the CanvasState class. The relation is a composition.
  * The Canvas class cannot exist without the CanvasState.
  *
  * @see CanvasState
@@ -35,6 +35,10 @@ public class Canvas implements Observer{
         return super.toString();
     }
 
+    /**
+     * Updates the Canvas with the layers and shapes.
+     * @param shape contains the added, deleted or edited shape
+     */
     public void update(Shape shape){
 
     }

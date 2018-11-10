@@ -11,9 +11,7 @@ import Management.RGBColour;
  */
 public class Polygon extends Shape{
 
-    private Coordinate v1Coord;
-    private int[] vertices;
-    private boolean regular;
+    private Coordinate[] v1Coord;
 
     /**
      * The constructor expects the name, color and coordinates.
@@ -23,6 +21,19 @@ public class Polygon extends Shape{
      */
     public Polygon(String name, RGBColour colour, Coordinate[] coordinates) {
         super(name, colour);
+
+    }
+
+    /**
+     * Default constructor with default values for the polygon.
+     */
+    public Polygon(){
+
+        super("polygon", new RGBColour(new int[]{1, 2, 3}));
+        this.v1Coord[0]=new Coordinate(10,10);
+        this.v1Coord[1]= new Coordinate(20,5);
+        this.v1Coord[0]=new Coordinate(30,10);
+        this.v1Coord[1]= new Coordinate(40,20);
 
     }
 
@@ -62,8 +73,5 @@ public class Polygon extends Shape{
      * Returns true or false whether the polygon is regular or not.
      * @return returns T/F in boolean
      */
-    public boolean isRegular(){
-        return regular;
-    }
 
 }

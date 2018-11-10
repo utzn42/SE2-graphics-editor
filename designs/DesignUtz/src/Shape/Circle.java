@@ -28,6 +28,18 @@ public class Circle extends Shape{
         this.radius=radius;
     }
 
+
+    /**
+     * Default constructor with default values for the circle.
+     */
+    public Circle(){
+
+        super("circle", new RGBColour(new int[]{1, 2, 3}));
+        this.centerCoord=new Coordinate(10,10);
+        this.radius=10;
+
+    }
+
     /**
      * Returns the center coordinates.
      * @return returns a Coordinate object

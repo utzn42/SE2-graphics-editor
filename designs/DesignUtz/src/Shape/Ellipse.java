@@ -32,6 +32,18 @@ public class Ellipse extends Shape{
     }
 
     /**
+     * Default constructor with default values for the ellipse.
+     */
+    public Ellipse(){
+
+        super("ellipse", new RGBColour(new int[]{1, 2, 3}));
+        this.f1Coord=new Coordinate(10,10);
+        this.f2Coord=new Coordinate(20,20);
+        this.radius=10;
+
+    }
+
+    /**
      * Returns the coordinates of f1 and f2.
      * @return returns a coordinate
      */

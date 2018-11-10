@@ -4,7 +4,7 @@ import Shape.Shape;
 
 
 /**
- * A collection of all the shapes and their information. There can be a maximum of 150 shapes from a maximum of 3 different layers.
+ * A collection of all the shapes and their information.
  * The ShapeInfo class implements the Observer interface.
  *
  * @see Observer
@@ -29,7 +29,10 @@ public class ShapeInfo implements Observer{
         return null;
     }
 
-
+    /**
+     * Updates the whole information about the layers and shapes.
+     * @param shape contains the added, deleted or edited shape
+     */
     public void update(Shape shape) {
 
     }

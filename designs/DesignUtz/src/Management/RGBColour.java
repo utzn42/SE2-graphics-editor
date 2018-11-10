@@ -7,29 +7,30 @@ package Management;
  */
 public class RGBColour {
 
-    private String colour;
+    private int[] colour;
 
     /**
-     * The constructor expects a string with the desired color.
-     * @param colour name of the color in String
+     * The constructor expects the RGB code in int with the desired color.
+     * @param colour name of the color in int
      */
-    public RGBColour(String colour){
+    public RGBColour(int[] colour){
         this.colour=colour;
     }
 
+
     /**
      * Returns the name of the color.
-     * @return returns a String
+     * @return returns an int
      */
-    public String getColour() {
+    public int[] getColour() {
         return colour;
     }
 
     /**
      * Can change the color to the desired new color received by the parameter.
-     * @param colour name of the color in String
+     * @param colour name of the color in int
      */
-    public void setColour(String colour) {
+    public void setColour(int[] colour) {
         this.colour = colour;
     }
 }

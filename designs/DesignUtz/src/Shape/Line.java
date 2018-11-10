@@ -11,22 +11,30 @@ import Management.RGBColour;
  */
 public class Line extends Shape{
 
-    private Coordinate startCoord;
-    private Coordinate endCoord;
+    private Coordinate[] pCoord;
 
     /**
      * The Constructor of the Line class. Expects the name, color, start coordinate as well as the end coordinate.
      * It then creates a line out of the 2 coordinates.
      * @param name name of the shape in String
      * @param colour color of the shape in RGBColour
-     * @param startCoord coordinate of the start point
-     * @param endCoord coordinate of the end point
+     * @param pCoord coordinates of the points of which the line consists
      */
-    public Line(String name, RGBColour colour, Coordinate startCoord, Coordinate endCoord) {
+    public Line(String name, RGBColour colour, Coordinate[] pCoord) {
         super(name, colour);
 
-        this.startCoord= startCoord;
-        this.endCoord = endCoord;
+        this.pCoord=pCoord;
+
+    }
+
+    /**
+     * Default constructor with default values for the line.
+     */
+    public Line(){
+
+        super("line", new RGBColour(new int[]{1, 2, 3}));
+        this.pCoord[0]=new Coordinate(10,10);
+        this.pCoord[1]= new Coordinate(20,20);
 
     }
 
