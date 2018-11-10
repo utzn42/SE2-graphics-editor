@@ -2,17 +2,17 @@ package Shape;
 
 
 import Management.RGBColour;
-import Management.Subject;
 import Move.MoveBehaviour;
 
 /**
  * This abstract class describes the main components of a shape. It is then divided into subclasses for each individual shape.
- * It implements Subject and MoveBehaviour.
+ * It implements Observable and MoveBehaviour.
  */
-public abstract class Shape implements MoveBehaviour{
+public abstract class Shape{
 
     private String name;
     private RGBColour colour;
+    private MoveBehaviour moveBehaviour;
 
     /**
      * The constructor of the Shape class. It expects a String with the desired name of the shape as well as the colour.

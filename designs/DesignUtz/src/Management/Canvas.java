@@ -14,10 +14,10 @@ import Shape.Shape;
  * @see CanvasState
  * @see Shape
  */
-public class Canvas {
+public class Canvas implements Observer{
 
     private CanvasState state;
-    private Shape[] data;
+    private Layer[] data;
 
     /**
      * This is the default constructor of the Canvas class.
@@ -33,5 +33,9 @@ public class Canvas {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public void update(Shape shape){
+
     }
 }

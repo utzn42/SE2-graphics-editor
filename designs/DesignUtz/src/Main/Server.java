@@ -4,7 +4,7 @@ package Main;
  * This class is the main class. The program starts here.
  *
  */
-public class MainUtz {
+public class Server {
 
     /**
      * The main method is where the program starts.

@@ -1,5 +1,7 @@
 package Management;
 
+import Shape.Shape;
+
 /**
  * This interface checks if something has changed...
  *
@@ -9,6 +11,6 @@ package Management;
  */
 public interface Observer {
 
-    void update();
+    void update(Shape shape);
 
 }

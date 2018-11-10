@@ -7,7 +7,7 @@ package Management;
  * @see Observer
  * @see Shape.Shape
  */
-public interface Subject {
+public interface Observable {
 
 
     /**

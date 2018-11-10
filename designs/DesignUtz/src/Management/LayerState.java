@@ -9,14 +9,11 @@ package Management;
  * @see Observer
  * @see Layer
  */
-public enum LayerState implements Observer {
+public enum LayerState{
 
     FULL,
     FILLED,
     EMPTY;
 
-    public void update(){
-
-    }
 
 }

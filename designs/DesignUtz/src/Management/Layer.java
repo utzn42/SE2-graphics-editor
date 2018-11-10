@@ -11,7 +11,7 @@ import Shape.Shape;
  * @see LayerState
  * @see Observer
  */
-public class Layer {
+public class Layer implements Observer{
 
     private LayerState state;
     private Shape[] data;
@@ -24,6 +24,10 @@ public class Layer {
 
     }
 
+    public Layer(){
+
+    }
+
 
     /**
      * This method lets you print out a String representation of the Canvas object. It overrides the method of Object.java class
@@ -32,5 +36,9 @@ public class Layer {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public void update(Shape shape){
+
     }
 }

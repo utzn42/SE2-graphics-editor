@@ -8,16 +8,10 @@ package Management;
  * @see Observer
  * @see Canvas
  */
-public enum CanvasState implements Observer{
+public enum CanvasState{
     FULL,
     FILLED,
     EMPTY;
-
-
-
-    public void update(){
-
-    }
 
 
 

@@ -14,20 +14,12 @@ import Shape.Shape;
 public class ShapeInfo implements Observer{
 
     private Shape[] listOfShapes;
-    private Shape[] layer1Shapes;
-    private Shape[] layer2Shapes;
-    private Shape[] layer3Shapes;
+    private Layer[] listOfLayers;
 
-    /**
-     * The constructor expects a list of shapes for each 3 layers.
-     *
-     * @param layer1Shapes array of shapes from layer 1
-     * @param layer2Shapes array of shapes from layer 2
-     * @param layer3Shapes array of shapes from layer 3
-     */
-    public ShapeInfo(Shape[] layer1Shapes, Shape[] layer2Shapes, Shape[] layer3Shapes){
+    private ShapeInfo(){
 
     }
+
 
     /**
      * Returns an array of all shapes existing in the canvas.
@@ -37,32 +29,8 @@ public class ShapeInfo implements Observer{
         return null;
     }
 
-    /**
-     * Returns all shapes from layer 1.
-     * @return returns a Shape array
-     */
-    public Shape[] getLayer1Shapes(){
-        return null;
-    }
 
-    /**
-     * Returns all shapes from layer 2.
-     * @return returns a Shape array
-     */
-    public Shape[] getLayer2Shapes(){
-        return null;
-    }
-
-    /**
-     * Returns all shapes from layer 3.
-     * @return returns a Shape array
-     */
-    public Shape[] getLayer3Shapes(){
-        return null;
-    }
-
-
-    public void update() {
+    public void update(Shape shape) {
 
     }
 }
