@@ -15,24 +15,24 @@ public class RESTHandler {
     private static Logger restLogger = LoggerFactory.getLogger(RESTHandler.class);
 
     @RequestMapping(value = "/addShape/", method = RequestMethod.GET)
-    public String addShape(@RequestBody JSONObject add_json) {
+    public JSONObject addShape(@RequestBody JSONObject add_json) {
 
         System.out.println(add_json.toString());
         return new Circle().getHTML();
     }
 
     @RequestMapping(value = "/editShape/", method = RequestMethod.POST)
-    public String editShape(@RequestBody JSONObject edit_json) {
+    public JSONObject editShape(@RequestBody JSONObject edit_json) {
         return "Under construction...";
     }
 
     @RequestMapping(value = "/transformShape/", method = RequestMethod.POST)
-    public String transformShape(@RequestBody JSONObject transform_json) {
+    public JSONObject transformShape(@RequestBody JSONObject transform_json) {
         return "Under construction...";
     }
 
     @RequestMapping(value = "deleteShape")
-    public String deleteShape() {
+    public JSONObject deleteShape() {
         return "Under construction...";
     }
 }
