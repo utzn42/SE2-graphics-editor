@@ -20,5 +20,8 @@ public class Server {
 }
 
 
-//TODO: utz' design implementieren
-//TODO: javadoc/signatures
+//TODO: Utz: REST API Documentation
+//TODO: Xandi: Show difference between designs
+//TODO: Xandi: Javadoc in HTML extrahieren
+//TODO: Xandi: Code metrics of current implementation
+//TODO: Daniel: Discuss how we applied observer and strategy patterns
