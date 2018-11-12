@@ -8,11 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Server {
 
-    static Logger logger = LoggerFactory.getLogger(Server.class);
+    private static Logger serverLogger = LoggerFactory.getLogger(Server.class);
 
     public static void main(String[] args) {
 
-        logger.info("Starting logger...");
+        serverLogger.info("Starting logger...");
 
         SpringApplication.run(Server.class, args);
 

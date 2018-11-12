@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RESTHandler {
 
-    static Logger logger = LoggerFactory.getLogger(RESTHandler.class);
+    private static Logger restLogger = LoggerFactory.getLogger(RESTHandler.class);
 
     @RequestMapping("/addShape/")
     public String addShape() {
