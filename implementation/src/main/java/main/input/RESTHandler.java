@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import shapes.Circle;
 
 @RestController
 public class RESTHandler {
@@ -18,21 +17,21 @@ public class RESTHandler {
     public JSONObject addShape(@RequestBody JSONObject add_json) {
 
         System.out.println(add_json.toString());
-        return new Circle().getHTML();
+        return null;
     }
 
     @RequestMapping(value = "/editShape/", method = RequestMethod.POST)
     public JSONObject editShape(@RequestBody JSONObject edit_json) {
-        return "Under construction...";
+        return null;
     }
 
     @RequestMapping(value = "/transformShape/", method = RequestMethod.POST)
     public JSONObject transformShape(@RequestBody JSONObject transform_json) {
-        return "Under construction...";
+        return null;
     }
 
     @RequestMapping(value = "deleteShape")
-    public JSONObject deleteShape() {
-        return "Under construction...";
+    public JSONObject deleteShape(@RequestBody JSONObject transform_json) {
+        return null;
     }
 }
