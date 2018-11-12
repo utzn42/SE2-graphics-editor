@@ -1,13 +1,9 @@
 package shapes;
 
-import main.facilitators.Coordinate;
-
-import java.lang.Math.*;
+import facilitators.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Math.round;
 
 public class RegularPolygon extends Circle {
 

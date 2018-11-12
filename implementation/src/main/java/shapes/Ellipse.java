@@ -1,6 +1,6 @@
 package shapes;
 
-import main.facilitators.Coordinate;
+import facilitators.Coordinate;
 
 public class Ellipse extends Shape {
 

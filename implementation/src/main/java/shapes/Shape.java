@@ -1,6 +1,6 @@
 package shapes;
 
-import main.facilitators.RGBColour;
+import facilitators.RGBColour;
 
 public abstract class Shape {
 

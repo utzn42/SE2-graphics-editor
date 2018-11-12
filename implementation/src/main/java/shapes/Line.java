@@ -1,6 +1,6 @@
 package shapes;
 
-import main.facilitators.Coordinate;
+import facilitators.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;

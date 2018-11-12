@@ -1,4 +1,4 @@
-package main.facilitators;
+package facilitators;
 
 public class Coordinate {
 
