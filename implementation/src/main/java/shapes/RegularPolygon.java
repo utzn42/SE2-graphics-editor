@@ -32,8 +32,8 @@ public class RegularPolygon extends Circle {
     public List<Coordinate> getPolygonCoordinates() {
         List<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < edgeAmount; ++i) {
-            float x = (float) (getRadius() * Math.sin((2 * i * Math.PI)/edgeAmount));
-            float y = (float) (getRadius() * Math.cos((2 * i * Math.PI)/edgeAmount));
+            float x = (float) (getRadius() * Math.sin((2 * i * Math.PI)/edgeAmount) + getCenter().getX());
+            float y = (float) (getRadius() * Math.cos((2 * i * Math.PI)/edgeAmount) + getCenter().getY());
             coordinates.add(new Coordinate(x, y));
         }
         return coordinates;

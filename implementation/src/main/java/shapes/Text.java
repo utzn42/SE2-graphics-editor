@@ -18,6 +18,15 @@ public class Text extends Shape {
         setStrokeWidth(0);
     }
 
+    public Text(Coordinate center, String displayText, String font, double fontSize) {
+        this.center = center;
+        this.displayText = displayText;
+        this.font = font;
+        this.fontSize = fontSize;
+        setFillColour("#000000");
+        setStrokeWidth(0);
+    }
+
     public Coordinate getCenter() {
         return center;
     }

@@ -28,11 +28,11 @@ public class Star extends RegularPolygon {
     public List<Coordinate> getStarCoordinates() {
         List<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < getEdgeAmount(); ++i) {
-            float xOuter = (float) (getRadius() * Math.sin((2 * i * Math.PI)/getEdgeAmount()));
-            float yOuter = (float) (getRadius() * Math.cos((2 * i * Math.PI)/getEdgeAmount()));
+            float xOuter = (float) (getRadius() * Math.sin((2 * i * Math.PI)/getEdgeAmount()) + getCenter().getX());
+            float yOuter = (float) (getRadius() * Math.cos((2 * i * Math.PI)/getEdgeAmount()) + getCenter().getY());
             coordinates.add(new Coordinate(xOuter, yOuter));
-            float xInner = (float) (innerRadius * Math.sin((2 * (i + 0.5) * Math.PI)/getEdgeAmount()));
-            float yInner = (float) (innerRadius * Math.cos((2 * (i + 0.5) * Math.PI)/getEdgeAmount()));
+            float xInner = (float) (innerRadius * Math.sin((2 * (i + 0.5) * Math.PI)/getEdgeAmount()) + getCenter().getX());
+            float yInner = (float) (innerRadius * Math.cos((2 * (i + 0.5) * Math.PI)/getEdgeAmount()) + getCenter().getY());
             coordinates.add(new Coordinate(xInner, yInner));
         }
         return coordinates;
