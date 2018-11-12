@@ -18,6 +18,7 @@ public class Layer implements Observer {
 
     private LayerState state;
     private Shape[] data;
+    private boolean visible;
 
     /**
      * The constructor of the Layer Class. It expects one or more shapes, which then get assigned to the layer.
@@ -50,6 +51,14 @@ public class Layer implements Observer {
      * @param shape contains the added, deleted or edited shape
      */
     public void update(Shape shape){
+
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visibility){
 
     }
 
