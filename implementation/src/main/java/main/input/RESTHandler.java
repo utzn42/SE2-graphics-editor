@@ -1,37 +1,47 @@
 package main.input;
 
+import canvas.Canvas;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class RESTHandler {
 
     private static Logger restLogger = LoggerFactory.getLogger(RESTHandler.class);
+    private Map<String, Canvas> projects = new HashMap<>();
+    private long seedCounter = 0;
 
-    @RequestMapping(value = "/addShape/", method = RequestMethod.GET)
-    public JSONObject addShape(@RequestBody JSONObject add_json) {
+    @RequestMapping(value = "/create/")
+    public String createProject() {
+        return null;
+    }
+
+    @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.GET)
+    public JSONObject addShape(@PathVariable String projectID, @RequestBody JSONObject add_json) {
 
         System.out.println(add_json.toString());
         return null;
     }
 
-    @RequestMapping(value = "/editShape/", method = RequestMethod.POST)
-    public JSONObject editShape(@RequestBody JSONObject edit_json) {
+    @RequestMapping(value = "/editShape/{projectID}", method = RequestMethod.POST)
+    public JSONObject editShape(@PathVariable String projectID, @RequestBody JSONObject edit_json) {
         return null;
     }
 
-    @RequestMapping(value = "/transformShape/", method = RequestMethod.POST)
-    public JSONObject transformShape(@RequestBody JSONObject transform_json) {
+    @RequestMapping(value = "/transformShape/{projectID}", method = RequestMethod.POST)
+    public JSONObject transformShape(@PathVariable String projectID, @RequestBody JSONObject transform_json) {
         return null;
     }
 
-    @RequestMapping(value = "deleteShape")
-    public JSONObject deleteShape(@RequestBody JSONObject transform_json) {
+    @RequestMapping(value = "/deleteShape/{projectID}")
+    public JSONObject deleteShape(@PathVariable String projectID, @RequestBody JSONObject transform_json) {
         return null;
     }
 }
+
+//TODO: Utz: Generate SHA Hash from seed
