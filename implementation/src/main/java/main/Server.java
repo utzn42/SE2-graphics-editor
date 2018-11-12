@@ -8,11 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Server {
 
-    static Logger logger = LoggerFactory.getLogger(Server.class);
+    private static Logger serverLogger = LoggerFactory.getLogger(Server.class);
 
     public static void main(String[] args) {
 
-        logger.info("Starting logger...");
+        serverLogger.info("Starting logger...");
 
         SpringApplication.run(Server.class, args);
 
@@ -20,5 +20,8 @@ public class Server {
 }
 
 
-//TODO: utz' design implementieren
-//TODO: javadoc/signatures
+//TODO: Utz: REST API Documentation
+//TODO: Xandi: Show difference between designs
+//TODO: Xandi: Javadoc in HTML extrahieren
+//TODO: Xandi: Code metrics of current implementation
+//TODO: Daniel: Discuss how we applied observer and strategy patterns
