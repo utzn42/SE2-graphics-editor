@@ -2,6 +2,7 @@ package canvas;
 
 import shapes.Shape;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,28 +16,19 @@ import java.util.Observer;
  */
 public class ShapeInfo implements Observer {
 
-    private Shape[] listOfShapes;
-    private Layer[] listOfLayers;
+    private List<Shape> listOfShapes;
+    private List<Layer> listOfLayers;
 
-    private ShapeInfo(){
+    private ShapeInfo() {
 
     }
-
 
     /**
      * Returns an array of all shapes existing in the canvas.
      * @return returns a Shape array
      */
-    public Shape[] getAllShapes(){
+    public List<Shape> getAllShapes(){
         return null;
-    }
-
-    /**
-     * Updates the whole information about the layers and shapes.
-     * @param shape contains the added, deleted or edited shape
-     */
-    public void update(Shape shape) {
-
     }
 
     @Override

@@ -5,10 +5,8 @@ package canvas;
  *
  * @see Layer
  */
-public enum LayerState{
-
+public enum LayerState {
     FULL,
     FILLED,
-    EMPTY;
-
+    EMPTY
 }

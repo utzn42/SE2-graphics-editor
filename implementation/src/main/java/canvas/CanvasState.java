@@ -5,11 +5,8 @@ package canvas;
  *
  * @see Canvas
  */
-public enum CanvasState{
+public enum CanvasState {
     FULL,
     FILLED,
-    EMPTY;
-
-
-
+    EMPTY
 }

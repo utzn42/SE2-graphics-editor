@@ -2,6 +2,7 @@ package canvas;
 
 import shapes.Shape;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,29 +21,12 @@ import java.util.Observer;
 public class Canvas implements Observer {
 
     private CanvasState state;
-    private Layer[] data;
+    private List<Layer> layers;
 
     /**
      * This is the default constructor of the Canvas class.
      */
-    public Canvas(){
-
-    }
-
-    /**
-     * This method lets you print out a String representation of the Canvas object. It overrides the method of Object.java class
-     * @return returns a String
-     */
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    /**
-     * Updates the Canvas with the layers and shapes.
-     * @param shape contains the added, deleted or edited shape
-     */
-    public void update(Shape shape){
+    public Canvas() {
 
     }
 
