@@ -5,8 +5,11 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import shapes.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,8 +19,21 @@ public class RESTHandler {
     private Map<String, Canvas> projects = new HashMap<>();
     private long seedCounter = 0;
 
-    @RequestMapping(value = "/create/")
-    public String createProject() {
+    @RequestMapping(value = "/test")
+    public List<Shape> test() {
+        List<Shape> shapes = new ArrayList<>();
+        shapes.add(new Circle());
+        shapes.add(new Ellipse());
+        shapes.add(new Line());
+        shapes.add(new Polygon());
+        shapes.add(new RegularPolygon());
+        shapes.add(new Star());
+        shapes.add(new Text());
+        return shapes;
+    }
+
+    @RequestMapping(value = "/create")
+    public JSONObject createProject() {
         return null;
     }
 
@@ -45,3 +61,4 @@ public class RESTHandler {
 }
 
 //TODO: Utz: Generate SHA Hash from seed
+//TODO: Jackson annotation reference to parse JSON to and from POJO: https://www.baeldung.com/jackson-annotations

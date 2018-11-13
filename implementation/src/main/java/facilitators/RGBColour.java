@@ -1,5 +1,7 @@
 package facilitators;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class RGBColour {
 
     private final byte red;
@@ -31,6 +33,7 @@ public class RGBColour {
         return blue;
     }
 
+    @JsonValue
     public String getHexColour() {
         return "#" + String.format("%02X", red) + String.format("%02X", green) + String.format("%02X", blue);
     }

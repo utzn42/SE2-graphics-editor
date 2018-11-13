@@ -1,7 +1,16 @@
 package shapes;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.RGBColour;
+// import org.json.JSONObject;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "shape"
+)
+@JsonRootName(value = "attributes")
 public abstract class Shape {
 
     private RGBColour fillColour;
@@ -12,6 +21,7 @@ public abstract class Shape {
     // TODO: Another idea? (read plz)
     // What if we add an anchor Coordinate here? (e.g. center for Circle, RegularPolygon, Star, Ellipse and Text (using text-anchor="middle" alignment-baseline="middle"), first point for Line & Polygon)
     // -> Could then implement move(vector) directly here
+    // (On second thought, that would make it harder to interpret which point exactly that variable represents for a shape)
 
     public Shape() {
         this.fillColour = new RGBColour("#FFFFFF");
@@ -68,5 +78,19 @@ public abstract class Shape {
     }
 
     public abstract String getHTML();
+
+    /*
+    public JSONObject getJSON() {
+        JSONObject json = new JSONObject();
+        json.put("shape", "null");
+        JSONObject attributes = new JSONObject();
+        attributes.put("fillColour", fillColour);
+        attributes.put("strokeColour", strokeColour);
+        attributes.put("strokeWidth", strokeWidth);
+        attributes.put("opacity", opacity);
+        json.put("attributes", attributes);
+        return json;
+    }
+    */
 
 }
