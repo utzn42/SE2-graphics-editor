@@ -1,6 +1,7 @@
 package main.input;
 
 import canvas.Canvas;
+import canvas.Layer;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,22 @@ public class RESTHandler {
     private long seedCounter = 0;
 
     @RequestMapping(value = "/test")
-    public List<Shape> test() {
-        List<Shape> shapes = new ArrayList<>();
-        shapes.add(new Circle());
-        shapes.add(new Ellipse());
-        shapes.add(new Line());
-        shapes.add(new Polygon());
-        shapes.add(new RegularPolygon());
-        shapes.add(new Star());
-        shapes.add(new Text());
-        return shapes;
+    public Canvas test() {
+        List<Layer> layers = new ArrayList<>();
+        List<Shape> shapes1 = new ArrayList<>();
+        List<Shape> shapes2 = new ArrayList<>();
+        List<Shape> shapes3 = new ArrayList<>();
+        shapes1.add(new Circle());
+        shapes2.add(new Ellipse());
+        shapes3.add(new Line());
+        shapes1.add(new Polygon());
+        shapes2.add(new RegularPolygon());
+        shapes3.add(new Star());
+        shapes1.add(new Text());
+        layers.add(new Layer(shapes1));
+        layers.add(new Layer(shapes2));
+        layers.add(new Layer(shapes3));
+        return new Canvas(layers);
     }
 
     @RequestMapping(value = "/create")

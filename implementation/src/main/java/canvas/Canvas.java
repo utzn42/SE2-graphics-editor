@@ -1,7 +1,9 @@
 package canvas;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import shapes.Shape;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,16 +20,61 @@ import java.util.Observer;
  * @see CanvasState
  * @see Shape
  */
+@JsonIgnoreProperties({"state"})
 public class Canvas implements Observer {
 
     private CanvasState state;
+    private double width;
+    private double height;
     private List<Layer> layers;
 
     /**
      * This is the default constructor of the Canvas class.
      */
     public Canvas() {
+        state = CanvasState.EMPTY;
+        width = 200;
+        height = 200;
+        layers = new ArrayList<>();
+    }
 
+    public Canvas(List<Layer> layers) {
+        state = CanvasState.EMPTY;
+        width = 200;
+        height = 200;
+        this.layers = layers;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public List<Layer> getLayers() {
+        return layers;
+    }
+
+    public String getHTML() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<svg width=\"").append(width)
+                .append("\" height=\"").append(height)
+                .append("\" baseProfile=\"full\" xmlns=\"http://www.w3.org/2000/svg\">");
+        for (Layer layer : layers) {
+            stringBuilder.append(layer.getHTML());
+        }
+        stringBuilder.append("</svg>");
+        return stringBuilder.toString();
     }
 
     @Override

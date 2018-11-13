@@ -1,7 +1,9 @@
 package canvas;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import shapes.Shape;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -15,6 +17,7 @@ import java.util.Observer;
  * @see LayerState
  * @see Observer
  */
+@JsonIgnoreProperties({"state", "html"})
 public class Layer implements Observer {
 
     private LayerState state;
@@ -25,7 +28,9 @@ public class Layer implements Observer {
      * Default constructor.
      */
     public Layer() {
-
+        state = LayerState.EMPTY;
+        shapes = new ArrayList<>();
+        visible = true;
     }
 
     /**
@@ -33,7 +38,13 @@ public class Layer implements Observer {
      * @param shapes one ore more shapes
      */
     public Layer(List<Shape> shapes) {
+        state = LayerState.EMPTY;
+        this.shapes = shapes;
+        visible = true;
+    }
 
+    public List<Shape> getShapes() {
+        return shapes;
     }
 
     public boolean isVisible() {
@@ -42,6 +53,14 @@ public class Layer implements Observer {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public String getHTML() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Shape shape : shapes) {
+            stringBuilder.append(shape.getHTML());
+        }
+        return stringBuilder.toString();
     }
 
     @Override
