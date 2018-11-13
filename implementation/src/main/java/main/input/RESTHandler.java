@@ -54,6 +54,51 @@ public class RESTHandler {
         return response;
     }
 
+    @RequestMapping(value = "/addLayer/{projectID}", method = RequestMethod.POST)
+    public ServerResponse addLayer(@PathVariable String projectID, @RequestBody String request) {
+        ServerResponse response = new ServerResponse(projectID);
+        if (!projects.containsKey(projectID)) {
+            response.addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
+            return response;
+        }
+        Canvas canvas = projects.get(projectID);
+
+        // TODO: Add Layer to Canvas
+
+        response.setCanvas(canvas);
+        return response;
+    }
+
+    @RequestMapping(value = "/editLayer/{projectID}", method = RequestMethod.POST)
+    public ServerResponse editLayer(@PathVariable String projectID, @RequestBody String request) {
+        ServerResponse response = new ServerResponse(projectID);
+        if (!projects.containsKey(projectID)) {
+            response.addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
+            return response;
+        }
+        Canvas canvas = projects.get(projectID);
+
+        // TODO: Edit Layer
+
+        response.setCanvas(canvas);
+        return response;
+    }
+
+    @RequestMapping(value = "/deleteLayer/{projectID}", method = RequestMethod.POST)
+    public ServerResponse deleteLayer(@PathVariable String projectID, @RequestBody String request) {
+        ServerResponse response = new ServerResponse(projectID);
+        if (!projects.containsKey(projectID)) {
+            response.addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
+            return response;
+        }
+        Canvas canvas = projects.get(projectID);
+
+        // TODO: Delete Layer
+
+        response.setCanvas(canvas);
+        return response;
+    }
+
     @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.POST)
     public ServerResponse addShape(@PathVariable String projectID, @RequestBody String request) {
         ServerResponse response = new ServerResponse(projectID);
@@ -63,7 +108,7 @@ public class RESTHandler {
         }
         Canvas canvas = projects.get(projectID);
 
-        // TODO: Add Shape
+        // TODO: Add Shape to Layer
 
         response.setCanvas(canvas);
         return response;
