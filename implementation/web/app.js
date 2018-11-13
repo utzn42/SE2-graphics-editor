@@ -4,7 +4,7 @@ var canvasStateServer = {
     canvasHeight: 200,
     activeLayer: -1,    // -1 is the canvas itself
     layers: [],
-    html: "<svg width='200' height='200'></svg>"
+    html: "<svg width='200' height='200' baseProfile='full' xmlns='http://www.w3.org/2000/svg'></svg>"
 };
 var canvasStateClient;
 
@@ -128,6 +128,20 @@ function switchActiveLayer(layer) {
 }
 
 
+// adapted from https://stackoverflow.com/questions/23218174
+function downloadSVG() {
+    var svg = document.getElementById("app_canvas").innerHTML;
+    var blob = new Blob([svg], {type:"image/svg+xml; charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "download.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+
 // DUMMY FUNCTION!
 // Implement on Server
 function serverStub(request) {
@@ -203,7 +217,8 @@ function serverStub(request) {
 // DUMMY FUNCTION!
 // Implement on Server
 function serverGenerateHTML() {
-    var html = "<svg width='" + canvasStateServer.canvasWidth + "' height='" + canvasStateServer.canvasHeight + "'>";
+    var html = "<svg width='" + canvasStateServer.canvasWidth + "' height='" + canvasStateServer.canvasHeight + "'"
+        + "baseProfile='full' xmlns='http://www.w3.org/2000/svg'>";
     for (var layer = 0; layer < canvasStateServer.layers.length; ++layer) {
         html += serverGenerateLayerHTML(layer);
     }
