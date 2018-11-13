@@ -2,6 +2,7 @@ package main.input;
 
 import canvas.Canvas;
 import canvas.Layer;
+import facilitators.Hasher;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class RESTHandler {
 
     private static Logger restLogger = LoggerFactory.getLogger(RESTHandler.class);
     private Map<String, Canvas> projects = new HashMap<>();
-    private long seedCounter = 0;
+    private static long seedCounter = 0;
 
     @RequestMapping(value = "/test")
     public Canvas test() {
@@ -41,6 +42,7 @@ public class RESTHandler {
 
     @RequestMapping(value = "/create")
     public JSONObject createProject() {
+        Hasher hash = new Hasher(++seedCounter);
         return null;
     }
 
