@@ -1,5 +1,6 @@
 package shapes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.RGBColour;
@@ -11,6 +12,7 @@ import facilitators.RGBColour;
         property = "shape"
 )
 @JsonRootName(value = "attributes")
+@JsonIgnoreProperties({"html"})
 public abstract class Shape {
 
     private RGBColour fillColour;

@@ -25,7 +25,7 @@ public class Star extends RegularPolygon {
         this.innerRadius = innerRadius;
     }
 
-    public List<Coordinate> getStarCoordinates() {
+    private List<Coordinate> getStarCoordinates() {
         List<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < getEdgeAmount(); ++i) {
             float xOuter = (float) (getRadius() * Math.sin((2 * i * Math.PI)/getEdgeAmount()) + getCenter().getX());
