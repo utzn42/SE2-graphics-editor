@@ -71,7 +71,9 @@ public class Canvas implements Observer {
                 .append("\" height=\"").append(height)
                 .append("\" baseProfile=\"full\" xmlns=\"http://www.w3.org/2000/svg\">");
         for (Layer layer : layers) {
-            stringBuilder.append(layer.getHTML());
+            if (layer.isVisible()) {
+                stringBuilder.append(layer.getHTML());
+            }
         }
         stringBuilder.append("</svg>");
         return stringBuilder.toString();
