@@ -10,6 +10,7 @@ import java.util.Map;
 import messages.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class RESTHandler {
   private static long seedCounter = 0;
   private Map<String, Canvas> projects = new HashMap<>();
 
+  @CrossOrigin()
   @RequestMapping(value = "/test")
   public ServerResponse test() {
     List<Layer> layers = new ArrayList<>();
@@ -50,9 +52,11 @@ public class RESTHandler {
     Canvas canvas = new Canvas(layers);
     ServerResponse response = new ServerResponse("TestID");
     response.setCanvas(canvas);
+    projects.put("TestID", canvas);
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/create")
   public ServerResponse createProject() {
     Hasher hash = new Hasher(++seedCounter);
@@ -64,6 +68,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/addLayer/{projectID}", method = RequestMethod.POST)
   public ServerResponse addLayer(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
@@ -80,6 +85,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/editLayer/{projectID}", method = RequestMethod.POST)
   public ServerResponse editLayer(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
@@ -96,6 +102,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/deleteLayer/{projectID}", method = RequestMethod.POST)
   public ServerResponse deleteLayer(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
@@ -112,6 +119,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.POST)
   public ServerResponse addShape(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
@@ -128,6 +136,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/editShape/{projectID}", method = RequestMethod.POST)
   public ServerResponse editShape(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
@@ -144,6 +153,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/transformShape/{projectID}", method = RequestMethod.POST)
   public ServerResponse transformShape(@PathVariable String projectID,
       @RequestBody String request) {
@@ -161,6 +171,7 @@ public class RESTHandler {
     return response;
   }
 
+  @CrossOrigin()
   @RequestMapping(value = "/deleteShape/{projectID}")
   public ServerResponse deleteShape(@PathVariable String projectID, @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
