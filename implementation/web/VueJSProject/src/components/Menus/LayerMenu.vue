@@ -70,6 +70,35 @@
         this.editLayer(index);
       },
       updateLayers: function(canvas) {
+        // Switch to last layer if one has been created
+        // If creation of a layer ever puts the new layer somewhere else than the last index, update this!
+        if (canvas.layers.length > this.layers.length) {
+          this.selectedLayer = canvas.layers.length - 1;
+          this.selectedShape = canvas.layers[this.selectedLayer].shapes.length - 1;
+        }
+        // Switch to last layer if deletion of a layer caused the currently selected one to go out of bounds
+        // In that case, select the last shape of that layer
+        else if (canvas.layers.length < this.layers.length) {
+          if (canvas.layers.length <= this.selectedLayer) {
+            this.selectedLayer = canvas.layers.length - 1;
+            if (this.selectedLayer === -1) {
+              this.selectedShape = -1;
+            }
+            else {
+              this.selectedShape = canvas.layers[this.selectedLayer].shapes.length - 1;
+            }
+          }
+        }
+        // If Layers have not been modified, perform similar checks for the selected Shape
+        else if (this.selectedLayer !== -1) {
+          let newShapesLength = canvas.layers[this.selectedLayer].shapes.length;
+          let oldShapesLength = this.layers[this.selectedLayer].shapes.length;
+          if (newShapesLength > oldShapesLength || newShapesLength <= this.selectedShape) {
+            this.selectedShape = canvas.layers[this.selectedLayer].shapes.length - 1;
+          }
+        }
+
+        // Update layers and shapes
         this.layers = canvas.layers;
         dataBus.$emit('canvasUpdated', {
           width: canvas.width,

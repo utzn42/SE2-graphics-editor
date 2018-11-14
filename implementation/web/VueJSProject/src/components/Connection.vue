@@ -19,9 +19,9 @@
     },
     methods: {
       createCanvas: function() {
-        this.$http.get(this.baseUrl + "/test")
+        this.$http.get(this.baseUrl + "/create")
           .then(response => {
-            console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/test\":");
+            console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":");
             console.log(response);
             this.projectID = response.body.projectID;
             dataBus.$emit('response', response);
