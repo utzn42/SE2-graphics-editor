@@ -9,7 +9,7 @@ public class RegularPolygon extends Circle {
   private int edgeAmount;
 
   public RegularPolygon() {
-    edgeAmount = 4;
+    edgeAmount = 5;
   }
 
   public RegularPolygon(int edgeAmount) {
@@ -27,9 +27,9 @@ public class RegularPolygon extends Circle {
   private List<Coordinate> getPolygonCoordinates() {
     List<Coordinate> coordinates = new ArrayList<>();
     for (int i = 0; i < edgeAmount; ++i) {
-      float x = (float) (getRadius() * Math.sin((2 * i * Math.PI) / edgeAmount) + getCenter()
+      float x = (float) (getRadius() * Math.sin((Math.PI + (2 * i * Math.PI)) / edgeAmount) + getCenter()
           .getX());
-      float y = (float) (getRadius() * Math.cos((2 * i * Math.PI) / edgeAmount) + getCenter()
+      float y = (float) (getRadius() * Math.cos((Math.PI + (2 * i * Math.PI)) / edgeAmount) + getCenter()
           .getY());
       coordinates.add(new Coordinate(x, y));
     }

@@ -90,7 +90,9 @@ public class RESTHandler {
     restLogger.info("editCanvas - Width: " + request.getWidth());
     restLogger.info("           - Height: " + request.getHeight());
 
-    // TODO: Edit Canvas
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.setWidth(request.getWidth());
+    canvas.setHeight(request.getHeight());
 
     response.setCanvas(canvas);
     return response;
@@ -110,7 +112,8 @@ public class RESTHandler {
 
     restLogger.info("addLayer - (empty object)");
 
-    // TODO: Add Layer to Canvas
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.getLayers().add(new Layer());
 
     response.setCanvas(canvas);
     return response;
@@ -131,7 +134,8 @@ public class RESTHandler {
     restLogger.info("editLayer - Layer Index: " + request.getLayerIndex());
     restLogger.info("          - Visible: " + request.isVisible());
 
-    // TODO: Edit Layer
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.getLayers().get(request.getLayerIndex()).setVisible(request.isVisible());
 
     response.setCanvas(canvas);
     return response;
@@ -151,7 +155,8 @@ public class RESTHandler {
 
     restLogger.info("deleteLayer - Layer Index: " + request.getLayerIndex());
 
-    // TODO: Delete Layer
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.getLayers().remove(request.getLayerIndex());
 
     response.setCanvas(canvas);
     return response;
@@ -170,6 +175,8 @@ public class RESTHandler {
 
     restLogger.info("addShape - Layer Index: " + request.getLayerIndex());
     restLogger.info("         - Shape Class: " + request.getShapeClass());
+
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
     Shape newShape;
     try {
       newShape = (Shape) (Class.forName(request.getShapeClass()).newInstance());
@@ -183,8 +190,6 @@ public class RESTHandler {
     } catch (InstantiationException e) {
       restLogger.error("         - HTML: Could not instantiate Object for Class");
     }
-
-    // TODO: Add Shape to Layer
 
     response.setCanvas(canvas);
     return response;
@@ -204,7 +209,8 @@ public class RESTHandler {
 
     restLogger.info("editShape - " + request.getShape().getHTML());
 
-    // TODO: Edit Shape
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.getLayers().get(request.getLayerIndex()).getShapes().set(request.getShapeIndex(), request.getShape());
 
     response.setCanvas(canvas);
     return response;
@@ -243,7 +249,8 @@ public class RESTHandler {
     restLogger.info("deleteShape - Layer Index: " + request.getLayerIndex());
     restLogger.info("            - Shape Index: " + request.getShapeIndex());
 
-    // TODO: Delete Shape
+    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
+    canvas.getLayers().get(request.getLayerIndex()).getShapes().remove(request.getShapeIndex());
 
     response.setCanvas(canvas);
     return response;
