@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import messages.RequestAddLayer;
+import messages.RequestAddShape;
+import messages.RequestDeleteLayer;
+import messages.RequestDeleteShape;
+import messages.RequestEditCanvas;
+import messages.RequestEditLayer;
+import messages.RequestEditShape;
 import messages.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +76,8 @@ public class RESTHandler {
   }
 
   @CrossOrigin()
-  @RequestMapping(value = "/addLayer/{projectID}", method = RequestMethod.POST)
-  public ServerResponse addLayer(@PathVariable String projectID, @RequestBody String request) {
+  @RequestMapping(value = "/editCanvas/{projectID}", method = RequestMethod.POST)
+  public ServerResponse editCanvas(@PathVariable String projectID, @RequestBody RequestEditCanvas request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -78,6 +85,28 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("editCanvas - Width: " + request.getWidth());
+    restLogger.info("           - Height: " + request.getHeight());
+
+    // TODO: Edit Canvas
+
+    response.setCanvas(canvas);
+    return response;
+  }
+
+  @CrossOrigin()
+  @RequestMapping(value = "/addLayer/{projectID}", method = RequestMethod.POST)
+  public ServerResponse addLayer(@PathVariable String projectID, @RequestBody RequestAddLayer request) {
+    ServerResponse response = new ServerResponse(projectID);
+    if (!projects.containsKey(projectID)) {
+      response
+          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
+      return response;
+    }
+    Canvas canvas = projects.get(projectID);
+
+    restLogger.info("addLayer - (empty object)");
 
     // TODO: Add Layer to Canvas
 
@@ -87,7 +116,7 @@ public class RESTHandler {
 
   @CrossOrigin()
   @RequestMapping(value = "/editLayer/{projectID}", method = RequestMethod.POST)
-  public ServerResponse editLayer(@PathVariable String projectID, @RequestBody String request) {
+  public ServerResponse editLayer(@PathVariable String projectID, @RequestBody RequestEditLayer request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -95,6 +124,9 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("editLayer - Layer Index: " + request.getLayerIndex());
+    restLogger.info("          - Visible: " + request.isVisible());
 
     // TODO: Edit Layer
 
@@ -104,7 +136,7 @@ public class RESTHandler {
 
   @CrossOrigin()
   @RequestMapping(value = "/deleteLayer/{projectID}", method = RequestMethod.POST)
-  public ServerResponse deleteLayer(@PathVariable String projectID, @RequestBody String request) {
+  public ServerResponse deleteLayer(@PathVariable String projectID, @RequestBody RequestDeleteLayer request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -112,6 +144,8 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("deleteLayer - Layer Index: " + request.getLayerIndex());
 
     // TODO: Delete Layer
 
@@ -121,7 +155,7 @@ public class RESTHandler {
 
   @CrossOrigin()
   @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.POST)
-  public ServerResponse addShape(@PathVariable String projectID, @RequestBody String request) {
+  public ServerResponse addShape(@PathVariable String projectID, @RequestBody RequestAddShape request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -129,6 +163,9 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("addShape - Layer Index: " + request.getLayerIndex());
+    restLogger.info("         - Shape Class: " + request.getShapeClass());
 
     // TODO: Add Shape to Layer
 
@@ -138,7 +175,7 @@ public class RESTHandler {
 
   @CrossOrigin()
   @RequestMapping(value = "/editShape/{projectID}", method = RequestMethod.POST)
-  public ServerResponse editShape(@PathVariable String projectID, @RequestBody String request) {
+  public ServerResponse editShape(@PathVariable String projectID, @RequestBody RequestEditShape request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -146,6 +183,8 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("editShape - " + request.getShape().getHTML());
 
     // TODO: Edit Shape
 
@@ -173,7 +212,7 @@ public class RESTHandler {
 
   @CrossOrigin()
   @RequestMapping(value = "/deleteShape/{projectID}")
-  public ServerResponse deleteShape(@PathVariable String projectID, @RequestBody String request) {
+  public ServerResponse deleteShape(@PathVariable String projectID, @RequestBody RequestDeleteShape request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!projects.containsKey(projectID)) {
       response
@@ -181,6 +220,9 @@ public class RESTHandler {
       return response;
     }
     Canvas canvas = projects.get(projectID);
+
+    restLogger.info("deleteShape - Layer Index: " + request.getLayerIndex());
+    restLogger.info("            - Shape Index: " + request.getShapeIndex());
 
     // TODO: Delete Shape
 

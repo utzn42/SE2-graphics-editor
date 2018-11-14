@@ -28,11 +28,11 @@
           })
       },
       postRequest: function(requestType, data) {
+        console.log("POST REQUEST TO URL=\"" + this.baseUrl + "/" + requestType + "/" + this.projectID + "\":");
+        console.log("SENDING DATA:");
+        console.log(data);
         this.$http.post(this.baseUrl + "/" + requestType + "/" + this.projectID, data)
           .then(response => {
-            console.log("POST REQUEST TO URL=\"" + this.baseUrl + "/" + requestType + "/" + this.projectID + "\":");
-            console.log("DATA SENT:");
-            console.log(data);
             console.log("DATA RECEIVED:");
             console.log(response);
             dataBus.$emit('response', response);
@@ -40,7 +40,8 @@
       }
     },
     created: function () {
-      this.createCanvas();
+      dataBus.$on('create', () => this.createCanvas());
+      dataBus.$on('editCanvas', (data) => this.postRequest('editCanvas', data));
       dataBus.$on('addLayer', (data) => this.postRequest('addLayer', data));
       dataBus.$on('editLayer', (data) => this.postRequest('editLayer', data));
       dataBus.$on('deleteLayer', (data) => this.postRequest('deleteLayer', data));

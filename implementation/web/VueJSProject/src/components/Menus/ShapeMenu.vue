@@ -4,26 +4,26 @@
       <ShapeEditForm />
     </div>
     <div class="shape-menu-shapes">
-      <ul>
-        <li v-on:click="addShape('Line')">
+      <ul v-if="selectedLayer !== -1">
+        <li v-on:click="addShape(shapesRootPackage + '.Line')">
           + Add Line
         </li>
-        <li v-on:click="addShape('Circle')">
+        <li v-on:click="addShape(shapesRootPackage + '.Circle')">
           + Add Circle
         </li>
-        <li v-on:click="addShape('Polygon')">
+        <li v-on:click="addShape(shapesRootPackage + '.Polygon')">
           + Add Polygon
         </li>
-        <li v-on:click="addShape('Regular Polygon')">
+        <li v-on:click="addShape(shapesRootPackage + '.RegularPolygon')">
           + Add Regular Polygon
         </li>
-        <li v-on:click="addShape('Ellipse')">
+        <li v-on:click="addShape(shapesRootPackage + '.Ellipse')">
           + Add Ellipse
         </li>
-        <li v-on:click="addShape('Star')">
+        <li v-on:click="addShape(shapesRootPackage + '.Star')">
           + Add Star
         </li>
-        <li v-on:click="addShape('Text')">
+        <li v-on:click="addShape(shapesRootPackage + '.Text')">
           + Add Text
         </li>
       </ul>
@@ -43,12 +43,24 @@
     },
     data() {
       return {
-        canvasData: {},
-        shapeType: null,
+        canvasData: {
+          width: {
+            label: "Canvas Width",
+            type: "simple",
+            value: ""
+          },
+          height: {
+            label: "Canvas Height",
+            type: "simple",
+            value: ""
+          }
+        },
+        shapeClass: null,
         shapeData: null,
         shapeModel: {},
         selectedLayer: null,
-        selectedShape: null
+        selectedShape: null,
+        shapesRootPackage: "shapes"
       }
     },
     methods: {
@@ -56,7 +68,7 @@
         this.selectedLayer = layerData.selectedLayer;
         this.selectedShape = layerData.selectedShape;
         if (this.selectedLayer === -1 || this.selectedShape === -1) {
-          this.shapeType = null;
+          this.shapeClass = null;
           this.shapeModel = {
             width: this.canvasData.width.value,
             height: this.canvasData.height.value
@@ -66,27 +78,27 @@
         else {
           let shape = layerData.layers[this.selectedLayer].shapes[this.selectedShape];
           this.shapeModel = shape;
-          this.shapeType = shape.shape;
-          switch (this.shapeType) {
-            case "Circle":
+          this.shapeClass = shape.shapeClass;
+          switch (this.shapeClass) {
+            case this.shapesRootPackage + ".Circle":
               this.shapeData = new Circle(shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "RegularPolygon":
+            case this.shapesRootPackage + ".RegularPolygon":
               this.shapeData = new RegularPolygon(shape.edgeAmount, shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "Star":
+            case this.shapesRootPackage + ".Star":
               this.shapeData = new Star(shape.innerRadius, shape.edgeAmount, shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "Ellipse":
+            case this.shapesRootPackage + ".Ellipse":
               this.shapeData = new Ellipse(shape.center, shape.radiusX, shape.radiusY, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "Line":
+            case this.shapesRootPackage + ".Line":
               this.shapeData = new Line(shape.coordinates, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "Polygon":
+            case this.shapesRootPackage + ".Polygon":
               this.shapeData = new Polygon(shape.coordinates, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case "Text":
+            case this.shapesRootPackage + ".Text":
               this.shapeData = new Text(shape.center, shape.displayText, shape.font, shape.fontSize, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
             default:
@@ -112,16 +124,16 @@
           value: canvas.height
         };
       },
-      addShape: function(shapeType) {
+      addShape: function(shapeClass) {
         dataBus.$emit('addShape', {
           layerIndex: this.selectedLayer,
-          shapeType: shapeType
+          shapeClass: shapeClass
         });
       }
     },
     created: function () {
       dataBus.$on('layersUpdated', (layerData) => this.updateEdit(layerData));
-      dataBus.$on('response', (response) => this.updateCanvasVars(response.body.canvas));
+      dataBus.$on('canvasUpdated', (canvas) => this.updateCanvasVars(canvas));
     }
   }
 </script>

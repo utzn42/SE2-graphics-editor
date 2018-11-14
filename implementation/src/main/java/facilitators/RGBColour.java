@@ -1,5 +1,6 @@
 package facilitators;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class RGBColour {
@@ -14,6 +15,7 @@ public class RGBColour {
     this.blue = blue;
   }
 
+  @JsonCreator()
   public RGBColour(String hex) {
     hex = hex.replace("#", "");
     this.red = (byte) Integer.parseInt(hex.substring(0, 2), 16);

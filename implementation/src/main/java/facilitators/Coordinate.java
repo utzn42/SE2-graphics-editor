@@ -1,11 +1,18 @@
 package facilitators;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Coordinate {
 
   private final double X;
   private final double Y;
 
-  public Coordinate(double x, double y) {
+  @JsonCreator
+  public Coordinate(
+      @JsonProperty("x") double x,
+      @JsonProperty("y") double y
+  ) {
     this.X = x;
     this.Y = y;
   }

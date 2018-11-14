@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.RGBColour;
-// import org.json.JSONObject;
 
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
+    use = JsonTypeInfo.Id.CLASS,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "shape"
+    property = "shapeClass"
 )
 @JsonRootName(value = "attributes")
 @JsonIgnoreProperties({"html"})

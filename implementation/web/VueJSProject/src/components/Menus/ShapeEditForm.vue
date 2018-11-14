@@ -1,12 +1,12 @@
 <template>
-  <div v-if="shapeData !== null" class="shape-edit-form">
+  <div v-if="shapeData !== null && shapeData !== undefined" class="shape-edit-form">
     <template v-for="(attribute, key) in shapeData">
       <label class="header-label">{{attribute.label}}</label><br />
       <template v-if="attribute.type === 'simple'">
         <input type="text" v-model="shapeModel[key]" v-on:keyup.enter="edit()">
       </template>
       <template v-if="attribute.type === 'colour'">
-        <input type="text" v-model="shapeModel[key]" v-on:keyup.enter="edit()">
+        <input type="color" v-model="shapeModel[key]" v-on:change="edit()">
       </template>
       <template v-if="attribute.type ==='coordinate'">
         <label>x: </label>
@@ -55,11 +55,19 @@
         this.edit();
       },
       edit: function() {
-        dataBus.$emit('editShape', {
-          layerIndex: this.selectedLayer,
-          shapeIndex: this.selectedShape,
-          shape: this.shapeModel
-        })
+        if (this.selectedLayer !== -1) {
+          dataBus.$emit('editShape', {
+            layerIndex: this.selectedLayer,
+            shapeIndex: this.selectedShape,
+            shape: this.shapeModel
+          });
+        }
+        else {
+          dataBus.$emit('editCanvas', {
+            width: this.shapeModel.width,
+            height: this.shapeModel.height
+          });
+        }
       }
     },
     created: function() {

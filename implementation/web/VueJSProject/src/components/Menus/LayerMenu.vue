@@ -3,7 +3,7 @@
     <div class="layer-menu-shapes">
       <ul v-if="selectedLayer !== -1">
         <li v-for="(shape, index) in layers[selectedLayer].shapes" :class="{selected: index === selectedShape}" v-on:click="selectShape(index)">
-          Shape {{index}} ({{shape.shape}})
+          Shape {{index}} ({{shape.shapeClass.split(".").reverse()[0]}})
         </li>
         <li v-if="selectedShape !== -1" v-on:click="deleteShape()">
           - Delete Selected Shape
@@ -71,6 +71,10 @@
       },
       updateLayers: function(canvas) {
         this.layers = canvas.layers;
+        dataBus.$emit('canvasUpdated', {
+          width: canvas.width,
+          height: canvas.height
+        });
         this.layersUpdated();
       },
       layersUpdated: function() {

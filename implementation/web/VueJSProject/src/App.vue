@@ -21,6 +21,7 @@
   import Connection from "./components/Connection";
   import LayerMenu from "./components/Menus/LayerMenu";
   import ShapeMenu from "./components/Menus/ShapeMenu";
+  import {dataBus} from "./main";
 
   export default {
     name: 'App',
@@ -29,6 +30,9 @@
       Canvas,
       Connection,
       LayerMenu
+    },
+    mounted: function() {
+      dataBus.$emit("create");
     }
   }
 </script>
