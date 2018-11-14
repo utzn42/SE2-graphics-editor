@@ -166,6 +166,16 @@ public class RESTHandler {
 
     restLogger.info("addShape - Layer Index: " + request.getLayerIndex());
     restLogger.info("         - Shape Class: " + request.getShapeClass());
+    try {
+      // For debugging and reference: Constructing an instance of the received shape class
+      restLogger.info("         - HTML: " + ((Shape) (Class.forName(request.getShapeClass()).newInstance())).getHTML());
+    } catch (ClassNotFoundException e) {
+      restLogger.error("         - HTML: Failed to get Class");
+    } catch (IllegalAccessException e) {
+      restLogger.error("         - HTML: Could not access Class");
+    } catch (InstantiationException e) {
+      restLogger.error("         - HTML: Could not instantiate Object for Class");
+    }
 
     // TODO: Add Shape to Layer
 
