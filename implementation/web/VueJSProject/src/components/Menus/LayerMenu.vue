@@ -17,6 +17,7 @@
         </li>
         <li v-for="(layer, index) in layers" :class="{selected: index === selectedLayer}" v-on:click="selectLayer(index)">
           {{layerName(index)}}
+          <input type="checkbox" :checked="layer.visible" v-on:click="toggleVisibility(index)">
         </li>
         <li v-on:click="addLayer()">
           + Add Layer
@@ -64,6 +65,10 @@
         this.selectedShape = index;
         this.layersUpdated();
       },
+      toggleVisibility: function(index) {
+        this.layers[index].visible = !this.layers[index].visible;
+        this.editLayer(index);
+      },
       updateLayers: function(canvas) {
         this.layers = canvas.layers;
         this.layersUpdated();
@@ -77,6 +82,12 @@
       },
       addLayer: function() {
         dataBus.$emit('addLayer', {});
+      },
+      editLayer: function(layerIndex) {
+        dataBus.$emit('editLayer', {
+          layerIndex: layerIndex,
+          visible: this.layers[layerIndex].visible
+        });
       },
       deleteLayer: function() {
         dataBus.$emit('deleteLayer', {
