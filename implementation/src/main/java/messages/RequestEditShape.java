@@ -2,7 +2,6 @@ package messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import shapes.Shape;
 
 public class RequestEditShape {
