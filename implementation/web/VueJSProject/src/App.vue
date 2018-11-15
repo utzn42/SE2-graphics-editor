@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Connection base-url="http://localhost:8080" />
+    <Connection base-url="http://localhost:8080"/>
     <div class="app-grid">
       <div id="layer-menu">
         <LayerMenu/>
@@ -9,7 +9,7 @@
         <Canvas/>
       </div>
       <div id="shape-menu">
-        <ShapeMenu />
+        <ShapeMenu/>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
       Connection,
       LayerMenu
     },
-    mounted: function() {
+    mounted: function () {
       dataBus.$emit("create");
     }
   }
