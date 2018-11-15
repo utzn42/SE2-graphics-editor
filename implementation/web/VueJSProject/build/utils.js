@@ -30,9 +30,8 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders(loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader]
-      : [cssLoader]
+  function generateLoaders (loader, loaderOptions) {
+    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
       loaders.push({
@@ -60,7 +59,7 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', {indentedSyntax: true}),
+    sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
@@ -83,17 +82,11 @@ exports.styleLoaders = function (options) {
   return output
 }
 
-exports.createNotifierCallback = () =
->
-{
+exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 
-  return (severity, errors) =
->
-  {
-    if (severity !== 'error') {
-      return
-    }
+  return (severity, errors) => {
+    if (severity !== 'error') return
 
     const error = errors[0]
     const filename = error.file && error.file.split('!').pop()

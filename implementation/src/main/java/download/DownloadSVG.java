@@ -5,14 +5,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 
 public class DownloadSVG implements DownloadStrategy {
 
   @Override
-  public void download(Canvas canvas) throws IOException {
-    File file = new File ("out.svg");
+  public URI download(Canvas canvas, String projectID) throws IOException {
+    String svgPath = "./" + projectID + "/" + projectID + ".svg";
+    File file = new File (svgPath);
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(canvas.getHTML());
     writer.close();
+    return file.toURI();
   }
 }

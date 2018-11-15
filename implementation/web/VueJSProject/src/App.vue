@@ -3,13 +3,16 @@
     <Connection base-url="http://localhost:8080"/>
     <div class="app-grid">
       <div id="layer-menu">
-        <LayerMenu/>
+        <LayerMenu />
       </div>
       <div id="canvas">
-        <Canvas/>
+        <Canvas />
       </div>
       <div id="shape-menu">
-        <ShapeMenu/>
+        <ShapeMenu />
+      </div>
+      <div id="bar-menu">
+        <BarMenu />
       </div>
     </div>
 
@@ -22,10 +25,12 @@
   import LayerMenu from "./components/Menus/LayerMenu";
   import ShapeMenu from "./components/Menus/ShapeMenu";
   import {dataBus} from "./main";
+  import BarMenu from "./components/Menus/BarMenu";
 
   export default {
     name: 'App',
     components: {
+      BarMenu,
       ShapeMenu,
       Canvas,
       Connection,
@@ -61,7 +66,7 @@
   .app-grid {
     display: grid;
     grid-template-columns: 20% 60% 20%;
-    grid-template-rows: auto;
+    grid-template-rows: auto 30px;
     box-sizing: border-box;
     background-color: darkgray;
     height: 100%;
@@ -87,4 +92,48 @@
     grid-column: 3;
     grid-row: 1;
   }
+
+  #bar-menu {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row: 2;
+  }
+
+  ul {
+    list-style: none;
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  li {
+    padding: 10px 5px;
+  }
+
+  li:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+
+  li.selected {
+    color: white;
+    background-color: #227722;
+  }
+
+  li.selected:hover {
+    background-color: #115511;
+  }
+
+  button {
+    padding: 5px 10px;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    background: #227722;
+    margin: 0;
+  }
+
+  button:hover {
+    background: #115511;
+  }
+
 </style>

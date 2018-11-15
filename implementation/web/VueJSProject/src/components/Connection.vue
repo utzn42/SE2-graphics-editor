@@ -19,9 +19,10 @@
     },
     methods: {
       createCanvas: function() {
+        console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":")
         this.$http.get(this.baseUrl + "/create")
           .then(response => {
-            console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":");
+            console.log("DATA RECEIVED:");
             console.log(response);
             this.projectID = response.body.projectID;
             dataBus.$emit('response', response);
@@ -49,6 +50,7 @@
       dataBus.$on('editShape', (data) => this.postRequest('editShape', data));
       dataBus.$on('transformShape', (data) => this.postRequest('transformShape', data));
       dataBus.$on('deleteShape', (data) => this.postRequest('deleteShape', data));
+      dataBus.$on('download', (data) => this.postRequest('download', data));
     }
   }
 </script>

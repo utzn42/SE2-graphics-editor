@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -16,28 +17,30 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 public class DownloadPNG implements DownloadStrategy {
 
   @Override
-  public void download(Canvas canvas) throws IOException, TranscoderException {
+  public URI download(Canvas canvas, String projectID) throws IOException, TranscoderException {
     PNGTranscoder t = new PNGTranscoder();
     t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-        new Float(.8));
+        .8);
 
-    File file = new File ("file.svg");
+    File file = new File ("./" + projectID + "/" + projectID + ".svg");
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(canvas.getHTML());
     writer.close();
 
-    String svgFile = file.toURL().toString();
+    String pngPath = "./" + projectID + "/" + projectID + ".png";
+    String svgFile = file.toURI().toURL().toString();
     TranscoderInput input = new TranscoderInput(svgFile);
-    OutputStream ostream = new FileOutputStream("out.png");
+    OutputStream ostream = new FileOutputStream(pngPath);
     TranscoderOutput output = new TranscoderOutput(ostream);
 
     t.transcode(input, output);
 
-    file.delete();
-
+    boolean deleted = file.delete();
 
     ostream.flush();
     ostream.close();
+
+    return file.toURI();
 
   }
 }

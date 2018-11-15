@@ -142,26 +142,6 @@
 
 <style scoped>
 
-  ul {
-    list-style: none;
-    box-sizing: border-box;
-    padding: 0;
-  }
-
-  li {
-    padding: 10px 5px;
-  }
-
-  li:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-  }
-
-  li.selected {
-    color: white;
-    background-color: #555555;
-  }
-
   .layer-menu-grid {
     display: grid;
     grid-template-columns: auto;

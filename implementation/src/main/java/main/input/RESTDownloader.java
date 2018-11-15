@@ -3,11 +3,16 @@ package main.input;
 import static main.input.RESTInit.getProjects;
 
 import canvas.Canvas;
+import download.DownloadJPG;
+import download.DownloadPNG;
+import download.DownloadSVG;
 import download.DownloadStrategy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLConnection;
 import messages.RequestAddShape;
 import messages.RequestDownload;
 import messages.ServerResponse;
@@ -33,9 +38,9 @@ public class RESTDownloader {
   private static Logger restDownloaderLogger = LoggerFactory.getLogger(RESTAdder.class);
 
   @CrossOrigin()
-  @RequestMapping(value = "/download/{projectID}", method = RequestMethod.GET)
+  @RequestMapping(value = "/download/{projectID}", method = RequestMethod.POST)
   public ResponseEntity<Object> download(@PathVariable String projectID,
-      @RequestBody RequestDownload request) throws FileNotFoundException {
+      @RequestBody RequestDownload request) throws IOException, TranscoderException {
     //ServerResponse response = new ServerResponse(projectID);
 
     if (!getProjects().containsKey(projectID)) {
@@ -46,31 +51,31 @@ public class RESTDownloader {
     restDownloaderLogger.info("download in format: " + request.getFileType());
 
     DownloadStrategy downloadStrategy;
-    File file = new File("out."+request.getFileType());
-    try {
-      downloadStrategy = (DownloadStrategy) (Class.forName(request.getFileType()).newInstance());
-      downloadStrategy.download(canvas);
-
-    } catch (ClassNotFoundException e) {
-      restDownloaderLogger.error("         - HTML: Failed to get Class");
-    } catch (IllegalAccessException e) {
-      restDownloaderLogger.error("         - HTML: Could not access Class");
-    } catch (InstantiationException e) {
-      restDownloaderLogger.error("         - HTML: Could not instantiate Object for Class");
-    } catch (IOException | TranscoderException e) {
-      e.printStackTrace();
+    switch (request.getFileType()) {
+      case "svg":
+        downloadStrategy = new DownloadSVG();
+        break;
+      case "png":
+        downloadStrategy = new DownloadPNG();
+        break;
+      case "jpg":
+        downloadStrategy = new DownloadJPG();
+        break;
+      default:
+        throw new IllegalArgumentException("Unknown file type");
     }
+
+    URI fileURI = downloadStrategy.download(canvas, projectID);
+    File file = new File(fileURI);
 
     //InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
     HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.add("Content-Disposition", String.format("attachment; filename=canvas.svg", file.getName()));
+    httpHeaders.add("Content-Disposition", "attachment; filename=" + file.getName());
     httpHeaders.add("Cache-Control", "no-cache, no-store, must-revalidate");
     httpHeaders.add("Expires", "0");
 
-    ResponseEntity<Object> response = ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
-        MediaType.ALL).body(new File("out."+request.getFileType()));
-
-    return response;
+    return ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
+        MediaType.parseMediaType(URLConnection.guessContentTypeFromName(file.getName()))).body(file);
   }
 
 }
