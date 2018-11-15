@@ -26,9 +26,7 @@ public class RESTAdder {
   public ServerResponse addLayer(@PathVariable String projectID) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 
@@ -46,9 +44,7 @@ public class RESTAdder {
       @RequestBody RequestAddShape request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 

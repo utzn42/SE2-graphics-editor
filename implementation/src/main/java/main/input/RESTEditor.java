@@ -27,9 +27,7 @@ public class RESTEditor {
       @RequestBody RequestEditCanvas request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 
@@ -50,9 +48,7 @@ public class RESTEditor {
       @RequestBody RequestEditLayer request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 
@@ -72,9 +68,7 @@ public class RESTEditor {
       @RequestBody RequestEditShape request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 
@@ -93,9 +87,7 @@ public class RESTEditor {
       @RequestBody String request) {
     ServerResponse response = new ServerResponse(projectID);
     if (!getProjects().containsKey(projectID)) {
-      response
-          .addError(new IllegalArgumentException("Project ID " + projectID + " does not exist!"));
-      return response;
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = getProjects().get(projectID);
 
