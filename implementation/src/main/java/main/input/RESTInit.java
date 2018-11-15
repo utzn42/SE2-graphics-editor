@@ -29,7 +29,7 @@ public class RESTInit {
   private static long seedCounter = 0;
   private static Map<String, Canvas> projects = new HashMap<>();
 
-  protected static Map<String, Canvas> getProjects() {
+  static Map<String, Canvas> getProjects() {
     return projects;
   }
 

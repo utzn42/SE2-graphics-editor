@@ -36,7 +36,6 @@ public class RESTEditor {
     restEditorLogger.info("editCanvas - Width: " + request.getWidth());
     restEditorLogger.info("           - Height: " + request.getHeight());
 
-    // TODO: Maybe move this to a separate class, add checks for illegal requests etc.
     canvas.setWidth(request.getWidth());
     canvas.setHeight(request.getHeight());
 
