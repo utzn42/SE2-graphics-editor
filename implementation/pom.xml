@@ -29,6 +29,18 @@
       <artifactId>json-path</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>batik</groupId>
+      <artifactId>batik-transcoder</artifactId>
+      <version>1.6-1</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>fop</artifactId>
+          <groupId>fop</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <properties>

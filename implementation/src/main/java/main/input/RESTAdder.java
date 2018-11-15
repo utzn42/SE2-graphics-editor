@@ -35,6 +35,8 @@ public class RESTAdder {
     canvas.getLayers().add(new Layer());
 
     response.setCanvas(canvas);
+
+
     return response;
   }
 
@@ -66,6 +68,7 @@ public class RESTAdder {
     }
 
     response.setCanvas(canvas);
+
     return response;
   }
 
