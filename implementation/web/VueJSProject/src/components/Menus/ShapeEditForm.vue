@@ -55,7 +55,7 @@
         this.edit();
       },
       edit: function() {
-        if (this.selectedLayer !== -1) {
+        if (this.selectedLayer !== -1 && this.selectedShape !== -1) {
           dataBus.$emit('editShape', {
             layerIndex: this.selectedLayer,
             shapeIndex: this.selectedShape,

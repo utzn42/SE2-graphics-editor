@@ -18,29 +18,28 @@ public class DownloadPNG implements DownloadStrategy {
 
   @Override
   public URI download(Canvas canvas, String projectID) throws IOException, TranscoderException {
+
     PNGTranscoder t = new PNGTranscoder();
     t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-        .8);
+        (float) .8);
 
-    File file = new File ("./" + projectID + "/" + projectID + ".svg");
-    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    File svgFile = new File ("./projects/" + projectID + "/" + projectID + ".svg");
+    boolean dirsCreated = svgFile.getParentFile().mkdirs();
+
+    BufferedWriter writer = new BufferedWriter(new FileWriter(svgFile));
     writer.write(canvas.getHTML());
     writer.close();
 
-    String pngPath = "./" + projectID + "/" + projectID + ".png";
-    String svgFile = file.toURI().toURL().toString();
-    TranscoderInput input = new TranscoderInput(svgFile);
-    OutputStream ostream = new FileOutputStream(pngPath);
+    File pngFile = new File("./projects/" + projectID + "/" + projectID + ".png");
+    TranscoderInput input = new TranscoderInput(svgFile.toURI().toString());
+    OutputStream ostream = new FileOutputStream(pngFile.getPath());
     TranscoderOutput output = new TranscoderOutput(ostream);
 
     t.transcode(input, output);
 
-    boolean deleted = file.delete();
-
     ostream.flush();
     ostream.close();
 
-    return file.toURI();
-
+    return pngFile.toURI();
   }
 }

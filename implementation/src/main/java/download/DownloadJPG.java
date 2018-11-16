@@ -20,26 +20,25 @@ public class DownloadJPG implements DownloadStrategy {
 
     JPEGTranscoder t = new JPEGTranscoder();
     t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
-        .8);
+        (float) .8);
 
-    File file = new File ("./" + projectID + "/" + projectID + ".svg");
-    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    File svgFile = new File ("./projects/" + projectID + "/" + projectID + ".svg");
+    boolean dirsCreated = svgFile.getParentFile().mkdirs();
+
+    BufferedWriter writer = new BufferedWriter(new FileWriter(svgFile));
     writer.write(canvas.getHTML());
     writer.close();
 
-    String jpgPath = "./" + projectID + "/" + projectID + ".jpg";
-    String svgFile = file.toURI().toURL().toString();
-    TranscoderInput input = new TranscoderInput(svgFile);
-    OutputStream ostream = new FileOutputStream(jpgPath);
+    File jpgFile = new File("./projects/" + projectID + "/" + projectID + ".jpg");
+    TranscoderInput input = new TranscoderInput(svgFile.toURI().toString());
+    OutputStream ostream = new FileOutputStream(jpgFile.getPath());
     TranscoderOutput output = new TranscoderOutput(ostream);
 
     t.transcode(input, output);
 
-    boolean deleted = file.delete();
-
     ostream.flush();
     ostream.close();
 
-    return file.toURI();
+    return jpgFile.toURI();
   }
 }

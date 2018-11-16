@@ -8,29 +8,24 @@ import download.DownloadPNG;
 import download.DownloadSVG;
 import download.DownloadStrategy;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
-import messages.RequestAddShape;
-import messages.RequestDownload;
-import messages.ServerResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.batik.transcoder.TranscoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import shapes.Shape;
 
 @RestController
 public class RESTDownloader {
@@ -38,9 +33,8 @@ public class RESTDownloader {
   private static Logger restDownloaderLogger = LoggerFactory.getLogger(RESTAdder.class);
 
   @CrossOrigin()
-  @RequestMapping(value = "/download/{projectID}", method = RequestMethod.POST)
-  public ResponseEntity<Object> download(@PathVariable String projectID,
-      @RequestBody RequestDownload request) throws IOException, TranscoderException {
+  @RequestMapping(produces={"image/svg+xml", "image/png", "image/jpeg"}, value = "/download/{projectID}/{type}", method = RequestMethod.GET)
+  public ResponseEntity<Object> download(@PathVariable String projectID, @PathVariable String type) throws IOException, TranscoderException {
     //ServerResponse response = new ServerResponse(projectID);
 
     if (!getProjects().containsKey(projectID)) {
@@ -48,18 +42,23 @@ public class RESTDownloader {
     }
     Canvas canvas = getProjects().get(projectID);
 
-    restDownloaderLogger.info("download in format: " + request.getFileType());
+    restDownloaderLogger.info("download in format: " + type);
 
     DownloadStrategy downloadStrategy;
-    switch (request.getFileType()) {
+    String mimeType;
+    switch (type) {
       case "svg":
         downloadStrategy = new DownloadSVG();
+        mimeType = "image/svg+xml";
         break;
       case "png":
         downloadStrategy = new DownloadPNG();
+        mimeType = "image/png";
         break;
       case "jpg":
+      case "jpeg":
         downloadStrategy = new DownloadJPG();
+        mimeType = "image/jpeg";
         break;
       default:
         throw new IllegalArgumentException("Unknown file type");
@@ -67,15 +66,18 @@ public class RESTDownloader {
 
     URI fileURI = downloadStrategy.download(canvas, projectID);
     File file = new File(fileURI);
+    Path path = Paths.get(fileURI);
+    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
+    InputStream in = getClass().getResourceAsStream(fileURI.getPath());
 
     //InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
     HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.add("Content-Disposition", "attachment; filename=" + file.getName());
-    httpHeaders.add("Cache-Control", "no-cache, no-store, must-revalidate");
-    httpHeaders.add("Expires", "0");
+    httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+    httpHeaders.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
+    httpHeaders.add(HttpHeaders.EXPIRES, "0");
 
     return ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
-        MediaType.parseMediaType(URLConnection.guessContentTypeFromName(file.getName()))).body(file);
+        MediaType.parseMediaType(mimeType)).body(resource);
   }
 
 }

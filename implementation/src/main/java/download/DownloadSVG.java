@@ -11,8 +11,10 @@ public class DownloadSVG implements DownloadStrategy {
 
   @Override
   public URI download(Canvas canvas, String projectID) throws IOException {
-    String svgPath = "./" + projectID + "/" + projectID + ".svg";
-    File file = new File (svgPath);
+
+    File file = new File ("./projects/" + projectID + "/" + projectID + ".svg");
+    boolean dirsCreated = file.getParentFile().mkdirs();
+
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.write(canvas.getHTML());
     writer.close();

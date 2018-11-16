@@ -25,9 +25,7 @@
     },
     methods: {
       download: function() {
-        dataBus.$emit('download', {
-          fileType: this.fileType
-        });
+        dataBus.$emit('download', this.fileType);
         this.$emit('close');
       }
     }

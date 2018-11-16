@@ -19,7 +19,7 @@
     },
     methods: {
       createCanvas: function() {
-        console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":")
+        console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":");
         this.$http.get(this.baseUrl + "/create")
           .then(response => {
             console.log("DATA RECEIVED:");
@@ -38,6 +38,10 @@
             console.log(response);
             dataBus.$emit('response', response);
           })
+      },
+      downloadRequest: function(fileType) {
+        console.log("OPENING URL=\"" + this.baseUrl + "/download/" + this.projectID + "\":");
+        window.open(this.baseUrl + "/download/" + this.projectID + "/" + fileType);
       }
     },
     created: function () {
@@ -50,7 +54,7 @@
       dataBus.$on('editShape', (data) => this.postRequest('editShape', data));
       dataBus.$on('transformShape', (data) => this.postRequest('transformShape', data));
       dataBus.$on('deleteShape', (data) => this.postRequest('deleteShape', data));
-      dataBus.$on('download', (data) => this.postRequest('download', data));
+      dataBus.$on('download', (fileType) => this.downloadRequest(fileType));
     }
   }
 </script>
