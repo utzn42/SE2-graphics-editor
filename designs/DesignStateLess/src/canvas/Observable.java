@@ -1,4 +1,4 @@
-package management;
+package canvas;
 
 /**
  * This interface manages the interaction between the actual shapes and the layers.

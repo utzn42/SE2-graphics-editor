@@ -1,12 +1,12 @@
-package move;
+package transform_strategy;
 
 /**
  * This class is simply for moving a circle.
- * It implements MoveBehaviour.
+ * It implements TransformBehaviour.
  *
- * @see MoveBehaviour
+ * @see TransformBehaviour
  */
-public class CircleMove implements MoveBehaviour{
+public class CircleTransform implements TransformBehaviour {
 
     /**
      * Moves the circle from one point to another.

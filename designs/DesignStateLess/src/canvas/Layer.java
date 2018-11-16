@@ -1,4 +1,4 @@
-package management;
+package canvas;
 
 import Shape.Shape;
 

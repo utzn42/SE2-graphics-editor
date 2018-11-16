@@ -1,4 +1,4 @@
-package management;
+package facilitators;
 
 /**
  * Every shape needs at least one coordinate. It represents a point in a two-dimensional graph.

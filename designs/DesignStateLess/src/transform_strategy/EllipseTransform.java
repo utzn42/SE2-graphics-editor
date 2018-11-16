@@ -1,12 +1,12 @@
-package move;
+package transform_strategy;
 
 /**
  * This class is simply for moving an ellipse.
- * It implements MoveBehaviour.
+ * It implements TransformBehaviour.
  *
- * @see MoveBehaviour
+ * @see TransformBehaviour
  */
-public class EllipseMove implements MoveBehaviour{
+public class EllipseTransform implements TransformBehaviour {
 
     /**
      * Moves the ellipse from one point to another.
