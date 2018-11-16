@@ -8,26 +8,22 @@ import java.util.Observer;
 import shapes.Shape;
 
 /**
- * A layer is the container of one or more shapes. One layer can hold up to 50 shapes. A layer can
- * lay over or under other layers.
+ * A layer is the container of one or more shapes. A layer can
+ * lay over or under other layers. It can be toggled visible or invisible.
  *
- * The relation is an aggregation, it cannot exist without a the LayerState.
- *
- * @see LayerState
- * @see Observer
+ * @see Shape
+ * @see Canvas
  */
 @JsonIgnoreProperties({"state", "html"})
-public class Layer implements Observer {
+public class Layer {
 
-  private LayerState state;
   private List<Shape> shapes;
   private boolean visible;
 
   /**
-   * Default constructor.
+   * Default constructor. This gets called whenever the user adds a new layer. It is set visible, even though the user can't see it because it doesn't have any shape in it.
    */
   public Layer() {
-    state = LayerState.EMPTY;
     shapes = new ArrayList<>();
     visible = true;
   }
@@ -35,27 +31,41 @@ public class Layer implements Observer {
   /**
    * The constructor of the Layer Class. It expects one or more shapes, which then get assigned to
    * the layer.
-   *
-   * @param shapes one ore more shapes
+   * @param shapes a {@link List} of {@link Shape}
    */
   public Layer(List<Shape> shapes) {
-    state = LayerState.EMPTY;
     this.shapes = shapes;
     visible = true;
   }
 
+  /**
+   * Returns the {@link List} of {@link Shape} which are in the layer. This gets called whenever the user adds, deletes or edits a shape.
+   * @return returns a {@link List} of {@link Layer}
+   */
   public List<Shape> getShapes() {
     return shapes;
   }
 
+  /**
+   * Returns true or false depending on the visibility of the layer.
+   * @return returns a {@link Boolean}
+   */
   public boolean isVisible() {
     return visible;
   }
 
+  /**
+   * Sets the visibility true or false. This gets called when the user toggles the visibility of the layer.
+   * @param visible
+   */
   public void setVisible(boolean visible) {
     this.visible = visible;
   }
 
+  /**
+   * Returns the containers of each {@link Shape} in the layer. Gets called by {@link Canvas} "getHTML" method.
+   * @return returns a {@link Shape} containing all HTML containers of the shapes
+   */
   public String getHTML() {
     StringBuilder stringBuilder = new StringBuilder();
     for (Shape shape : shapes) {
@@ -64,8 +74,4 @@ public class Layer implements Observer {
     return stringBuilder.toString();
   }
 
-  @Override
-  public void update(Observable o, Object arg) {
-
-  }
 }
