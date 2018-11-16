@@ -1,7 +1,7 @@
 package Shape;
 
-import Management.Coordinate;
-import Management.RGBColour;
+import management.Coordinate;
+import management.RGBColour;
 
 /**
  * Represents a polygon. Creates a polygon out of the nr of vertices and coordinates.

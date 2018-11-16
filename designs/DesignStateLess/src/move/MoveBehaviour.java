@@ -1,4 +1,4 @@
-package Move;
+package move;
 
 /**
  * This interface combines the different movebehaviours of the different shapes.

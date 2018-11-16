@@ -1,4 +1,4 @@
-package Management;
+package management;
 
 /**
  * This interface manages the interaction between the actual shapes and the layers.
@@ -12,13 +12,13 @@ public interface Observable {
 
     /**
      * Registers new observable objects.
-     * @param observer
+     * @param observer the observer which gets registered
      */
     void register(Observer observer);
 
     /**
      * Unregisters observable objects.
-     * @param observer
+     * @param observer the observer which gets unregistered
      */
     void unregister(Observer observer);
 

@@ -1,7 +1,7 @@
 package Shape;
 
-import Management.Coordinate;
-import Management.RGBColour;
+import management.Coordinate;
+import management.RGBColour;
 
 /**
  * Creates a circle out of a center coordinate and a radius.

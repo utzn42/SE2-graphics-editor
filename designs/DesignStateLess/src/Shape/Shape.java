@@ -1,14 +1,14 @@
 package Shape;
 
 
-import Management.Observable;
-import Management.Observer;
-import Management.RGBColour;
-import Move.MoveBehaviour;
+import management.Observable;
+import management.Observer;
+import management.RGBColour;
+import move.MoveBehaviour;
 
 /**
  * This abstract class describes the main components of a shape. It is then divided into subclasses for each individual shape.
- * It implements Observable and MoveBehaviour.
+ * It implements {@link Observable}.
  */
 public abstract class Shape implements Observable{
 
@@ -18,7 +18,7 @@ public abstract class Shape implements Observable{
 
     /**
      * Registers new observable objects.
-     * @param observer
+     * @param observer the observer which gets registered
      */
     public void register(Observer observer){
 
@@ -26,7 +26,7 @@ public abstract class Shape implements Observable{
 
     /**
      * Unregisters observable objects.
-     * @param observer
+     * @param observer the observer which gets unregistered
      */
     public void unregister(Observer observer){
 

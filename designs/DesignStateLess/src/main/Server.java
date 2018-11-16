@@ -1,8 +1,8 @@
-package Main;
+package main;
 
 /**
- * This class is the main class. The program starts here.
- *
+ * This class is the main class. The program starts here. The server runs and waits for REST requests.
+ * All Requests will get redirected to the {@link RestHandler.RestHandler}.
  */
 public class Server {
 

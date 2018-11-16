@@ -1,4 +1,4 @@
-package Management;
+package management;
 
 /**
  * Describes one of the three different states a canvas object can currently be. Full, filled or empty.
@@ -9,7 +9,5 @@ public enum CanvasState{
     FULL,
     FILLED,
     EMPTY;
-
-
 
 }

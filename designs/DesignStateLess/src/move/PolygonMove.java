@@ -1,4 +1,4 @@
-package Move;
+package move;
 
 /**
  * This class is simply for moving a polygon.

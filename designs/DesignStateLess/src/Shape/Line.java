@@ -1,7 +1,7 @@
 package Shape;
 
-import Management.Coordinate;
-import Management.RGBColour;
+import management.Coordinate;
+import management.RGBColour;
 
 /**
  * Represents a line out of 2 points: The start coordinate and the end coordinate.
