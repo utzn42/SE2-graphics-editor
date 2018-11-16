@@ -1,10 +1,9 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import shapes.Shape;
 
 /**
@@ -19,7 +18,7 @@ import shapes.Shape;
  * @see Shape
  */
 @JsonIgnoreProperties({"state"})
-public class Canvas implements Observer {
+public class Canvas implements Serializable {
 
   private CanvasState state;
   private double width;
@@ -77,8 +76,4 @@ public class Canvas implements Observer {
     return stringBuilder.toString();
   }
 
-  @Override
-  public void update(Observable o, Object arg) {
-
-  }
 }
