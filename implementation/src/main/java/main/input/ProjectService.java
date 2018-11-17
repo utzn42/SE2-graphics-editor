@@ -50,8 +50,10 @@ public class ProjectService extends Observable {
 
   }
 
-  public Canvas createCanvas() {
-    return new Canvas();
+  public Canvas createCanvas(String projectID) {
+    Canvas blankCanvas = new Canvas();
+    projects.put(projectID, blankCanvas);
+    return blankCanvas;
   }
 
   public Canvas addLayer(String projectID) {
@@ -67,7 +69,8 @@ public class ProjectService extends Observable {
     return canvas;
   }
 
-  public Canvas addShape(String projectID, int layerIndex, String shapeClass) {
+  public Canvas addShape(String projectID, int layerIndex, String shapeClass)
+      throws Exception {
     if (!projects.containsKey(projectID)) {
       throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
@@ -83,18 +86,24 @@ public class ProjectService extends Observable {
       projectServiceLogger.info("         - HTML: " + newShape.getHTML());
     } catch (ClassNotFoundException e) {
       projectServiceLogger.error("         - HTML: Failed to get Class");
+      throw new ClassNotFoundException("Class " + shapeClass + " does not exist!");
     } catch (IllegalAccessException e) {
       projectServiceLogger.error("         - HTML: Could not access Class");
+      throw new IllegalAccessException("layerIndex: " + layerIndex + ". No such layer found!");
     } catch (InstantiationException e) {
       projectServiceLogger.error("         - HTML: Could not instantiate Object for Class");
+      throw new InstantiationException("Could not instantiate object of class " + shapeClass + ".");
     }
 
     return canvas;
   }
 
   public Canvas editCanvas(String projectID, double width, double height) {
+    if (width < 0 || height < 0) {
+      throw new IllegalArgumentException("Height and width must both be positive!");
+    }
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     Canvas canvas = projects.get(projectID);
@@ -110,7 +119,7 @@ public class ProjectService extends Observable {
 
   public Canvas editLayer(String projectID, int layerIndex, boolean isVisible) {
     if (projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
     Canvas canvas = projects.get(projectID);
 
@@ -228,5 +237,7 @@ public class ProjectService extends Observable {
     return projects;
   }
 }
+
+//TODO:Error handling
 
 
