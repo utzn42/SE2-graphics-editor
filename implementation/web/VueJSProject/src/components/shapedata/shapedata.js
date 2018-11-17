@@ -1,4 +1,6 @@
-
+/**
+ * Describes attributes that all Shapes share.
+ */
 class Shape {
 
   constructor(fillColour, strokeColour, strokeWidth, opacity) {
@@ -19,14 +21,20 @@ class Shape {
     };
     this.opacity = {
       label: "Opacity",
-      type: "simple",
+      type: "range:0-1",
       value: opacity
     };
   }
 
 }
 
+
+/**
+ * Describes attributes of a Circle.
+ * Extends {@link Shape}.
+ */
 export class Circle extends Shape {
+
   constructor(center, radius, fillColour, strokeColour, strokeWidth, opacity) {
     super(fillColour, strokeColour, strokeWidth, opacity);
     this.center = {
@@ -40,9 +48,16 @@ export class Circle extends Shape {
       value: radius
     };
   }
+
 }
 
+
+/**
+ * Describes attributes of a RegularPolygon.
+ * Extends {@link Circle}.
+ */
 export class RegularPolygon extends Circle {
+
   constructor(edgeAmount, center, radius, fillColour, strokeColour, strokeWidth, opacity) {
     super(center, radius, fillColour, strokeColour, strokeWidth, opacity);
     this.edgeAmount = {
@@ -51,9 +66,16 @@ export class RegularPolygon extends Circle {
       value: edgeAmount
     };
   }
+
 }
 
+
+/**
+ * Describes attributes of a Star.
+ * Extends {@link RegularPolygon}.
+ */
 export class Star extends RegularPolygon {
+
   constructor(innerRadius, edgeAmount, center, radius, fillColour, strokeColour, strokeWidth, opacity) {
     super(edgeAmount, center, radius, fillColour, strokeColour, strokeWidth, opacity);
     this.radius.label = "Outer Radius";
@@ -64,9 +86,16 @@ export class Star extends RegularPolygon {
       value: innerRadius
     };
   }
+
 }
 
+
+/**
+ * Describes attributes of an Ellipse.
+ * Extends {@link Shape}.
+ */
 export class Ellipse extends Shape {
+
   constructor(center, radiusX, radiusY, fillColour, strokeColour, strokeWidth, opacity) {
     super(fillColour, strokeColour, strokeWidth, opacity);
     this.center = {
@@ -85,9 +114,16 @@ export class Ellipse extends Shape {
       value: radiusY
     };
   }
+
 }
 
+
+/**
+ * Describes attributes of a Line.
+ * Extends {@link Shape}.
+ */
 export class Line extends Shape {
+
   constructor(coordinates, fillColour, strokeColour, strokeWidth, opacity) {
     super(fillColour, strokeColour, strokeWidth, opacity);
     this.coordinates = {
@@ -96,15 +132,29 @@ export class Line extends Shape {
       value: coordinates
     };
   }
+
 }
 
+
+/**
+ * Describes attributes of a Polygon.
+ * Extends {@link Line}.
+ */
 export class Polygon extends Line {
+
   constructor(coordinates, fillColour, strokeColour, strokeWidth, opacity) {
     super(coordinates, fillColour, strokeColour, strokeWidth, opacity);
   }
+
 }
 
+
+/**
+ * Describes attributes of a Text field.
+ * Extends {@link Shape}.
+ */
 export class Text extends Shape {
+
   constructor(center, displayText, font, fontSize, fillColour, strokeColour, strokeWidth, opacity) {
     super(fillColour, strokeColour, strokeWidth, opacity);
     this.center = {
@@ -128,4 +178,5 @@ export class Text extends Shape {
       value: fontSize
     };
   }
+
 }

@@ -24,7 +24,7 @@ public class RegularPolygon extends Circle {
     this.edgeAmount = edgeAmount;
   }
 
-  private List<Coordinate> getPolygonCoordinates() {
+  protected List<Coordinate> getCoordinates() {
     List<Coordinate> coordinates = new ArrayList<>();
     for (int i = 0; i < edgeAmount; ++i) {
       float x = (float) (getRadius() * Math.sin((Math.PI + (2 * i * Math.PI)) / edgeAmount)
@@ -39,9 +39,9 @@ public class RegularPolygon extends Circle {
   }
 
   @Override
-  public String getHTML() {
+  protected String getHTMLAttributes() {
     StringBuilder stringBuilder = new StringBuilder();
-    for (Coordinate coordinate : getPolygonCoordinates()) {
+    for (Coordinate coordinate : getCoordinates()) {
       stringBuilder.append(coordinate.getX())
           .append(",")
           .append(coordinate.getY())
@@ -49,12 +49,11 @@ public class RegularPolygon extends Circle {
     }
     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
     String points = stringBuilder.toString();
-    return "<polygon" +
-        " points=\"" + points + "\"" +
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        "></polygon>";
+    return super.getHTMLAttributes() + " points=\"" + points + "\"";
+  }
+
+  @Override
+  public String getHTML() {
+    return "<polygon " + getHTMLAttributes() + "></polygon>";
   }
 }

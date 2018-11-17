@@ -24,7 +24,8 @@ public class Star extends RegularPolygon {
     this.innerRadius = innerRadius;
   }
 
-  private List<Coordinate> getStarCoordinates() {
+  @Override
+  protected List<Coordinate> getCoordinates() {
     List<Coordinate> coordinates = new ArrayList<>();
     for (int i = 0; i < getEdgeAmount(); ++i) {
       float xOuter = (float) (
@@ -45,23 +46,4 @@ public class Star extends RegularPolygon {
     return coordinates;
   }
 
-  @Override
-  public String getHTML() {
-    StringBuilder stringBuilder = new StringBuilder();
-    for (Coordinate coordinate : getStarCoordinates()) {
-      stringBuilder.append(coordinate.getX())
-          .append(",")
-          .append(coordinate.getY())
-          .append(" ");
-    }
-    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-    String points = stringBuilder.toString();
-    return "<polygon" +
-        " points=\"" + points + "\"" +
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        "></polygon>";
-  }
 }

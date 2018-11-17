@@ -27,7 +27,7 @@ public class Line extends Shape {
   }
 
   @Override
-  public String getHTML() {
+  protected String getHTMLAttributes() {
     StringBuilder stringBuilder = new StringBuilder();
     for (Coordinate coordinate : coordinates) {
       stringBuilder.append(coordinate.getX())
@@ -37,12 +37,11 @@ public class Line extends Shape {
     }
     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
     String points = stringBuilder.toString();
-    return "<polyline" +
-        " points=\"" + points + "\"" +
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        "></polyline>";
+    return super.getHTMLAttributes() + " points=\"" + points + "\"";
+  }
+
+  @Override
+  public String getHTML() {
+    return "<polyline " + getHTMLAttributes() + "></polyline>";
   }
 }

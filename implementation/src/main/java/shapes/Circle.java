@@ -34,16 +34,16 @@ public class Circle extends Shape {
   }
 
   @Override
-  public String getHTML() {
-    return "<circle" +
+  protected String getHTMLAttributes() {
+    return super.getHTMLAttributes() +
         " cx=\"" + center.getX() + "\"" +
         " cy=\"" + center.getY() + "\"" +
-        " r=\"" + radius + "\"" +
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        "></circle>";
+        " r=\"" + radius + "\"";
+  }
+
+  @Override
+  public String getHTML() {
+    return "<circle " + getHTMLAttributes() + "></circle>";
   }
 
 }

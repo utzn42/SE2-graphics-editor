@@ -45,16 +45,16 @@ public class Ellipse extends Shape {
   }
 
   @Override
-  public String getHTML() {
-    return "<ellipse" +
+  protected String getHTMLAttributes() {
+    return super.getHTMLAttributes() +
         " cx=\"" + center.getX() + "\"" +
         " cy=\"" + center.getY() + "\"" +
         " rx=\"" + radiusX + "\"" +
-        " ry=\"" + radiusY + "\"" +
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        "></ellipse>";
+        " ry=\"" + radiusY + "\"";
+  }
+
+  @Override
+  public String getHTML() {
+    return "<ellipse " + getHTMLAttributes() + "></ellipse>";
   }
 }

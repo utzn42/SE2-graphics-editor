@@ -22,8 +22,8 @@ public abstract class Shape {
   private double opacity;
 
   public Shape() {
-    this.fillColour = new Colour(new RGBColour("#FFFFFF"), true);
-    this.strokeColour = new Colour(new RGBColour("#000000"), false);
+    this.fillColour = new Colour("#FFFFFF", 0);
+    this.strokeColour = new Colour("#000000", 1);
     this.strokeWidth = 1;
     this.opacity = 1;
   }
@@ -32,7 +32,7 @@ public abstract class Shape {
     this.fillColour = fillColour;
     this.strokeColour = strokeColour;
     this.strokeWidth = strokeWidth;
-    this.opacity = 1;
+    this.opacity = opacity;
   }
 
   public Colour getFillColour() {
@@ -44,8 +44,8 @@ public abstract class Shape {
     this.fillColour = fillColour;
   }
 
-  public void setFillColour(String fillColour) {
-    this.fillColour = new Colour(fillColour);
+  public void setFillColour(String hex, float opacity) {
+    this.fillColour = new Colour(hex, opacity);
   }
 
   public Colour getStrokeColour() {
@@ -57,8 +57,8 @@ public abstract class Shape {
     this.strokeColour = strokeColour;
   }
 
-  public void setStrokeColour(String strokeColour) {
-    this.strokeColour = new Colour(strokeColour);
+  public void setStrokeColour(String hex, float opacity) {
+    this.strokeColour = new Colour(hex, opacity);
   }
 
   public double getStrokeWidth() {
@@ -75,6 +75,15 @@ public abstract class Shape {
 
   public void setOpacity(double opacity) {
     this.opacity = opacity;
+  }
+
+  protected String getHTMLAttributes() {
+    return "fill=\"" + fillColour.getRgbColour().toString() + "\" "
+        + "fill-opacity=\"" + fillColour.getOpacity() + "\" "
+        + "stroke=\"" + strokeColour.getRgbColour().toString() + "\" "
+        + "stroke-opacity=\"" + strokeColour.getOpacity() + "\" "
+        + "stroke-width=\"" + strokeWidth + "\" "
+        + "opacity=\"" + opacity + "\"";
   }
 
   public abstract String getHTML();

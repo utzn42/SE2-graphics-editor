@@ -1,15 +1,24 @@
 <template>
   <div class="modal-wrapper">
+
     <div class="modal-content">
       <slot></slot>
     </div>
+
   </div>
 </template>
 
 <script>
+
+  /**
+   * This component can wrap another component to turn it into a modal overlay.
+   */
   export default {
+
     name: "ModalComponent",
+
   }
+
 </script>
 
 <style scoped>

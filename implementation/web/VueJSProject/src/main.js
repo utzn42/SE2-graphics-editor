@@ -8,6 +8,10 @@ Vue.use(vueResource);
 
 Vue.config.productionTip = false;
 
+/**
+ * A bus for sending and listening to events between components
+ * @type {Vue | CombinedVueInstance<V, object, object, object, Record<never, any>>}
+ */
 export const dataBus = new Vue();
 
 /* eslint-disable no-new */

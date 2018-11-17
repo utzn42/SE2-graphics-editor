@@ -14,7 +14,7 @@ public class Text extends Shape {
     displayText = "Hello World!";
     font = "Arial";
     fontSize = 12;
-    setFillColour("#000000");
+    setFillColour("#000000", 1);
     setStrokeWidth(0);
   }
 
@@ -23,7 +23,7 @@ public class Text extends Shape {
     this.displayText = displayText;
     this.font = font;
     this.fontSize = fontSize;
-    setFillColour("#000000");
+    setFillColour("#000000", 1);
     setStrokeWidth(0);
   }
 
@@ -60,18 +60,17 @@ public class Text extends Shape {
   }
 
   @Override
-  public String getHTML() {
-    return "<text" +
+  protected String getHTMLAttributes() {
+    return super.getHTMLAttributes() +
         " x=\"" + center.getX() + "\"" +
         " y=\"" + center.getY() + "\"" +
         " font-family=\"" + font + "\"" +
         " font-size=\"" + fontSize + "\"" +
-        " text-anchor=\"middle\" alignment-baseline=\"middle\"" +
-        // makes x and y the "center" coordinates
-        " fill=\"" + getFillColour() + "\"" +
-        " stroke=\"" + getStrokeColour() + "\"" +
-        " stroke-width=\"" + getStrokeWidth() + "\"" +
-        " opacity=\"" + getOpacity() + "\"" +
-        ">" + displayText + "</text>";
+        " text-anchor=\"middle\" alignment-baseline=\"middle\"";
+  }
+
+  @Override
+  public String getHTML() {
+    return "<text " + getHTMLAttributes() + ">" + displayText + "</text>";
   }
 }

@@ -1,46 +1,82 @@
 <template>
-  <div class="shape-menu-grid">
-    <div class="shape-menu-edit">
-      <ShapeEditForm />
-    </div>
-    <div class="shape-menu-shapes">
-      <ul v-if="selectedLayer !== -1">
-        <li v-on:click="addShape(shapesRootPackage + '.Line')">
-          + Add Line
+  <div v-if="shapeData !== null && shapeData !== undefined" class="shape-edit-form">
+
+    <ul>
+      <template v-for="(attribute, key) in shapeData">
+
+        <li>
+
+          <label class="header-label">{{attribute.label}}</label><br />
+
+          <template v-if="attribute.type === 'simple'">
+            <input type="text" v-model="shapeModel[key]" v-on:keyup.enter="edit()">
+          </template>
+
+          <template v-if="attribute.type === 'range:0-1'">
+            <input type="range" min="0" max="1" step="any" v-model="shapeModel[key]" v-on:change="edit()">
+          </template>
+
+          <template v-if="attribute.type === 'colour'">
+            <input type="color" v-model="shapeModel[key].rgbColour" v-on:change="edit()"><br />
+            <label>Opacity </label>
+            <input type="range" min="0" max="1" step="any" v-model="shapeModel[key].opacity" v-on:change="edit()">
+          </template>
+
+          <template v-if="attribute.type ==='coordinate'">
+            <label>x: </label>
+            <input type="text" v-model="shapeModel[key].x" v-on:keyup.enter="edit()"><br />
+            <label>y: </label>
+            <input type="text" v-model="shapeModel[key].y" v-on:keyup.enter="edit()">
+          </template>
+
+          <template v-if="attribute.type ==='coordinateArray'">
+            <template v-for="(coordinate, index) in attribute.value">
+              <table>
+                <tr>
+                  <td>
+                    <label>x: </label>
+                    <input type="text" v-model="shapeModel[key][index].x" v-on:keyup.enter="edit()">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>y: </label>
+                    <input type="text" v-model="shapeModel[key][index].y" v-on:keyup.enter="edit()">
+                  </td>
+                </tr>
+              </table>
+              <button v-on:click="removeVertex(shapeModel[key], index)">Remove</button>
+              <br />
+            </template>
+            <button v-on:click="addVertex(shapeModel[key])">Add Point</button>
+          </template>
+
         </li>
-        <li v-on:click="addShape(shapesRootPackage + '.Circle')">
-          + Add Circle
-        </li>
-        <li v-on:click="addShape(shapesRootPackage + '.Polygon')">
-          + Add Polygon
-        </li>
-        <li v-on:click="addShape(shapesRootPackage + '.RegularPolygon')">
-          + Add Regular Polygon
-        </li>
-        <li v-on:click="addShape(shapesRootPackage + '.Ellipse')">
-          + Add Ellipse
-        </li>
-        <li v-on:click="addShape(shapesRootPackage + '.Star')">
-          + Add Star
-        </li>
-        <li v-on:click="addShape(shapesRootPackage + '.Text')">
-          + Add Text
-        </li>
-      </ul>
-    </div>
+
+        <hr />
+
+      </template>
+
+    </ul>
+
+    <br />
+    <button v-on:click="edit()">Apply Changes</button>
+
   </div>
 </template>
 
 <script>
   import {dataBus} from "../../main";
-  import {Circle, Ellipse, Line, Polygon, RegularPolygon, Star, Text} from "../ShapeData/ShapeData";
-  import ShapeEditForm from "./ShapeEditForm";
+  import {Circle, Ellipse, Line, Polygon, RegularPolygon, Star, Text} from "../shapedata/shapedata";
 
+  /**
+   * This component renders the shape edit menu.
+   * Upon confirmation, it sends an "editShape" event over the {@link dataBus}.
+   */
   export default {
-    name: "ShapeMenu",
-    components: {
-      ShapeEditForm
-    },
+
+    name: "ShapeEditMenu",
+
     data() {
       return {
         canvasData: {
@@ -63,7 +99,9 @@
         shapesRootPackage: "shapes"
       }
     },
+
     methods: {
+
       updateEdit: function(layerData) {
         this.selectedLayer = layerData.selectedLayer;
         this.selectedShape = layerData.selectedShape;
@@ -105,13 +143,8 @@
               console.log("Unexpected Type");
           }
         }
-        dataBus.$emit('setShapeEditForm', {
-          shapeData: this.shapeData,
-          shapeModel: this.shapeModel,
-          selectedLayer: this.selectedLayer,
-          selectedShape: this.selectedShape
-        });
       },
+
       updateCanvasVars: function(canvas) {
         this.canvasData.width = {
           label: "Canvas Width",
@@ -124,56 +157,48 @@
           value: canvas.height
         };
       },
-      addShape: function(shapeClass) {
-        dataBus.$emit('addShape', {
-          layerIndex: this.selectedLayer,
-          shapeClass: shapeClass
+
+      addVertex: function (object) {
+        object.push({
+          x: 0,
+          y: 0
         });
+        this.edit();
+      },
+
+      removeVertex: function (object, index) {
+        object.splice(index, 1);
+        this.edit();
+      },
+
+      edit: function () {
+        if (this.selectedLayer !== -1 && this.selectedShape !== -1) {
+          dataBus.$emit('editShape', {
+            layerIndex: this.selectedLayer,
+            shapeIndex: this.selectedShape,
+            shape: this.shapeModel
+          });
+        } else {
+          dataBus.$emit('editCanvas', {
+            width: this.shapeModel.width,
+            height: this.shapeModel.height
+          });
+        }
       }
     },
+
     created: function () {
       dataBus.$on('layersUpdated', (layerData) => this.updateEdit(layerData));
       dataBus.$on('canvasUpdated', (canvas) => this.updateCanvasVars(canvas));
     }
+
   }
 </script>
 
 <style scoped>
 
-  ul {
-    list-style: none;
-    box-sizing: border-box;
-    padding: 0;
-  }
-
-  li {
-    padding: 10px 5px;
-  }
-
-  li:hover {
-    cursor: pointer;
-    background-color: #ffffff;
-  }
-
-  .shape-menu-grid {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 70% 30%;
-    height: 100%;
-    width: 100%;
-    background-color: darkgray;
-  }
-
-  .shape-menu-edit {
-    grid-column: 1;
-    grid-row: 1;
-    overflow-y: auto;
-  }
-
-  .shape-menu-shapes {
-    grid-column: 1;
-    grid-row: 2;
-    overflow-y: auto;
+  table {
+    display: inline-table;
   }
 
 </style>

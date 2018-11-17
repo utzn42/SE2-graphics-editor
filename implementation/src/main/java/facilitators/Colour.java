@@ -6,49 +6,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Colour {
 
   private RGBColour rgbColour;
-  private boolean transparent;
+  private float opacity;
 
   @JsonCreator
   public Colour(
       @JsonProperty("rgbColour") RGBColour rgbColour,
-      @JsonProperty("transparent") boolean transparent
+      @JsonProperty("opacity") float opacity
   ) {
     this.rgbColour = rgbColour;
-    this.transparent = transparent;
+    this.opacity = opacity;
   }
 
-  public Colour(String colour) {
-    if (colour.replaceAll(" ", "").toLowerCase().equals("transparent")) {
-      this.rgbColour = new RGBColour("#ffffff");
-      this.transparent = true;
-    } else {
-      this.rgbColour = new RGBColour(colour);
-      this.transparent = false;
-    }
+  public Colour(String hex, float opacity) {
+    this.rgbColour = new RGBColour(hex);
+    this.opacity = opacity;
   }
 
   public RGBColour getRgbColour() {
     return rgbColour;
   }
 
-  public boolean isTransparent() {
-    return transparent;
+  public float getOpacity() {
+    return opacity;
   }
 
   public void setRgbColour(RGBColour rgbColour) {
     this.rgbColour = rgbColour;
   }
 
-  public void setTransparent(boolean transparent) {
-    this.transparent = transparent;
+  public void setOpacity(float opacity) {
+    this.opacity = opacity;
   }
 
-  @Override
-  public String toString() {
-    if (transparent) {
-      return "transparent";
-    } else {
-      return rgbColour.toString();
-    }
-  }
 }

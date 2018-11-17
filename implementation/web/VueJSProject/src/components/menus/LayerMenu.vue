@@ -1,45 +1,80 @@
 <template>
   <div class="layer-menu-grid">
-    <div class="layer-menu-shapes">
-      <ul v-if="selectedLayer !== -1">
-        <li v-for="(shape, index) in layers[selectedLayer].shapes" :class="{selected: index === selectedShape}" v-on:click="selectShape(index)">
-          Shape {{index}} ({{shape.shapeClass.split(".").reverse()[0]}})
-        </li>
-        <li v-if="selectedShape !== -1" v-on:click="deleteShape()">
-          - Delete Selected Shape
-        </li>
-      </ul>
-    </div>
-    <div class="layer-menu-layers">
-      <ul>
-        <li v-on:click="selectLayer(-1)" :class="{selected: selectedLayer === -1}">
-          {{layerName(-1)}}
-        </li>
-        <li v-for="(layer, index) in layers" :class="{selected: index === selectedLayer}" v-on:click="selectLayer(index)">
-          {{layerName(index)}}
-          <input type="checkbox" :checked="layer.visible" v-on:click="toggleVisibility(index)">
-        </li>
-        <li v-on:click="addLayer()">
-          + Add Layer
-        </li>
-        <li v-if="selectedLayer !== -1" v-on:click="deleteLayer()">
-          - Delete Selected Layer
-        </li>
-      </ul>
-    </div>
+
+    <ul>
+
+      <li class="clickable" v-on:click="selectLayer(-1)" :class="{'selected-dark': selectedLayer === -1}">
+        <i>{{layerName(-1)}}</i>
+      </li>
+
+      <li class="clickable" v-for="(layer, index) in layers" :class="{'selected-dark': index === selectedLayer}" v-on:click="selectLayer(index)">
+
+        {{layerName(index)}}
+        <input type="checkbox" :checked="layer.visible" v-on:click.stop="toggleVisibility(index)">
+
+        <div class="white-border" v-if="index === selectedLayer" style="margin-top:20px;">
+          <ul>
+            <li class="clickable" v-for="(shape, shapeIndex) in layer.shapes" :class="{selected: shapeIndex === selectedShape}" v-on:click.stop="selectShape(shapeIndex)">
+              Shape {{shapeIndex}} ({{shape.shapeClass.split(".").reverse()[0]}})
+            </li>
+          </ul>
+          <hr v-if="layer.shapes.length > 0" />
+          <ul>
+            <li class="clickable" v-on:click.stop="showAddShape=true">
+              <b>+ Add Shape</b>
+            </li>
+            <li class="clickable" v-if="selectedShape !== -1" v-on:click="deleteShape()">
+              <b>&ndash; Delete Selected Shape</b>
+            </li>
+          </ul>
+        </div>
+
+      </li>
+    </ul>
+
+    <hr v-if="layers.length > 0" />
+
+    <ul>
+      <li class="clickable" v-on:click="addLayer()">
+        <b>+ Add Layer</b>
+      </li>
+      <li class="clickable" v-if="selectedLayer !== -1" v-on:click="deleteLayer()">
+        <b>&ndash; Delete Selected Layer</b>
+      </li>
+    </ul>
+
+    <ModalComponent v-show="showAddShape" >
+      <AddShapeMenu modal :layer="selectedLayer" v-on:close="showAddShape=false" />
+    </ModalComponent>
+
   </div>
+
 </template>
 
 <script>
   import {dataBus} from "../../main";
+  import ModalComponent from "./ModalComponent";
+  import AddShapeMenu from "./AddShapeMenu";
 
+  /**
+   * This component renders the layer menu.
+   * It can react to user interaction by sending one of the following events over the {@link dataBus}:
+   * * "addLayer"
+   * * "deleteLayer"
+   * * "editLayer"
+   * * "deleteShape"
+   *
+   * It can also access the {@link AddShapeMenu} through a {@link ModalComponent}.
+   */
   export default {
     name: "LayerMenu",
+    components: {AddShapeMenu, ModalComponent},
     data() {
       return {
         layers: [],
         selectedLayer: -1,
-        selectedShape: -1
+        selectedShape: -1,
+        showAddShape: false
       }
     },
     methods: {
@@ -52,18 +87,22 @@
         }
       },
       selectLayer: function(index) {
-        this.selectedLayer = index;
-        if (index === -1) {
-          this.selectedShape = -1;
+        if (this.selectedLayer !== index) {
+          this.selectedLayer = index;
+          if (index === -1) {
+            this.selectedShape = -1;
+          }
+          else {
+            this.selectedShape = this.layers[this.selectedLayer].shapes.length - 1;
+          }
+          this.layersUpdated();
         }
-        else {
-          this.selectedShape = this.layers[this.selectedLayer].shapes.length - 1;
-        }
-        this.layersUpdated();
       },
       selectShape: function(index) {
-        this.selectedShape = index;
-        this.layersUpdated();
+        if (this.selectedShape !== index) {
+          this.selectedShape = index;
+          this.layersUpdated();
+        }
       },
       toggleVisibility: function(index) {
         this.layers[index].visible = !this.layers[index].visible;
@@ -143,24 +182,8 @@
 <style scoped>
 
   .layer-menu-grid {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 50% 50%;
     height: 100%;
     width: 100%;
-    background-color: darkgray;
-  }
-
-  .layer-menu-shapes {
-    grid-column: 1;
-    grid-row: 1;
-    overflow-y: auto;
-  }
-
-  .layer-menu-layers {
-    grid-column: 1;
-    grid-row: 2;
-    overflow-y: auto;
   }
 
 </style>
