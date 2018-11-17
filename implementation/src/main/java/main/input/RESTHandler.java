@@ -145,7 +145,7 @@ public class RESTHandler {
   }
 
   @CrossOrigin()
-  @RequestMapping(value = "/deleteShape/{projectID}")
+  @RequestMapping(value = "/deleteShape/{projectID}", method = RequestMethod.POST)
   public Response deleteShape(@PathVariable String projectID,
       @RequestBody RequestDeleteShape request) {
     ServerResponse response = new ServerResponse(projectID);
