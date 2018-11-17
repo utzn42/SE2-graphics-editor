@@ -35,26 +35,6 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
     return storedObjects;
   }
 
-  /*@Override
-  public void update(Observable o, Object arg) {
-    localFileManagerLogger.info("update called");
-    if (arg instanceof Map) {
-      storedObjects = (Map<String, T>) arg;
-      try {
-        FileOutputStream out = new FileOutputStream(fileDirectoryPath + "/test.ser");
-        ObjectOutputStream oout = new ObjectOutputStream(out);
-        oout.writeObject(storedObjects);
-        oout.close();
-        out.close();
-      } catch (Exception e) {
-        localFileManagerLogger.error("Caught an exception in update()!");
-      }
-    }
-
-    localFileManagerLogger.info("Map after put:" + storedObjects.toString());*/
-
-  // TODO: Implement update(Observable, Object) in LocalFileManager
-
   @Override
   public void update(Object obj) {
     localFileManagerLogger.info("Observer.update() called!");
