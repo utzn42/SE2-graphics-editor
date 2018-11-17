@@ -8,6 +8,6 @@ public interface PersistenceSubject {
 
   void removeObserver(PersistenceObserver o);
 
-  void notifyObservers();
+  void notifyObservers(boolean type);
 
 }

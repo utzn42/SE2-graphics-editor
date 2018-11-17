@@ -32,7 +32,6 @@ import shapes.Shape;
 @Service
 public class ProjectService implements PersistenceSubject {
 
-  //TODO: Utz -> Make seedCounter unique. Store int in file which is retrieved upon loading Projectservice.
   private static long seedCounter = 0;
   private static Logger projectServiceLogger = LoggerFactory.getLogger(ProjectService.class);
   private Map<String, Canvas> projects;
@@ -43,11 +42,14 @@ public class ProjectService implements PersistenceSubject {
     FileManager<Canvas> fileManager = new LocalFileManager<Canvas>("./projects");
     observers.add(fileManager);
     projects = fileManager.getStoredObjects();
-    notifyObservers();
+    seedCounter = ((LocalFileManager<Canvas>) fileManager).getSeedCounter();
+    notifyObservers(true);
+    notifyObservers(false);
   }
 
   public String createID() {
     Hasher hash = new Hasher(++seedCounter);
+    notifyObservers(false);
     return hash.getHash();
 
   }
@@ -55,7 +57,7 @@ public class ProjectService implements PersistenceSubject {
   public Canvas createCanvas(String projectID) {
     Canvas blankCanvas = new Canvas();
     projects.put(projectID, blankCanvas);
-    notifyObservers();
+    notifyObservers(true);
     return blankCanvas;
   }
 
@@ -69,7 +71,7 @@ public class ProjectService implements PersistenceSubject {
 
     canvas.getLayers().add(new Layer());
     projects.get(projectID).getLayers().add(new Layer());
-    notifyObservers();
+    notifyObservers(true);
 
     return canvas;
   }
@@ -100,7 +102,7 @@ public class ProjectService implements PersistenceSubject {
       throw new InstantiationException("Could not instantiate object of class " + shapeClass + ".");
     }
 
-    notifyObservers();
+    notifyObservers(true);
     return canvas;
   }
 
@@ -115,7 +117,7 @@ public class ProjectService implements PersistenceSubject {
     projectServiceLogger.info("editCanvas - Width: " + width);
     projectServiceLogger.info("           - Height: " + height);
 
-    notifyObservers();
+    notifyObservers(true);
     return projects.get(projectID);
 
   }
@@ -129,7 +131,7 @@ public class ProjectService implements PersistenceSubject {
     projectServiceLogger.info("          - Visible: " + isVisible);
     projects.get(projectID).getLayers().get(layerIndex).setVisible(isVisible);
 
-    notifyObservers();
+    notifyObservers(true);
     return projects.get(projectID);
   }
 
@@ -143,7 +145,7 @@ public class ProjectService implements PersistenceSubject {
     projects.get(projectID).getLayers().get(layerIndex).getShapes()
         .set(shapeIndex, shape);
 
-    notifyObservers();
+    notifyObservers(true);
     return projects.get(projectID);
   }
 
@@ -166,7 +168,7 @@ public class ProjectService implements PersistenceSubject {
 
     projects.get(projectID).getLayers().remove(layerIndex);
 
-    notifyObservers();
+    notifyObservers(true);
     return projects.get(projectID);
   }
 
@@ -227,12 +229,6 @@ public class ProjectService implements PersistenceSubject {
         MediaType.parseMediaType(mimeType)).body(resource);
   }
 
-
-  /*public void testUpdate() {
-    setChanged();
-    notifyObservers(new Object());
-  }*/
-
   public Map<String, Canvas> getProjects() {
     return projects;
   }
@@ -251,9 +247,15 @@ public class ProjectService implements PersistenceSubject {
   }
 
   @Override
-  public void notifyObservers() {
-    for (PersistenceObserver o : observers) {
-      o.update(projects);
+  public void notifyObservers(boolean type) {
+    if (type) {
+      for (PersistenceObserver o : observers) {
+        o.update(projects);
+      }
+    } else {
+      for (PersistenceObserver o : observers) {
+        o.update(seedCounter);
+      }
     }
   }
 }
