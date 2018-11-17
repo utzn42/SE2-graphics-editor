@@ -1,12 +1,9 @@
 package messages;
 
 import canvas.Canvas;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ServerResponse {
+public class ServerResponse extends Response {
 
-  private String projectID;
   private Canvas canvas;
 
   public ServerResponse() {
