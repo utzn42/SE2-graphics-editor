@@ -27,8 +27,8 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
       ObjectInputStream oin = new ObjectInputStream(in);
       this.storedObjects = (Map<String, T>) (oin.readObject());
     } catch (Exception e) {
-      localFileManagerLogger.error("No projects have been found! Initializing new HashMap...");
-      storedObjects = new HashMap<String, T>();
+      localFileManagerLogger.info("No projects have been found! Initializing new HashMap...");
+      storedObjects = new HashMap<>();
     }
 
     try {
@@ -36,7 +36,7 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
       ObjectInputStream oin = new ObjectInputStream(in);
       this.seedCounter = (long) (oin.readObject());
     } catch (Exception e) {
-      localFileManagerLogger.error("No seed has been found! Initializing at zero...");
+      localFileManagerLogger.info("No seed has been found! Initializing at zero...");
       seedCounter = 0;
     }
   }
@@ -53,31 +53,34 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
   public void update(Object obj) {
     localFileManagerLogger.info("PersistenceObserver.update() called!");
     if (obj instanceof Map) {
-      storedObjects = (Map<String, T>) obj;
       try {
+        storedObjects = (Map<String, T>) obj;
         FileOutputStream out = new FileOutputStream(fileDirectoryPath + "/projects.ser");
         ObjectOutputStream oout = new ObjectOutputStream(out);
         oout.writeObject(storedObjects);
         oout.close();
         out.close();
       } catch (Exception e) {
-        localFileManagerLogger.error("Oops! Object is not instance of Map Type!");
+        localFileManagerLogger.error(e.getClass().getCanonicalName() +
+            " in LocalFileManager.update(obj): " + e.getMessage());
       }
-    }
-    if (obj instanceof Long) {
-      seedCounter = ((Long) obj).longValue();
+    } else if (obj instanceof Long) {
       try {
+        seedCounter = (long) obj;
         FileOutputStream out = new FileOutputStream(fileDirectoryPath + "/seedCounter.ser");
         ObjectOutputStream oout = new ObjectOutputStream(out);
         oout.writeObject(seedCounter);
         oout.close();
         out.close();
       } catch (Exception e) {
-        localFileManagerLogger.error("Oops! Object is not instance of Long Type!");
+        localFileManagerLogger.error(e.getClass().getCanonicalName() +
+            " in LocalFileManager.update(obj): " + e.getMessage());
       }
+    } else {
+      localFileManagerLogger.error("Unexpected type: " + obj.getClass().getCanonicalName());
     }
 
-    localFileManagerLogger.info("Map after put:" + storedObjects.toString());
+    localFileManagerLogger.debug("Map after update:" + storedObjects.toString());
 
   }
 }

@@ -39,22 +39,27 @@ public class ProjectService implements PersistenceSubject {
 
   public ProjectService() {
     observers = new ArrayList<>();
-    FileManager<Canvas> fileManager = new LocalFileManager<Canvas>("./projects");
+    FileManager<Canvas> fileManager = new LocalFileManager<>("./projects");
     observers.add(fileManager);
     projects = fileManager.getStoredObjects();
-    seedCounter = ((LocalFileManager<Canvas>) fileManager).getSeedCounter();
-    notifyObservers(true);
-    notifyObservers(false);
+    seedCounter = fileManager.getSeedCounter();
   }
 
   public String createID() {
-    Hasher hash = new Hasher(++seedCounter);
-    notifyObservers(false);
-    return hash.getHash();
-
+    String projectID;
+    do {
+      Hasher hash = new Hasher(++seedCounter);
+      notifyObservers(false);
+      projectID = hash.getHash();
+    } while (projects.containsKey(projectID));
+    return projectID;
   }
 
   public Canvas createCanvas(String projectID) {
+    if (projects.containsKey(projectID)) {
+      throw new IllegalArgumentException("Project ID " + projectID + " already exists!");
+    }
+
     Canvas blankCanvas = new Canvas();
     projects.put(projectID, blankCanvas);
     notifyObservers(true);
@@ -63,25 +68,22 @@ public class ProjectService implements PersistenceSubject {
 
   public Canvas addLayer(String projectID) {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
-    Canvas canvas = projects.get(projectID);
 
     projectServiceLogger.info("addLayer - (empty object)");
 
-    canvas.getLayers().add(new Layer());
     projects.get(projectID).getLayers().add(new Layer());
     notifyObservers(true);
 
-    return canvas;
+    return projects.get(projectID);
   }
 
   public Canvas addShape(String projectID, int layerIndex, String shapeClass)
       throws Exception {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
-    Canvas canvas = projects.get(projectID);
 
     projectServiceLogger.info("addShape - Layer Index: " + layerIndex);
     projectServiceLogger.info("         - Shape Class: " + shapeClass);
@@ -95,15 +97,15 @@ public class ProjectService implements PersistenceSubject {
       projectServiceLogger.error("         - HTML: Failed to get Class");
       throw new ClassNotFoundException("Class " + shapeClass + " does not exist!");
     } catch (IllegalAccessException e) {
-      projectServiceLogger.error("         - HTML: Could not access Class");
-      throw new IllegalAccessException("layerIndex: " + layerIndex + ". No such layer found!");
+      projectServiceLogger.error("         - HTML: Could not call Class constructor");
+      throw new IllegalAccessException("Could not call constructor for class " + shapeClass + "!");
     } catch (InstantiationException e) {
       projectServiceLogger.error("         - HTML: Could not instantiate Object for Class");
-      throw new InstantiationException("Could not instantiate object of class " + shapeClass + ".");
+      throw new InstantiationException("Failed to instantiate object of class " + shapeClass + "!");
     }
 
     notifyObservers(true);
-    return canvas;
+    return projects.get(projectID);
   }
 
   public Canvas editCanvas(String projectID, double width, double height) {
@@ -137,7 +139,7 @@ public class ProjectService implements PersistenceSubject {
 
   public Canvas editShape(String projectID, int layerIndex, int shapeIndex, Shape shape) {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     projectServiceLogger.info("editShape - " + shape.getHTML());
@@ -151,7 +153,7 @@ public class ProjectService implements PersistenceSubject {
 
   public Canvas transformShape(String projectID) {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     // TODO: Transform Shape
@@ -161,7 +163,7 @@ public class ProjectService implements PersistenceSubject {
 
   public Canvas deleteLayer(String projectID, int layerIndex) {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     projectServiceLogger.info("deleteLayer - Layer Index: " + layerIndex);
@@ -174,7 +176,7 @@ public class ProjectService implements PersistenceSubject {
 
   public Canvas deleteShape(String projectID, int layerIndex, int shapeIndex) {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     projectServiceLogger.info("deleteShape - Layer Index: " + layerIndex);
@@ -188,7 +190,7 @@ public class ProjectService implements PersistenceSubject {
   public ResponseEntity<Object> download(String projectID, String type)
       throws IOException, TranscoderException {
     if (!projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
+      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
     projectServiceLogger.info("Download in format: " + type);
@@ -219,7 +221,6 @@ public class ProjectService implements PersistenceSubject {
     ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
     InputStream in = getClass().getResourceAsStream(fileURI.getPath());
 
-    //InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
     httpHeaders.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
