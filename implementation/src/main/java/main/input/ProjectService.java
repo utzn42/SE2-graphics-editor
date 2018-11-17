@@ -9,11 +9,8 @@ import download.DownloadStrategy;
 import facilitators.Hasher;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
 import org.apache.batik.transcoder.TranscoderException;
@@ -217,14 +214,10 @@ public class ProjectService implements PersistenceSubject {
 
     URI fileURI = downloadStrategy.download(projects.get(projectID), projectID);
     File file = new File(fileURI);
-    Path path = Paths.get(fileURI);
     ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
-    InputStream in = getClass().getResourceAsStream(fileURI.getPath());
 
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
-    httpHeaders.add(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate");
-    httpHeaders.add(HttpHeaders.EXPIRES, "0");
 
     return ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
         MediaType.parseMediaType(mimeType)).body(resource);

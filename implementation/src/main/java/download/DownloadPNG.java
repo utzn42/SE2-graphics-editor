@@ -25,8 +25,8 @@ public class DownloadPNG implements DownloadStrategy {
    * @param canvas the {@link Canvas} which wants to get downloaded
    * @param projectID the unique projectID to create the file name
    * @return returns an {@link URI} of the PNG {@link File}
-   * @throws IOException
-   * @throws TranscoderException
+   * @throws IOException If an I/O error occurs
+   * @throws TranscoderException If transcoding to PNG fails
    */
   @Override
   public URI download(Canvas canvas, String projectID) throws IOException, TranscoderException {
