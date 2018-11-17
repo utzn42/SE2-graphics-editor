@@ -1,7 +1,7 @@
 package Shape;
 
-import management.Coordinate;
-import management.RGBColour;
+import facilitators.Coordinate;
+import facilitators.RGBColour;
 
 /**
  * Represents a textfield. Creates a text out of a string.

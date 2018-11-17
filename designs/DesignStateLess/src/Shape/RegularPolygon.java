@@ -1,8 +1,8 @@
 package Shape;
 
 
-import management.Coordinate;
-import management.RGBColour;
+import facilitators.Coordinate;
+import facilitators.RGBColour;
 
 /**
  * Represents a regular polygon. Creates a polygon out of the nr of edges.

@@ -1,7 +1,7 @@
 package Shape;
 
-import management.Coordinate;
-import management.RGBColour;
+import facilitators.Coordinate;
+import facilitators.RGBColour;
 
 /**
  * Represents a star. Creates a star out of an inner radius and the other parameters of the super classes.

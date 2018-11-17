@@ -14,8 +14,20 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 
+/**
+ * One of the possible download options is to download the canvas in PNG format. It implements {@link DownloadStrategy} and is part of our Strategy Pattern.
+ * @see DownloadStrategy
+ */
 public class DownloadPNG implements DownloadStrategy {
 
+  /**
+   * Gets called when the user wants to download the canvas in PNG. Converts the SVG container from the HTML code into a PNG {@link File} and sends the file to the client. It overrides the method of {@link DownloadStrategy}.
+   * @param canvas the {@link Canvas} which wants to get downloaded
+   * @param projectID the unique projectID to create the file name
+   * @return returns an {@link URI} of the PNG {@link File}
+   * @throws IOException
+   * @throws TranscoderException
+   */
   @Override
   public URI download(Canvas canvas, String projectID) throws IOException, TranscoderException {
 

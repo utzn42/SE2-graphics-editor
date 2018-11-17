@@ -1,10 +1,10 @@
 package Shape;
 
 
-import management.Observable;
-import management.Observer;
-import management.RGBColour;
-import move.MoveBehaviour;
+import canvas.Observable;
+import canvas.Observer;
+import facilitators.RGBColour;
+import transform_strategy.TransformBehaviour;
 
 /**
  * This abstract class describes the main components of a shape. It is then divided into subclasses for each individual shape.
@@ -14,7 +14,7 @@ public abstract class Shape implements Observable{
 
     private String name;
     private RGBColour colour;
-    private MoveBehaviour moveBehaviour;
+    private TransformBehaviour transformBehaviour;
 
     /**
      * Registers new observable objects.

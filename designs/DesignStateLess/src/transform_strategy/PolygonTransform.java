@@ -1,12 +1,12 @@
-package move;
+package transform_strategy;
 
 /**
  * This class is simply for moving a polygon.
- * It implements MoveBehaviour.
+ * It implements TransformBehaviour.
  *
- * @see MoveBehaviour
+ * @see TransformBehaviour
  */
-public class PolygonMove implements MoveBehaviour{
+public class PolygonTransform implements TransformBehaviour {
 
     /**
      * Moves the polygon from one point to another.

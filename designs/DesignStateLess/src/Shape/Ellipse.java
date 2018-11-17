@@ -1,7 +1,7 @@
 package Shape;
 
-import management.Coordinate;
-import management.RGBColour;
+import facilitators.Coordinate;
+import facilitators.RGBColour;
 
 /**
  * Creates an ellipse out of two coordinates and a radius. It extends the Shape class.

@@ -1,4 +1,4 @@
-package management;
+package facilitators;
 
 /**
  * Represents all possible colors in the RGB range field. Will get assigned to each shape.
