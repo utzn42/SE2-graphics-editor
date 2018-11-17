@@ -2,8 +2,9 @@ package facilitators;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
-public class Coordinate {
+public class Coordinate implements Serializable {
 
   private final double X;
   private final double Y;

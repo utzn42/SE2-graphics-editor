@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
 import facilitators.RGBColour;
+import java.io.Serializable;
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.CLASS,
@@ -14,7 +15,7 @@ import facilitators.RGBColour;
 )
 @JsonRootName(value = "attributes")
 @JsonIgnoreProperties({"html"})
-public abstract class Shape {
+public abstract class Shape implements Serializable {
 
   private Colour fillColour;
   private Colour strokeColour;

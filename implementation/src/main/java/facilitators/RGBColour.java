@@ -2,8 +2,9 @@ package facilitators;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.io.Serializable;
 
-public class RGBColour {
+public class RGBColour implements Serializable {
 
   private final byte red;
   private final byte green;

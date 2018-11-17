@@ -1,6 +1,7 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -15,7 +16,7 @@ import shapes.Shape;
  * @see Canvas
  */
 @JsonIgnoreProperties({"state", "html"})
-public class Layer {
+public class Layer implements Serializable {
 
   private List<Shape> shapes;
   private boolean visible;
@@ -56,7 +57,7 @@ public class Layer {
 
   /**
    * Sets the visibility true or false. This gets called when the user toggles the visibility of the layer.
-   * @param visible
+   * @param visible If <code>true</code>, makes the Layer visible; if <code>false</code> invisible.
    */
   public void setVisible(boolean visible) {
     this.visible = visible;
