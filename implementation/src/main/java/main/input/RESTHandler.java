@@ -1,9 +1,6 @@
 package main.input;
 
-import canvas.Canvas;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import messages.ErrorResponse;
 import messages.RequestAddLayer;
 import messages.RequestAddShape;
@@ -30,9 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RESTHandler {
 
   private static Logger restHandlerLogger = LoggerFactory.getLogger(RESTHandler.class);
-
-  private static Map<String, Canvas> projects = new HashMap<>();
-
 
   @Autowired
   private ProjectService projectService;

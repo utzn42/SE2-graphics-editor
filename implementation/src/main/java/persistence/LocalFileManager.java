@@ -1,4 +1,4 @@
-package persistency;
+package persistence;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,7 +37,7 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
 
   @Override
   public void update(Object obj) {
-    localFileManagerLogger.info("Observer.update() called!");
+    localFileManagerLogger.info("PersistenceObserver.update() called!");
     if (obj instanceof Map) {
       storedObjects = (Map<String, T>) obj;
       try {

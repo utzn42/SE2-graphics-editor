@@ -24,19 +24,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import persistency.FileManager;
-import persistency.LocalFileManager;
-import persistency.Observer;
+import persistence.FileManager;
+import persistence.LocalFileManager;
+import persistence.PersistenceObserver;
 import shapes.Shape;
 
 @Service
-public class ProjectService implements Subject {
+public class ProjectService implements PersistenceSubject {
 
   //TODO: Utz -> Make seedCounter unique. Store int in file which is retrieved upon loading Projectservice.
   private static long seedCounter = 0;
   private static Logger projectServiceLogger = LoggerFactory.getLogger(ProjectService.class);
   private Map<String, Canvas> projects;
-  private ArrayList<Observer> observers;
+  private ArrayList<PersistenceObserver> observers;
 
   public ProjectService() {
     observers = new ArrayList<>();
@@ -238,12 +238,12 @@ public class ProjectService implements Subject {
   }
 
   @Override
-  public void registerObserver(Observer o) {
+  public void registerObserver(PersistenceObserver o) {
     observers.add(o);
   }
 
   @Override
-  public void removeObserver(Observer o) {
+  public void removeObserver(PersistenceObserver o) {
     int i = observers.indexOf(o);
     if (i >= 0) {
       observers.remove(i);
@@ -252,7 +252,7 @@ public class ProjectService implements Subject {
 
   @Override
   public void notifyObservers() {
-    for (Observer o : observers) {
+    for (PersistenceObserver o : observers) {
       o.update(projects);
     }
   }
