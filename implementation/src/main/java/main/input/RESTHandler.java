@@ -59,7 +59,9 @@ public class RESTHandler {
   @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.POST)
   public Response addShape(@PathVariable String projectID,
       @RequestBody RequestAddShape request) {
+
     ServerResponse response = new ServerResponse(projectID);
+
     try {
       response.setCanvas(
           projectService.addShape(projectID, request.getLayerIndex(), request.getShapeClass()));
@@ -76,6 +78,7 @@ public class RESTHandler {
       return new ErrorResponse("Unknown error.",
           "/addShape/" + projectID);
     }
+
     return response;
   }
 
@@ -83,7 +86,9 @@ public class RESTHandler {
   @RequestMapping(value = "/editCanvas/{projectID}", method = RequestMethod.POST)
   public Response editCanvas(@PathVariable String projectID,
       @RequestBody RequestEditCanvas request) {
+
     ServerResponse response = new ServerResponse(projectID);
+
     try {
       response
           .setCanvas(projectService.editCanvas(projectID, request.getWidth(), request.getHeight()));
@@ -93,6 +98,7 @@ public class RESTHandler {
     } catch (IndexOutOfBoundsException e) {
       return new ErrorResponse("projectID does not exist!", "/editCanvas/" + projectID);
     }
+
     return response;
   }
 
@@ -101,13 +107,23 @@ public class RESTHandler {
   @RequestMapping(value = "/editLayer/{projectID}", method = RequestMethod.POST)
   public Response editLayer(@PathVariable String projectID,
       @RequestBody RequestEditLayer request) {
+
+    if (request.getLayerIndex() > projectService.getProjects().get(projectID).getLayers().size()) {
+      return new ErrorResponse(
+          "layerIndex out of bounds! Was: " + request.getLayerIndex() + " - Maximum layer index: "
+              + (projectService.getProjects().get(projectID).getLayers().size() - 1),
+          "/editlayer/" + projectID);
+    }
+
     ServerResponse response = new ServerResponse(projectID);
+
     try {
       response.setCanvas(
           projectService.editLayer(projectID, request.getLayerIndex(), request.isVisible()));
     } catch (IndexOutOfBoundsException e) {
       return new ErrorResponse("projectID does not exist!", "/editLayer/" + projectID);
     }
+
     return response;
   }
 
@@ -115,7 +131,9 @@ public class RESTHandler {
   @RequestMapping(value = "/editShape/{projectID}", method = RequestMethod.POST)
   public Response editShape(@PathVariable String projectID,
       @RequestBody RequestEditShape request) {
+
     ServerResponse response = new ServerResponse(projectID);
+
     try {
       response.setCanvas(projectService
           .editShape(projectID, request.getLayerIndex(), request.getShapeIndex(),
@@ -123,6 +141,7 @@ public class RESTHandler {
     } catch (IllegalArgumentException e) {
       return new ErrorResponse("projectID does not exist!", "/editShape/" + projectID);
     }
+
     return response;
   }
 
