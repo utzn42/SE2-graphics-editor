@@ -16,8 +16,12 @@ public class Hasher {
     try {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
       byte[] rawHash = messageDigest.digest(byteArrayConverter(l));
+
+      //The following code is taken from https://www.geeksforgeeks.org/sha-256-hash-in-java/
       BigInteger bigIntHash = new BigInteger(1, rawHash);
       String fullHashValue = bigIntHash.toString(16);
+      //The code above is taken from https://www.geeksforgeeks.org/sha-256-hash-in-java/
+
       hashValue = fullHashValue.substring(0, 6);
 
     } catch (NoSuchAlgorithmException e) {
