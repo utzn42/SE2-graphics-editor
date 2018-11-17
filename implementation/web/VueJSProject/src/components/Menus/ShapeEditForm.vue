@@ -6,7 +6,10 @@
         <input type="text" v-model="shapeModel[key]" v-on:keyup.enter="edit()">
       </template>
       <template v-if="attribute.type === 'colour'">
-        <input type="color" v-model="shapeModel[key]" v-on:change="edit()">
+        <label>RGB: </label>
+        <input type="color" v-model="shapeModel[key].rgbColour" v-on:change="edit()"><br />
+        <label>Transparent: </label>
+        <input type="checkbox" v-model="shapeModel[key].transparent" v-on:change="edit()">
       </template>
       <template v-if="attribute.type ==='coordinate'">
         <label>x: </label>

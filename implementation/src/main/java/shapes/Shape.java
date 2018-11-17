@@ -2,7 +2,9 @@ package shapes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import facilitators.Colour;
 import facilitators.RGBColour;
 
 @JsonTypeInfo(
@@ -14,52 +16,49 @@ import facilitators.RGBColour;
 @JsonIgnoreProperties({"html"})
 public abstract class Shape {
 
-  private RGBColour fillColour;
-  private RGBColour strokeColour;
+  private Colour fillColour;
+  private Colour strokeColour;
   private double strokeWidth;
   private double opacity;
 
-  // TODO: Another idea? (read plz)
-  // What if we add an anchor Coordinate here? (e.g. center for Circle, RegularPolygon, Star, Ellipse and Text (using text-anchor="middle" alignment-baseline="middle"), first point for Line & Polygon)
-  // -> Could then implement move(vector) directly here
-  // (On second thought, that would make it harder to interpret which point exactly that variable represents for a shape)
-
   public Shape() {
-    this.fillColour = new RGBColour("#FFFFFF");
-    this.strokeColour = new RGBColour("#000000");
+    this.fillColour = new Colour(new RGBColour("#FFFFFF"), true);
+    this.strokeColour = new Colour(new RGBColour("#000000"), false);
     this.strokeWidth = 1;
     this.opacity = 1;
   }
 
-  public Shape(RGBColour fillColour, RGBColour strokeColour, double strokeWidth, double opacity) {
+  public Shape(Colour fillColour, Colour strokeColour, double strokeWidth, double opacity) {
     this.fillColour = fillColour;
     this.strokeColour = strokeColour;
     this.strokeWidth = strokeWidth;
     this.opacity = 1;
   }
 
-  public RGBColour getFillColour() {
+  public Colour getFillColour() {
     return fillColour;
   }
 
-  public void setFillColour(RGBColour fillColour) {
+  @JsonSetter
+  public void setFillColour(Colour fillColour) {
     this.fillColour = fillColour;
   }
 
   public void setFillColour(String fillColour) {
-    this.fillColour = new RGBColour(fillColour);
+    this.fillColour = new Colour(fillColour);
   }
 
-  public RGBColour getStrokeColour() {
+  public Colour getStrokeColour() {
     return strokeColour;
   }
 
-  public void setStrokeColour(RGBColour strokeColour) {
+  @JsonSetter
+  public void setStrokeColour(Colour strokeColour) {
     this.strokeColour = strokeColour;
   }
 
   public void setStrokeColour(String strokeColour) {
-    this.strokeColour = new RGBColour(strokeColour);
+    this.strokeColour = new Colour(strokeColour);
   }
 
   public double getStrokeWidth() {
@@ -79,19 +78,5 @@ public abstract class Shape {
   }
 
   public abstract String getHTML();
-
-    /*
-    public JSONObject getJSON() {
-        JSONObject json = new JSONObject();
-        json.put("shape", "null");
-        JSONObject attributes = new JSONObject();
-        attributes.put("fillColour", fillColour);
-        attributes.put("strokeColour", strokeColour);
-        attributes.put("strokeWidth", strokeWidth);
-        attributes.put("opacity", opacity);
-        json.put("attributes", attributes);
-        return json;
-    }
-    */
 
 }
