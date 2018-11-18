@@ -1,5 +1,6 @@
 package persistence;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -20,6 +21,7 @@ public class LocalFileManager<T extends Serializable> implements FileManager<T> 
   public LocalFileManager(String fileDirectoryPath) {
     localFileManagerLogger.info("Constructor called with path " + fileDirectoryPath);
     // fileDirectoryPath is the path where subfolders (for each ID) are placed
+    boolean temp = new File(fileDirectoryPath).mkdirs();
     this.fileDirectoryPath = fileDirectoryPath;
 
     try {

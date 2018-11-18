@@ -122,7 +122,7 @@ public class ProjectService implements PersistenceSubject {
   }
 
   public Canvas editLayer(String projectID, int layerIndex, boolean isVisible) {
-    if (projects.containsKey(projectID)) {
+    if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
 
