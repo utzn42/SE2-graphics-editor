@@ -291,8 +291,8 @@ public class ProjectService implements Subject {
    * @param projectID Is used to retrieve the canvas based on the ID.
    * @param type Specifies the desired file format.
    * @return A SVG, JPG or PNG file, which represents the canvas at the time of download.
-   * @throws IOException
-   * @throws TranscoderException
+   * @throws IOException If an I/O error occurs.
+   * @throws TranscoderException If transcoding to the desired image format fails.
    */
   public ResponseEntity<Object> download(String projectID, String type)
       throws IOException, TranscoderException {

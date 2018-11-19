@@ -279,6 +279,8 @@ public class RESTHandler {
    * @param projectID The ID the client has been assigned in createProject().
    * @param type Specifies the file format.
    * @return If successfully called, it returns a .svg/.png/.jpg file, which shows a representation of the most recent canvas.
+   * @throws IOException If an I/O error occurs.
+   * @throws TranscoderException If transcoding to the desired image format fails.
    * @see ResponseEntity
    */
   @CrossOrigin()
