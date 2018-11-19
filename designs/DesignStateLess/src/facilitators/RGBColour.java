@@ -19,7 +19,7 @@ public class RGBColour {
 
 
     /**
-     * Returns the name of the color.
+     * Returns the the color.
      * @return returns an int
      */
     public int[] getColour() {

@@ -20,7 +20,7 @@ public class ErrorResponse extends Response {
    * The constructor expects an error message in {@link String} and a path in {@link String}.
    * The constructor also creates a timestamp at the moment the object gets created.
    * @param message the error message in {@link String}
-   * @param path the path in {@link String} (e.g.: "/addShape/<projectID>")
+   * @param path the path in {@link String} (e.g.: "/addShape/projectID")
    */
   public ErrorResponse(String message, String path) {
     this.message = message;
