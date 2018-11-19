@@ -56,6 +56,6 @@ public class Hasher {
   }
 
   public String getHash() {
-    return hashValue.toString();
+    return hashValue;
   }
 }

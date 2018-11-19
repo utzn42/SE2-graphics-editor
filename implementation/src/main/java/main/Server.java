@@ -36,17 +36,14 @@ public class Server {
    */
   private static String print(String[] args) {
     if (args.length > 0) {
+      StringBuilder stringBuilder = new StringBuilder();
       for (String s : args) {
-        return (s + '\n');
+        stringBuilder.append(s).append('\n');
       }
+      return stringBuilder.toString();
     }
     return "No arguments have been passed.";
   }
 }
 
-//TODO: Xandi: Show difference between designs
-//TODO: Xandi: Javadoc in HTML extrahieren
 //TODO: Xandi: Code metrics of current implementation
-//TODO: Daniel: Discuss how we applied observer and strategy patterns
-//TODO: RequestAddLayer necessary?
-//TODO: RequestDownload necessary?

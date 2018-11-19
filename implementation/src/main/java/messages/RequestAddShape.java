@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RequestAddShape {
 
+  //TODO: Add a parameter for the new shape's position
   private final int layerIndex;
   private final String shapeClass;
 

@@ -35,6 +35,8 @@ import shapes.Shape;
 @Service
 public class ProjectService implements Subject {
 
+  //TODO: Maybe allow layers and shapes to be "moved" up and down
+
   private static long seedCounter = 0;
   private static Logger projectServiceLogger = LoggerFactory.getLogger(ProjectService.class);
   private Map<String, Canvas> projects;
@@ -111,10 +113,12 @@ public class ProjectService implements Subject {
    * @param layerIndex Is used to access the layer to which the shape shall be added.
    * @param shapeClass Specifies the type of shape which is to be added, in order to call default constructors.
    * @return A canvas including the added shape.
-   * @throws Exception
+   * @throws ClassNotFoundException Thrown if the shape class could not be found.
+   * @throws IllegalAccessException Thrown if the shape class constructor could not be called.
+   * @throws InstantiationException Thrown if an instance of the shape class could not be created.
    */
   public Canvas addShape(String projectID, int layerIndex, String shapeClass)
-      throws Exception {
+      throws ClassNotFoundException, IllegalAccessException, InstantiationException {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }

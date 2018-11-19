@@ -32,8 +32,12 @@ public class RESTHandler {
 
   private static Logger restHandlerLogger = LoggerFactory.getLogger(RESTHandler.class);
 
+  private final ProjectService projectService;
+
   @Autowired
-  private ProjectService projectService;
+  public RESTHandler(ProjectService projectService) {
+    this.projectService = projectService;
+  }
 
   /**
    * Creates a project by subsequently getting a project ID and a default Canvas from the server.

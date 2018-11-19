@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  */
 public class RequestAddLayer {
 
+  //TODO: Add a parameter for the new layer's position
+
   @JsonCreator()
   RequestAddLayer() {
 
