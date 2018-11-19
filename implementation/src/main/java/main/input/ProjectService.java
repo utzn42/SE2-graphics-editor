@@ -23,21 +23,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import persistence.FileManager;
 import persistence.LocalFileManager;
-import persistence.PersistenceObserver;
+import observer.Observer;
+import observer.Subject;
 import shapes.Shape;
 
 @Service
-public class ProjectService implements PersistenceSubject {
+public class ProjectService implements Subject {
 
   private static long seedCounter = 0;
   private static Logger projectServiceLogger = LoggerFactory.getLogger(ProjectService.class);
   private Map<String, Canvas> projects;
-  private ArrayList<PersistenceObserver> observers;
+  private ArrayList<Observer> observers;
 
   public ProjectService() {
     observers = new ArrayList<>();
     FileManager<Canvas> fileManager = new LocalFileManager<>("./projects");
-    observers.add(fileManager);
+    registerObserver(fileManager);
     projects = fileManager.getStoredObjects();
     seedCounter = fileManager.getSeedCounter();
   }
@@ -46,7 +47,6 @@ public class ProjectService implements PersistenceSubject {
     String projectID;
     do {
       Hasher hash = new Hasher(++seedCounter);
-      notifyObservers(false);
       projectID = hash.getHash();
     } while (projects.containsKey(projectID));
     return projectID;
@@ -59,7 +59,8 @@ public class ProjectService implements PersistenceSubject {
 
     Canvas blankCanvas = new Canvas();
     projects.put(projectID, blankCanvas);
-    notifyObservers(true);
+
+    notifyObservers();
     return blankCanvas;
   }
 
@@ -71,8 +72,8 @@ public class ProjectService implements PersistenceSubject {
     projectServiceLogger.info("addLayer - (empty object)");
 
     projects.get(projectID).getLayers().add(new Layer());
-    notifyObservers(true);
 
+    notifyObservers();
     return projects.get(projectID);
   }
 
@@ -101,7 +102,7 @@ public class ProjectService implements PersistenceSubject {
       throw new InstantiationException("Failed to instantiate object of class " + shapeClass + "!");
     }
 
-    notifyObservers(true);
+    notifyObservers();
     return projects.get(projectID);
   }
 
@@ -116,7 +117,7 @@ public class ProjectService implements PersistenceSubject {
     projectServiceLogger.info("editCanvas - Width: " + width);
     projectServiceLogger.info("           - Height: " + height);
 
-    notifyObservers(true);
+    notifyObservers();
     return projects.get(projectID);
 
   }
@@ -130,7 +131,7 @@ public class ProjectService implements PersistenceSubject {
     projectServiceLogger.info("          - Visible: " + isVisible);
     projects.get(projectID).getLayers().get(layerIndex).setVisible(isVisible);
 
-    notifyObservers(true);
+    notifyObservers();
     return projects.get(projectID);
   }
 
@@ -144,7 +145,7 @@ public class ProjectService implements PersistenceSubject {
     projects.get(projectID).getLayers().get(layerIndex).getShapes()
         .set(shapeIndex, shape);
 
-    notifyObservers(true);
+    notifyObservers();
     return projects.get(projectID);
   }
 
@@ -167,7 +168,7 @@ public class ProjectService implements PersistenceSubject {
 
     projects.get(projectID).getLayers().remove(layerIndex);
 
-    notifyObservers(true);
+    notifyObservers();
     return projects.get(projectID);
   }
 
@@ -228,12 +229,12 @@ public class ProjectService implements PersistenceSubject {
   }
 
   @Override
-  public void registerObserver(PersistenceObserver o) {
+  public void registerObserver(Observer o) {
     observers.add(o);
   }
 
   @Override
-  public void removeObserver(PersistenceObserver o) {
+  public void removeObserver(Observer o) {
     int i = observers.indexOf(o);
     if (i >= 0) {
       observers.remove(i);
@@ -241,15 +242,10 @@ public class ProjectService implements PersistenceSubject {
   }
 
   @Override
-  public void notifyObservers(boolean type) {
-    if (type) {
-      for (PersistenceObserver o : observers) {
-        o.update(projects);
-      }
-    } else {
-      for (PersistenceObserver o : observers) {
-        o.update(seedCounter);
-      }
+  public void notifyObservers() {
+    for (Observer o : observers) {
+      o.update(seedCounter);
+      o.update(projects);
     }
   }
 }

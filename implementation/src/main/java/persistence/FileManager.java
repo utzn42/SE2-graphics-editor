@@ -2,11 +2,12 @@ package persistence;
 
 import java.io.Serializable;
 import java.util.Map;
+import observer.Observer;
 
-public interface FileManager<T extends Serializable> extends PersistenceObserver {
+public interface FileManager<T extends Serializable> extends Observer {
 
-  public Map<String, T> getStoredObjects();
+  Map<String, T> getStoredObjects();
 
-  public long getSeedCounter();
+  long getSeedCounter();
 
 }
