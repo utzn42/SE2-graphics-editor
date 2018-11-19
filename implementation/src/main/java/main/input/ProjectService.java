@@ -13,6 +13,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Map;
+import observer.Observer;
+import observer.Subject;
 import org.apache.batik.transcoder.TranscoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +25,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import persistence.FileManager;
 import persistence.LocalFileManager;
-import observer.Observer;
-import observer.Subject;
 import shapes.Shape;
 
+/**
+ * This class provides the logic which RESTHandler calls upon to deliver its functionality.
+ *
+ * @see RESTHandler
+ */
 @Service
 public class ProjectService implements Subject {
 
@@ -35,6 +40,10 @@ public class ProjectService implements Subject {
   private Map<String, Canvas> projects;
   private ArrayList<Observer> observers;
 
+  /**
+   * Creates a default ProjectService object. If previously stored projects or ID seeds are available, they are loaded into the object.
+   * @see LocalFileManager
+   */
   public ProjectService() {
     observers = new ArrayList<>();
     FileManager<Canvas> fileManager = new LocalFileManager<>("./projects");
@@ -43,6 +52,10 @@ public class ProjectService implements Subject {
     seedCounter = fileManager.getSeedCounter();
   }
 
+  /**
+   * Creates a one-way hash of the ID seed.
+   * @return A 6-letter substring of the SHA-256 hash of the ID seed.
+   */
   public String createID() {
     String projectID;
     do {
@@ -52,6 +65,13 @@ public class ProjectService implements Subject {
     return projectID;
   }
 
+
+  /**
+   * Creates a default canvas measuring 200*200px.
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @return A default, empty canvas.
+   * @see Canvas
+   */
   public Canvas createCanvas(String projectID) {
     if (projects.containsKey(projectID)) {
       throw new IllegalArgumentException("Project ID " + projectID + " already exists!");
@@ -64,6 +84,12 @@ public class ProjectService implements Subject {
     return blankCanvas;
   }
 
+
+  /**
+   * Adds a layer to the canvas which is specified by the project ID.
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @return The canvas including the layer which was added.
+   */
   public Canvas addLayer(String projectID) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -77,6 +103,16 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Adds a shape to a specified layer within the canvas, which is specified by the project ID.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param layerIndex Is used to access the layer to which the shape shall be added.
+   * @param shapeClass Specifies the type of shape which is to be added, in order to call default constructors.
+   * @return A canvas including the added shape.
+   * @throws Exception
+   */
   public Canvas addShape(String projectID, int layerIndex, String shapeClass)
       throws Exception {
     if (!projects.containsKey(projectID)) {
@@ -106,6 +142,14 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Modifies the width/height of a given canvas.
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param width Specifies the new canvas width.
+   * @param height Specifies the new canvas height.
+   * @return The canvas featuring the updated measurements.
+   */
   public Canvas editCanvas(String projectID, double width, double height) {
     if (width < 0 || height < 0) {
       throw new IllegalArgumentException("Height and width must both be positive!");
