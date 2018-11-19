@@ -120,12 +120,12 @@
         else if (canvas.layers.length < this.layers.length) {
           if (canvas.layers.length <= this.selectedLayer) {
             this.selectedLayer = canvas.layers.length - 1;
-            if (this.selectedLayer === -1) {
-              this.selectedShape = -1;
-            }
-            else {
-              this.selectedShape = canvas.layers[this.selectedLayer].shapes.length - 1;
-            }
+          }
+          if (this.selectedLayer === -1) {
+            this.selectedShape = -1;
+          }
+          else {
+            this.selectedShape = canvas.layers[this.selectedLayer].shapes.length - 1;
           }
         }
         // If Layers have not been modified, perform similar checks for the selected Shape
