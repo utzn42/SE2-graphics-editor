@@ -11,7 +11,7 @@ public class CircleTransform implements TransformBehaviour {
     /**
      * Moves the circle from one point to another.
      */
-    public void move() {
+    public void transform() {
 
     }
 }

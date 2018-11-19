@@ -7,11 +7,23 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is for calculating a hash value to specify a projectID which is then assigned to each
+ * project/client. This ID is Required to identify each project/client.
+ *
+ * @see main.input.ProjectService
+ * @see main.input.RESTHandler
+ */
 public class Hasher {
 
   private static Logger hasherLogger = LoggerFactory.getLogger(Hasher.class);
   private String hashValue;
 
+  /**
+   * The constructor does the actual calculation. It is called from the {@link main.input.ProjectService} class whenever a client opens the
+   * index.html.
+   * @param l this is the seedCounter in {@link Long}. It represents the nr of created projects and is necessary for calculating a different hash value than before
+   */
   public Hasher(long l) {
     try {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
@@ -31,6 +43,11 @@ public class Hasher {
 
   }
 
+  /**
+   * The seedCounter gets converted into byte because {@link MessageDigest} needs a byte as parameter type.
+   * @param l the seedCounter in {@link Long}
+   * @return returns the seedCounter in byte
+   */
   public static byte[] byteArrayConverter(long l) {
     byte b[] = new byte[8];
     ByteBuffer bb = ByteBuffer.wrap(b);

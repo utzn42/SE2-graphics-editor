@@ -33,3 +33,5 @@ public class Server {
 //TODO: Xandi: Javadoc in HTML extrahieren
 //TODO: Xandi: Code metrics of current implementation
 //TODO: Daniel: Discuss how we applied observer and strategy patterns
+//TODO: RequestAddLayer necessary?
+//TODO: RequestDownload necessary?

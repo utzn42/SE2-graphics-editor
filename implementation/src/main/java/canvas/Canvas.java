@@ -9,10 +9,7 @@ import shapes.Shape;
 /**
  * The Canvas class is the container in which all layers with shapes are in. It is like the
  * coordinate system for the operations which will take place. It manages all layers and shapes.
- * Every object is "registered" in the canvas. A canvas can hold up to 150 shapes.
- *
- * The Canvas class uses the Shape class and the CanvasState class. The relation is a composition.
- * The Canvas class cannot exist without the CanvasState.
+ * Every object is "registered" in the canvas.
  *
  * @see Shape
  * @see Layer
@@ -25,8 +22,9 @@ public class Canvas implements Serializable {
   private List<Layer> layers;
 
   /**
-   * This is the default constructor of the Canvas class. It gets called when the user calls the webpage.
-   * We chose a default value of 200x200, but the user can change its actual size all the time when needed.
+   * This is the default constructor of the Canvas class. It gets called when the user calls the
+   * webpage. We chose a default value of 200x200, but the user can change its actual size all the
+   * time when needed.
    */
   public Canvas() {
     width = 200;
@@ -35,8 +33,9 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * This constructor creates a canvas already with layers.
-   * We chose a default value of 200x200, but the user can change its actual size all the time when needed.
+   * This constructor creates a canvas already with layers. We chose a default value of 200x200, but
+   * the user can change its actual size all the time when needed.
+   *
    * @param layers a {@link List} of {@link Layer}
    */
   public Canvas(List<Layer> layers) {
@@ -46,7 +45,9 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * Returns the width of the canvas. Gets called when the canvas gets parsed into json to send it to the client.
+   * Returns the width of the canvas. Gets called when the canvas gets parsed into json to send it
+   * to the client.
+   *
    * @return returns width in {@link Double}
    */
   public double getWidth() {
@@ -55,6 +56,7 @@ public class Canvas implements Serializable {
 
   /**
    * Lets you set the width of the canvas. This gets called when the user edits the canvas.
+   *
    * @param width the width of the canvas in {@link Double}
    */
   public void setWidth(double width) {
@@ -62,7 +64,9 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * Returns the height of the canvas. Gets called when the canvas gets parsed into json to send it to the client.
+   * Returns the height of the canvas. Gets called when the canvas gets parsed into json to send it
+   * to the client.
+   *
    * @return returns height in {@link Double}
    */
   public double getHeight() {
@@ -71,6 +75,7 @@ public class Canvas implements Serializable {
 
   /**
    * Lets you set the height of the canvas. This gets called when the user edits the canvas.
+   *
    * @param height the height of the canvas in {@link Double}
    */
   public void setHeight(double height) {
@@ -78,7 +83,9 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * Returns a {@link List} of the {@link Layer} which are in the canvas. This gets called when the canvas gets parsed into json to send it to the client.
+   * Returns a {@link List} of the {@link Layer} which are in the canvas. This gets called when the
+   * canvas gets parsed into json to send it to the client.
+   *
    * @return a {@link List} of {@link Layer}
    */
   public List<Layer> getLayers() {
@@ -87,6 +94,7 @@ public class Canvas implements Serializable {
 
   /**
    * Returns the SVG container for the HTML file.
+   *
    * @return returns a {@link String} which contains the SVG container
    */
   public String getHTML() {

@@ -7,7 +7,7 @@ package transform_strategy;
  * @see TransformBehaviour
  */
 public class CantTransform implements TransformBehaviour {
-    public void move() {
+    public void transform() {
 
     }
 }

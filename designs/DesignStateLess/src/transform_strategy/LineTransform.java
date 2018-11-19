@@ -11,7 +11,7 @@ public class LineTransform implements TransformBehaviour {
     /**
      * Moves the line from one point to another.
      */
-    public void move() {
+    public void transform() {
 
     }
 }

@@ -11,7 +11,7 @@ public class PolygonTransform implements TransformBehaviour {
     /**
      * Moves the polygon from one point to another.
      */
-    public void move() {
+    public void transform() {
 
     }
 }

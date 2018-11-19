@@ -3,7 +3,7 @@ package canvas;
 import Shape.Shape;
 
 /**
- * A layer is the container of one or more shapes. One layer can hold up to 50 shapes.
+ * A layer is the container of one or more shapes. One layer can hold up to 25 shapes.
  * A layer can lay over or under other layers.
  *
  * The relation is an aggregation, it cannot exist without a the LayerState.

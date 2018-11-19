@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
-import facilitators.RGBColour;
 import java.io.Serializable;
 
 @JsonTypeInfo(

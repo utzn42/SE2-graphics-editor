@@ -6,7 +6,7 @@ import Shape.Shape;
  * The Canvas class is the container in which all layers with shapes are in.
  * It is like the coordinate system for the operations which will take place.
  * It manages all layers and shapes. Every object is "registered" in the canvas.
- * A canvas can hold up to 150 shapes.
+ * A canvas can hold up to 100 shapes.
  *
  * The Canvas class uses the Shape class and the CanvasState class. The relation is a composition.
  * The Canvas class cannot exist without the CanvasState.
