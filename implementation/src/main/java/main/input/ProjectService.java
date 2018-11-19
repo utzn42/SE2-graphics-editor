@@ -42,6 +42,7 @@ public class ProjectService implements Subject {
 
   /**
    * Creates a default ProjectService object. If previously stored projects or ID seeds are available, they are loaded into the object.
+   *
    * @see LocalFileManager
    */
   public ProjectService() {
@@ -54,6 +55,7 @@ public class ProjectService implements Subject {
 
   /**
    * Creates a one-way hash of the ID seed.
+   *
    * @return A 6-letter substring of the SHA-256 hash of the ID seed.
    */
   public String createID() {
@@ -68,6 +70,7 @@ public class ProjectService implements Subject {
 
   /**
    * Creates a default canvas measuring 200*200px.
+   *
    * @param projectID Is used to retrieve the canvas based on the ID.
    * @return A default, empty canvas.
    * @see Canvas
@@ -87,6 +90,7 @@ public class ProjectService implements Subject {
 
   /**
    * Adds a layer to the canvas which is specified by the project ID.
+   *
    * @param projectID Is used to retrieve the canvas based on the ID.
    * @return The canvas including the layer which was added.
    */
@@ -145,6 +149,7 @@ public class ProjectService implements Subject {
 
   /**
    * Modifies the width/height of a given canvas.
+   *
    * @param projectID Is used to retrieve the canvas based on the ID.
    * @param width Specifies the new canvas width.
    * @param height Specifies the new canvas height.
@@ -169,6 +174,15 @@ public class ProjectService implements Subject {
 
   }
 
+
+  /**
+   * Sets the visibility of a given layer.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param layerIndex Is used to retrieve the desired layer from within the canvas.
+   * @param isVisible Sets the layer (and therefore all of its shapes) to visible/invisible.
+   * @return A canvas where the visibility of a given layer within it has been modified
+   */
   public Canvas editLayer(String projectID, int layerIndex, boolean isVisible) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -182,6 +196,16 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Modifies a shape within a given layer of the canvas.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param layerIndex Is used to retrieve the desired layer from within the canvas.
+   * @param shapeIndex Is used to retrieve the desired shape from within the layer.
+   * @param shape Passes the modified shape to the function
+   * @return Returns a canvas with a shape, which now includes the updated parameters.
+   */
   public Canvas editShape(String projectID, int layerIndex, int shapeIndex, Shape shape) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -196,6 +220,13 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Modifies the visual representation of a shape within a certain layer using the SVG format's inbuilt transform parameters.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @return A canvas where the specified shape is now modified in accordance with SVG's inbuilt transform parameters.
+   */
   public Canvas transformShape(String projectID) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -206,6 +237,14 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Deletes a layer from the specified canvas.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param layerIndex Specifies the layer which the user wishes to delete.
+   * @return A canvas without the layer specified by layerIndex.
+   */
   public Canvas deleteLayer(String projectID, int layerIndex) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -219,6 +258,15 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Deletes a certain shape within a layer of the canvas.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param layerIndex Specifies the layer within which the user wishes to delete the shape.
+   * @param shapeIndex Specifies the exact shape which the user wishes to delete.
+   * @return A canvas without the deleted shape.
+   */
   public Canvas deleteShape(String projectID, int layerIndex, int shapeIndex) {
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
@@ -232,6 +280,16 @@ public class ProjectService implements Subject {
     return projects.get(projectID);
   }
 
+
+  /**
+   * Downloads a picture of the canvas in a format of choice.
+   *
+   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param type Specifies the desired file format.
+   * @return A SVG, JPG or PNG file, which represents the canvas at the time of download.
+   * @throws IOException
+   * @throws TranscoderException
+   */
   public ResponseEntity<Object> download(String projectID, String type)
       throws IOException, TranscoderException {
     if (!projects.containsKey(projectID)) {
@@ -271,15 +329,33 @@ public class ProjectService implements Subject {
         MediaType.parseMediaType(mimeType)).body(resource);
   }
 
+
+  /**
+   * @return A Map of project IDs and corresponding canvasses.
+   */
   public Map<String, Canvas> getProjects() {
     return projects;
   }
 
+
+  /**
+   * Adds an observer to the list of active observers.
+   *
+   * @param o Specifies the observer which is to be added to the list.
+   * @see Subject
+   */
   @Override
   public void registerObserver(Observer o) {
     observers.add(o);
   }
 
+
+  /**
+   * Removes an observer from the list of active observers.
+   *
+   * @param o Passes the specific observer to the function in order to remove it.
+   * @see Subject
+   */
   @Override
   public void removeObserver(Observer o) {
     int i = observers.indexOf(o);
@@ -288,6 +364,13 @@ public class ProjectService implements Subject {
     }
   }
 
+
+  /**
+   * Notifies the observers of a ProjectService object whether seedCounter or projects have been modified.
+   *
+   * @see Subject
+   * @see Observer
+   */
   @Override
   public void notifyObservers() {
     for (Observer o : observers) {
