@@ -1,5 +1,6 @@
 RestHandler
 Shape
+canvas
+facilitators
 main
-management
-move
+transform_strategy
