@@ -117,6 +117,9 @@ public class ProjectService implements Subject {
     projectServiceLogger.info("editCanvas - Width: " + width);
     projectServiceLogger.info("           - Height: " + height);
 
+    projects.get(projectID).setWidth(width);
+    projects.get(projectID).setHeight(height);
+
     notifyObservers();
     return projects.get(projectID);
 
