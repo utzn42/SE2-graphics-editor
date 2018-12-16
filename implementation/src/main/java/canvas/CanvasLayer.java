@@ -38,7 +38,7 @@ public class CanvasLayer extends CanvasElement {
    */
   @Override
   public void transform(ShapeTransformer shapeTransformer) {
-    //TODO: Apply transformation
+    //TODO: Implement canvas.CanvasLayer#transform(ShapeTransformer)
   }
 
 }
