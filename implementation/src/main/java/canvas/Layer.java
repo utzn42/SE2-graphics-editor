@@ -12,6 +12,9 @@ import shapes.Shape;
  *
  * @see Shape
  * @see Canvas
+ *
+ * @deprecated
+ * Use {@link CanvasElement} and subclasses instead.
  */
 @JsonIgnoreProperties({"state", "html"})
 public class Layer implements Serializable {
