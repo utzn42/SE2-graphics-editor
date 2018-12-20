@@ -1,6 +1,9 @@
 package shapes;
 
 import facilitators.Coordinate;
+import shapes.transform.ShapeTransformer;
+import shapes.transform.Translatable;
+import shapes.transform.Translater;
 
 /**
  * Represents a Text element on the canvas.
@@ -8,7 +11,7 @@ import facilitators.Coordinate;
  *
  * @see Shape
  */
-public class Text extends Shape {
+public class Text extends Shape implements Translatable {
 
   private Coordinate center;
   private String displayText;
@@ -117,6 +120,25 @@ public class Text extends Shape {
   }
 
   /**
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the Text element.
+   * The Text class is non-transformable, so the following transformations will cause an error:
+   * rotate, scale, skew
+   *
+   * @param transformer The transformation to apply to the Text element.
+   */
+  @Override
+  public void applyTransformation(ShapeTransformer transformer) {
+    if (transformer.getRotation() != null ||
+        transformer.getScale() != null ||
+        transformer.getSkew() != null) {
+      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
+    }
+    if (transformer.getTranslation() != null) {
+      translate(transformer.getTranslation());
+    }
+  }
+
+  /**
    * Returns a String representation of the Text element's attributes as chained HTML attributes.
    *
    * @return A String representation of the Text element's attributes as chained HTML attributes.
@@ -141,5 +163,15 @@ public class Text extends Shape {
   @Override
   public String getHTML() {
     return "<text " + getHTMLAttributes() + ">" + displayText + "</text>";
+  }
+
+  /**
+   * Translates the Text element using a {@link Translater}.
+   *
+   * @param translater The translation to apply to the Text element.
+   */
+  @Override
+  public void translate(Translater translater) {
+    //TODO: Implement shapes.Text#translate(Translater)
   }
 }

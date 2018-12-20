@@ -1,6 +1,13 @@
 package shapes;
 
 import facilitators.Coordinate;
+import shapes.transform.Rotatable;
+import shapes.transform.Rotator;
+import shapes.transform.Scalable;
+import shapes.transform.Scaler;
+import shapes.transform.ShapeTransformer;
+import shapes.transform.Translatable;
+import shapes.transform.Translater;
 
 /**
  * Represents a Circle on the canvas.
@@ -10,7 +17,7 @@ import facilitators.Coordinate;
  * @see RegularPolygon
  * @see Star
  */
-public class Circle extends Shape {
+public class Circle extends Shape implements Translatable, Rotatable, Scalable {
 
   private Coordinate center;
   private double radius;
@@ -71,6 +78,29 @@ public class Circle extends Shape {
   }
 
   /**
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the Circle.
+   * The Circle class is non-transformable, so the following transformations will cause an error:
+   * skew
+   *
+   * @param transformer The transformation to apply to the Circle.
+   */
+  @Override
+  public void applyTransformation(ShapeTransformer transformer) {
+    if (transformer.getSkew() != null) {
+      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
+    }
+    if (transformer.getTranslation() != null) {
+      translate(transformer.getTranslation());
+    }
+    if (transformer.getRotation() != null) {
+      rotate(transformer.getRotation());
+    }
+    if (transformer.getScale() != null) {
+      scale(transformer.getScale());
+    }
+  }
+
+  /**
    * Returns a String representation of the Circle's attributes as chained HTML attributes.
    *
    * @return A String representation of the Circle's attributes as chained HTML attributes.
@@ -95,4 +125,33 @@ public class Circle extends Shape {
     return "<circle " + getHTMLAttributes() + "></circle>";
   }
 
+  /**
+   * Translates the Circle using a {@link Translater}.
+   *
+   * @param translater The translation to apply to the Circle.
+   */
+  @Override
+  public void translate(Translater translater) {
+    //TODO: Implement shapes.Circle#translate(Translater)
+  }
+
+  /**
+   * Rotates the Circle using a {@link Rotator}.
+   *
+   * @param rotator The rotation to apply to the Circle.
+   */
+  @Override
+  public void rotate(Rotator rotator) {
+    //TODO: Implement shapes.Circle#rotate(Rotator)
+  }
+
+  /**
+   * Scales the Circle using a {@link Scaler}.
+   *
+   * @param scaler The scaler to apply to the Circle.
+   */
+  @Override
+  public void scale(Scaler scaler) {
+    //TODO: Implement shapes.Circle#scale(Scaler)
+  }
 }

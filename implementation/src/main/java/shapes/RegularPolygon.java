@@ -3,6 +3,7 @@ package shapes;
 import facilitators.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.transform.ShapeTransformer;
 
 /**
  * Represents a regular Polygon on the canvas.
@@ -69,6 +70,27 @@ public class RegularPolygon extends Circle {
       coordinates.add(new Coordinate(x, y));
     }
     return coordinates;
+  }
+
+  /**
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the RegularPolygon.
+   * The RegularPolygon class is non-transformable, so the following transformations will cause an error:
+   * rotate, skew
+   *
+   * @param transformer The transformation to apply to the RegularPolygon.
+   */
+  @Override
+  public void applyTransformation(ShapeTransformer transformer) {
+    if (transformer.getRotation() != null ||
+        transformer.getSkew() != null) {
+      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
+    }
+    if (transformer.getTranslation() != null) {
+      translate(transformer.getTranslation());
+    }
+    if (transformer.getScale() != null) {
+      scale(transformer.getScale());
+    }
   }
 
   /**

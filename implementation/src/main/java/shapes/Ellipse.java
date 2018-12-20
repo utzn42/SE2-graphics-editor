@@ -1,6 +1,11 @@
 package shapes;
 
 import facilitators.Coordinate;
+import shapes.transform.Scalable;
+import shapes.transform.Scaler;
+import shapes.transform.ShapeTransformer;
+import shapes.transform.Translatable;
+import shapes.transform.Translater;
 
 /**
  * Represents an Ellipse on the canvas.
@@ -8,7 +13,7 @@ import facilitators.Coordinate;
  *
  * @see Shape
  */
-public class Ellipse extends Shape {
+public class Ellipse extends Shape implements Translatable, Scalable {
 
   private Coordinate center;
   private double radiusX;
@@ -91,6 +96,27 @@ public class Ellipse extends Shape {
   }
 
   /**
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the Ellipse.
+   * The Ellipse class is non-transformable, so the following transformations will cause an error:
+   * rotate, skew
+   *
+   * @param transformer The transformation to apply to the Ellipse.
+   */
+  @Override
+  public void applyTransformation(ShapeTransformer transformer) {
+    if (transformer.getRotation() != null ||
+        transformer.getSkew() != null) {
+      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
+    }
+    if (transformer.getTranslation() != null) {
+      translate(transformer.getTranslation());
+    }
+    if (transformer.getScale() != null) {
+      scale(transformer.getScale());
+    }
+  }
+
+  /**
    * Returns a String representation of the Ellipse's attributes as chained HTML attributes.
    *
    * @return A String representation of the Ellipse's attributes as chained HTML attributes.
@@ -114,5 +140,25 @@ public class Ellipse extends Shape {
   @Override
   public String getHTML() {
     return "<ellipse " + getHTMLAttributes() + "></ellipse>";
+  }
+
+  /**
+   * Translates the Ellipse using a {@link Translater}.
+   *
+   * @param translater The translation to apply to the Ellipse.
+   */
+  @Override
+  public void translate(Translater translater) {
+    //TODO: Implement shapes.Ellipse#translate(Translater)
+  }
+
+  /**
+   * Scales the Ellipse using a {@link Scaler}.
+   *
+   * @param scaler The scaler to apply to the Ellipse.
+   */
+  @Override
+  public void scale(Scaler scaler) {
+    //TODO: Implement shapes.Ellipse#scale(Scaler)
   }
 }
