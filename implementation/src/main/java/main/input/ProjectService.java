@@ -2,10 +2,10 @@ package main.input;
 
 import canvas.Canvas;
 import canvas.Layer;
-import download.DownloadJPG;
-import download.DownloadPNG;
-import download.DownloadSVG;
-import download.DownloadStrategy;
+import download.CanvasToJPGConverter;
+import download.CanvasToPNGConverter;
+import download.CanvasToSVGConverter;
+import download.CanvasToImageConverter;
 import facilitators.Hasher;
 import java.io.File;
 import java.io.IOException;
@@ -290,7 +290,7 @@ public class ProjectService implements Subject {
    *
    * @param projectID Is used to retrieve the canvas based on the ID.
    * @param type Specifies the desired file format.
-   * @return A SVG, JPG or PNG file, which represents the canvas at the time of download.
+   * @return A SVG, JPG or PNG file, which represents the canvas at the time of convert.
    * @throws IOException If an I/O error occurs.
    * @throws TranscoderException If transcoding to the desired image format fails.
    */
@@ -302,27 +302,27 @@ public class ProjectService implements Subject {
 
     projectServiceLogger.info("Download in format: " + type);
 
-    DownloadStrategy downloadStrategy;
+    CanvasToImageConverter canvasToImageConverter;
     String mimeType;
     switch (type) {
       case "svg":
-        downloadStrategy = new DownloadSVG();
+        canvasToImageConverter = new CanvasToSVGConverter();
         mimeType = "image/svg+xml";
         break;
       case "png":
-        downloadStrategy = new DownloadPNG();
+        canvasToImageConverter = new CanvasToPNGConverter();
         mimeType = "image/png";
         break;
       case "jpg":
       case "jpeg":
-        downloadStrategy = new DownloadJPG();
+        canvasToImageConverter = new CanvasToJPGConverter();
         mimeType = "image/jpeg";
         break;
       default:
         throw new IllegalArgumentException("Unknown file type");
     }
 
-    URI fileURI = downloadStrategy.download(projects.get(projectID), projectID);
+    URI fileURI = canvasToImageConverter.convert(projects.get(projectID), projectID);
     File file = new File(fileURI);
     ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
 

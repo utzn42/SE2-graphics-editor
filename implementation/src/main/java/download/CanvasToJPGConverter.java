@@ -12,31 +12,28 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 
 /**
- * One of the possible download options is to download the canvas in PNG format. It implements
- * {@link DownloadStrategy} and is part of our Strategy Pattern.
+ * One of the possible convert options is to convert the canvas in JPG format. It implements
+ * {@link CanvasToImageConverter} and is part of our Strategy Pattern.
  *
- * @see DownloadStrategy
+ * @see CanvasToImageConverter
  */
-public class DownloadPNG implements DownloadStrategy {
+public class CanvasToJPGConverter implements CanvasToImageConverter {
 
   /**
-   * Gets called when the user wants to download the canvas in PNG. Converts the SVG container from
-   * the HTML code into a PNG {@link File} and sends the file to the client. It overrides the method
-   * of {@link DownloadStrategy}.
+   * Converts the {@link Canvas} into a JPG {@link File} and returns the {@link URI}.
    *
-   * @param canvas the {@link Canvas} which wants to get downloaded
+   * @param canvas the {@link Canvas} to convert
    * @param projectID the unique projectID to create the file name
-   * @return returns an {@link URI} of the PNG {@link File}
+   * @return returns an {@link URI} of the JPG {@link File}
    * @throws IOException If an I/O error occurs
-   * @throws TranscoderException If transcoding to PNG fails
+   * @throws TranscoderException If transcoding to JPG fails
    */
   @Override
-  public URI download(Canvas canvas, String projectID) throws IOException, TranscoderException {
+  public URI convert(Canvas canvas, String projectID) throws IOException, TranscoderException {
 
-    PNGTranscoder t = new PNGTranscoder();
+    JPEGTranscoder t = new JPEGTranscoder();
     t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY,
         (float) .8);
 
@@ -47,9 +44,9 @@ public class DownloadPNG implements DownloadStrategy {
     writer.write(canvas.getHTML());
     writer.close();
 
-    File pngFile = new File("./projects/" + projectID + "/" + projectID + ".png");
+    File jpgFile = new File("./projects/" + projectID + "/" + projectID + ".jpg");
     TranscoderInput input = new TranscoderInput(svgFile.toURI().toString());
-    OutputStream ostream = new FileOutputStream(pngFile.getPath());
+    OutputStream ostream = new FileOutputStream(jpgFile.getPath());
     TranscoderOutput output = new TranscoderOutput(ostream);
 
     t.transcode(input, output);
@@ -57,6 +54,6 @@ public class DownloadPNG implements DownloadStrategy {
     ostream.flush();
     ostream.close();
 
-    return pngFile.toURI();
+    return jpgFile.toURI();
   }
 }

@@ -8,25 +8,23 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * One of the possible download options is to download the canvas in SVG format. It implements
- * {@link DownloadStrategy} and is part of our Strategy Pattern.
+ * One of the possible convert options is to convert the canvas in SVG format. It implements
+ * {@link CanvasToImageConverter} and is part of our Strategy Pattern.
  *
- * @see DownloadStrategy
+ * @see CanvasToImageConverter
  */
-public class DownloadSVG implements DownloadStrategy {
+public class CanvasToSVGConverter implements CanvasToImageConverter {
 
   /**
-   * Gets called when the user wants to download the canvas in SVG. In this case conversion is not
-   * necessary, just creating a {@link File} out of the SVG container and send the file to the
-   * client. It overrides the method of {@link DownloadStrategy}.
+   * Converts the {@link Canvas} into an SVG {@link File} and returns the {@link URI}.
    *
-   * @param canvas the {@link Canvas} which wants to get downloaded
+   * @param canvas the {@link Canvas} to convert
    * @param projectID the unique projectID to create the file name
    * @return returns an {@link URI} of the SVG {@link File}
    * @throws IOException If an I/O error occurs
    */
   @Override
-  public URI download(Canvas canvas, String projectID) throws IOException {
+  public URI convert(Canvas canvas, String projectID) throws IOException {
 
     File file = new File("./projects/" + projectID + "/" + projectID + ".svg");
     boolean dirsCreated = file.getParentFile().mkdirs();
