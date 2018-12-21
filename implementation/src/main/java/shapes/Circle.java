@@ -17,7 +17,7 @@ import shapes.transform.Translater;
  * @see RegularPolygon
  * @see Star
  */
-public class Circle extends Shape implements Translatable, Rotatable, Scalable {
+public class Circle extends Shape implements Translatable, Rotatable {
 
   private Coordinate center;
   private double radius;
@@ -86,7 +86,8 @@ public class Circle extends Shape implements Translatable, Rotatable, Scalable {
    */
   @Override
   public void applyTransformation(ShapeTransformer transformer) {
-    if (transformer.getSkew() != null) {
+    if (transformer.getScale() != null ||
+        transformer.getSkew() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
     }
     if (transformer.getTranslation() != null) {
@@ -94,9 +95,6 @@ public class Circle extends Shape implements Translatable, Rotatable, Scalable {
     }
     if (transformer.getRotation() != null) {
       rotate(transformer.getRotation());
-    }
-    if (transformer.getScale() != null) {
-      scale(transformer.getScale());
     }
   }
 
@@ -145,13 +143,4 @@ public class Circle extends Shape implements Translatable, Rotatable, Scalable {
     //TODO: Implement shapes.Circle#rotate(Rotator)
   }
 
-  /**
-   * Scales the Circle using a {@link Scaler}.
-   *
-   * @param scaler The scaler to apply to the Circle.
-   */
-  @Override
-  public void scale(Scaler scaler) {
-    //TODO: Implement shapes.Circle#scale(Scaler)
-  }
 }
