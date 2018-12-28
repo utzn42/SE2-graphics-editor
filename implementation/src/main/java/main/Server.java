@@ -23,6 +23,7 @@ public class Server {
    */
   public static void main(String[] args) {
 
+    System.out.println("Composite & iterator test");
     serverLogger.info("Starting logger...");
     serverLogger.info(print(args));
 
