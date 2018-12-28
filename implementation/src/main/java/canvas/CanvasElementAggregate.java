@@ -2,6 +2,7 @@ package canvas;
 
 import facilitators.Aggregate;
 import facilitators.Iterator;
+import java.util.List;
 import shapes.transform.ShapeTransformer;
 
 /**
@@ -9,7 +10,7 @@ import shapes.transform.ShapeTransformer;
  */
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
-  private CanvasElement elements;
+  private List<CanvasElement> elements;
 
   @Override
   public void addItem(CanvasElement item) {

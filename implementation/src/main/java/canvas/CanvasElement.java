@@ -8,6 +8,7 @@ import shapes.transform.ShapeTransformer;
  */
 public abstract class CanvasElement {
 
+  private long id;
   private boolean visible;
 
   public boolean isVisible() {

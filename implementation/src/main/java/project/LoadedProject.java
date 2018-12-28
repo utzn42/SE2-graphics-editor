@@ -13,11 +13,13 @@ public class LoadedProject implements Project {
 
   @Override
   public String getProjectID() {
+    //TODO: Implement project.LoadedProject.getProjectID()
     return null;
   }
 
   @Override
   public Canvas getCanvas() {
+    //TODO: Implement project.LoadedProject.getCanvas()
     return null;
   }
 
