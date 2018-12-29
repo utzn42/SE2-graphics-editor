@@ -82,14 +82,11 @@ public class RegularPolygon extends Circle {
   @Override
   public void applyTransformation(ShapeTransformer transformer) {
     if (transformer.getRotation() != null ||
-        transformer.getSkew() != null) {
+        transformer.getSkew() != null || transformer.getScale() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
     }
     if (transformer.getTranslation() != null) {
       translate(transformer.getTranslation());
-    }
-    if (transformer.getScale() != null) {
-      scale(transformer.getScale());
     }
   }
 

@@ -149,7 +149,10 @@ public class Ellipse extends Shape implements Translatable, Scalable {
    */
   @Override
   public void translate(Translater translater) {
-    //TODO: Implement shapes.Ellipse#translate(Translater)
+    double newX = center.getX() + translater.getTranslation().getX();
+    double newY = center.getY() + translater.getTranslation().getY();
+
+    center = new Coordinate(newX, newY);
   }
 
   /**

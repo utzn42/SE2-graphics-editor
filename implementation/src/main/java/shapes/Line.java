@@ -14,8 +14,8 @@ import shapes.transform.Translatable;
 import shapes.transform.Translater;
 
 /**
- * Represents a Line on the canvas.
- * This class extends {@link Shape} by an array of {@link Coordinate Coordinates} (the Line's vertices).
+ * Represents a Line on the canvas. This class extends {@link Shape} by an array of {@link
+ * Coordinate Coordinates} (the Line's vertices).
  *
  * @see Shape
  * @see Polygon
@@ -36,7 +36,8 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   /**
    * Creates a new Line with the specified attributes and default {@link Shape} attributes.
    *
-   * @param coordinates A {@link List} of the {@link Coordinate Coordinates} of the Line's vertices.
+   * @param coordinates A {@link List} of the {@link Coordinate Coordinates} of the Line's
+   * vertices.
    */
   public Line(List<Coordinate> coordinates) {
     this.coordinates = coordinates;
@@ -52,17 +53,19 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   }
 
   /**
-   * Sets the Line's vertices. This operation overwrites the already existing vertices with the new ones.
+   * Sets the Line's vertices. This operation overwrites the already existing vertices with the new
+   * ones.
    *
-   * @param coordinates A {@link List} of the {@link Coordinate Coordinates} of the Line's new vertices.
+   * @param coordinates A {@link List} of the {@link Coordinate Coordinates} of the Line's new
+   * vertices.
    */
   public void setCoordinates(List<Coordinate> coordinates) {
     this.coordinates = coordinates;
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the Line.
-   * The Line class is non-transformable, but all transformations should still be applicable.
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the Line. The Line class is
+   * non-transformable, but all transformations should still be applicable.
    *
    * @param transformer The transformation to apply to the Line.
    */
@@ -86,7 +89,6 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
    * Returns a String representation of the Line's attributes as chained HTML attributes.
    *
    * @return A String representation of the Line's attributes as chained HTML attributes.
-   *
    * @see Shape#getHTMLAttributes()
    */
   @Override
@@ -120,7 +122,14 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
    */
   @Override
   public void translate(Translater translater) {
-    //TODO: Implement shapes.Line#translate(Translater)
+    double newX;
+    double newY;
+
+    for (Coordinate tempCoordinate : coordinates) {
+      newX = tempCoordinate.getX() + translater.getTranslation().getX();
+      newY = tempCoordinate.getY() + translater.getTranslation().getY();
+      tempCoordinate = new Coordinate(newX, newY);
+    }
   }
 
   /**
