@@ -1,5 +1,7 @@
 package canvas;
 
+import facilitators.Iterator;
+import facilitators.NullIterator;
 import shapes.Shape;
 import shapes.transform.ShapeTransformer;
 
@@ -32,10 +34,22 @@ public class CanvasLayer extends CanvasElement {
   }
 
   /**
+   * Creates an Iterator which returns null/false as default operation, since CanvasLayer represents
+   * a leaf element in the tree structure and therefore, can't be iterated over.
+   *
+   * @return A default NullIterator
+   */
+
+  public Iterator<CanvasElement> createIterator() {
+    return new NullIterator();
+  }
+
+  /**
    * Applies transformation, given as a {@link ShapeTransformer}, to the contained {@link Shape}.
    *
    * @param shapeTransformer the transformation to be applied to the {@link Shape}.
    */
+
   @Override
   public void transform(ShapeTransformer shapeTransformer) {
     //TODO: Implement canvas.CanvasLayer#transform(ShapeTransformer)
