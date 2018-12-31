@@ -2,6 +2,7 @@ package canvas;
 
 import facilitators.Aggregate;
 import facilitators.Iterator;
+import java.util.ArrayList;
 import shapes.transform.ShapeTransformer;
 
 /**
@@ -9,28 +10,33 @@ import shapes.transform.ShapeTransformer;
  */
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
-  private CanvasElement elements;
+  private ArrayList<CanvasElement> elements;
 
   @Override
   public void addItem(CanvasElement item) {
-    //TODO: Implement canvas.CanvasElementAggregate#addItem(CanvasElement)
+    elements.add(item);
   }
 
   @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
-    //TODO: Implement canvas.CanvasElementAggregate#getItem(int)
-    return null;
+    return elements.get(index);
   }
 
   @Override
   public boolean deleteItem(int index) {
-    //TODO: Implement canvas.CanvasElementAggregate#deleteItem(int)
+    if ((index > 0) && (index < elements.size())) {
+      elements.remove(index);
+      return true;
+    }
     return false;
   }
 
   @Override
   public boolean deleteItem(CanvasElement item) {
-    //TODO: Implement canvas.CanvasElementAggregate#deleteItem(CanvasElement)
+    if (elements.contains(item)) {
+      elements.remove(item);
+      return true;
+    }
     return false;
   }
 
