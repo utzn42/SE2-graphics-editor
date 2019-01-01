@@ -18,6 +18,7 @@ public class ProjectProxy implements Project {
    */
   @Override
   public String getProjectID() {
+    //TODO: Implement project.ProjectProxy.getProjectID()
     return null;
   }
 
@@ -28,6 +29,7 @@ public class ProjectProxy implements Project {
    */
   @Override
   public Canvas getCanvas() {
+    //TODO: Implement project.ProjectProxy.getCanvas()
     return null;
   }
 

@@ -172,6 +172,9 @@ public class Text extends Shape implements Translatable {
    */
   @Override
   public void translate(Translater translater) {
-    //TODO: Implement shapes.Text#translate(Translater)
+    double newX = center.getX() + translater.getTranslation().getX();
+    double newY = center.getY() + translater.getTranslation().getY();
+
+    center = new Coordinate(newX, newY);
   }
 }

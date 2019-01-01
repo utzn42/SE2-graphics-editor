@@ -10,8 +10,8 @@ import shapes.transform.Translatable;
 import shapes.transform.Translater;
 
 /**
- * Represents a Circle on the canvas.
- * This class extends {@link Shape} by a center {@link Coordinate} and a radius.
+ * Represents a Circle on the canvas. This class extends {@link Shape} by a center {@link
+ * Coordinate} and a radius.
  *
  * @see Shape
  * @see RegularPolygon
@@ -78,9 +78,8 @@ public class Circle extends Shape implements Translatable, Rotatable {
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the Circle.
-   * The Circle class is non-transformable, so the following transformations will cause an error:
-   * skew
+   * Applies a transformation, given as a {@link ShapeTransformer}, to the Circle. The Circle class
+   * is non-transformable, so the following transformations will cause an error: skew
    *
    * @param transformer The transformation to apply to the Circle.
    */
@@ -88,7 +87,8 @@ public class Circle extends Shape implements Translatable, Rotatable {
   public void applyTransformation(ShapeTransformer transformer) {
     if (transformer.getScale() != null ||
         transformer.getSkew() != null) {
-      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
+      throw new IllegalArgumentException(
+          "Cannot add transform attribute to non-transformable Shape!");
     }
     if (transformer.getTranslation() != null) {
       translate(transformer.getTranslation());
@@ -102,7 +102,6 @@ public class Circle extends Shape implements Translatable, Rotatable {
    * Returns a String representation of the Circle's attributes as chained HTML attributes.
    *
    * @return A String representation of the Circle's attributes as chained HTML attributes.
-   *
    * @see Shape#getHTMLAttributes()
    */
   @Override
@@ -130,7 +129,10 @@ public class Circle extends Shape implements Translatable, Rotatable {
    */
   @Override
   public void translate(Translater translater) {
-    //TODO: Implement shapes.Circle#translate(Translater)
+    double newX = center.getX() + translater.getTranslation().getX();
+    double newY = center.getY() + translater.getTranslation().getY();
+
+    center = new Coordinate(newX, newY);
   }
 
   /**
