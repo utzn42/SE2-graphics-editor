@@ -1,9 +1,8 @@
 package canvas;
 
 import facilitators.Aggregate;
-import facilitators.AggregateIterator;
 import facilitators.Iterator;
-import java.util.ArrayList;
+import java.util.List;
 import shapes.transform.ShapeTransformer;
 
 /**
@@ -12,7 +11,7 @@ import shapes.transform.ShapeTransformer;
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
   Iterator<CanvasElement> iterator = null;
-  private ArrayList<CanvasElement> elements;
+  private List<CanvasElement> elements;
 
   @Override
   public void addItem(CanvasElement item) {
@@ -45,9 +44,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   @Override
   public Iterator<CanvasElement> createIterator() {
     if (iterator == null) {
-      iterator = new AggregateIterator(this.createIterator());
+      iterator = new CanvasElementIterator(this.createIterator());
     }
-    return new CanvasElementIterator(this);
+    return new CanvasElementIterator(this.iterator);
   }
 
   /**

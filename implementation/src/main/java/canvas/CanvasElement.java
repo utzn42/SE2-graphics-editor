@@ -1,5 +1,6 @@
 package canvas;
 
+import facilitators.Iterator;
 import shapes.transform.ShapeTransformer;
 
 /**
@@ -29,5 +30,9 @@ public abstract class CanvasElement {
    * @param shapeTransformer the transformation to be applied to the CanvasElement.
    */
   public abstract void transform(ShapeTransformer shapeTransformer);
+
+  public Iterator<CanvasElement> createIterator() {
+    return null;
+  }
 
 }
