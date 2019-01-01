@@ -43,7 +43,7 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
       CanvasElement element = iterator.next();
 
       stack.push(element
-          .createIterator());                                                         //Error due to multiple inheritance issue (Aggregate/CanvasElement)
+          .createIterator());
 
       return element;
     } else {

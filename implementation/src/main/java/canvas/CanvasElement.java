@@ -4,8 +4,8 @@ import facilitators.Iterator;
 import shapes.transform.ShapeTransformer;
 
 /**
- * Represents an element on a {@link Canvas}.
- * Defines basic functionality any element on a canvas needs to have.
+ * Represents an element on a {@link Canvas}. Defines basic functionality any element on a canvas
+ * needs to have.
  */
 public abstract class CanvasElement {
 
@@ -31,7 +31,7 @@ public abstract class CanvasElement {
    */
   public abstract void transform(ShapeTransformer shapeTransformer);
 
-  public Iterator<CanvasElement> createIterator() {
+  public Iterator<CanvasElement> createIterator() {                                                 //TODO: Fix multiple inheritance issues.
     return null;
   }
 
