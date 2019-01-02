@@ -7,13 +7,13 @@ Add the following lines to your ```pom.xml```:
 <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.3.2</version>
+      <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.3.2</version>
+      <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -23,3 +23,4 @@ Add the following lines to your ```pom.xml```:
       <scope>test</scope>
     </dependency>
 ```
+In case of problems, replace 5.2.0 with 5.1.1.
