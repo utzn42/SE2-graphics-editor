@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
+import facilitators.Coordinate;
 import java.io.Serializable;
 import shapes.transform.ShapeTransformer;
 
@@ -191,5 +192,12 @@ public abstract class Shape implements Serializable {
    * @return A String representation of the Shape as an SVG object in HTML.
    */
   public abstract String getHTML();
+
+  /**
+   * Returns the center of the Shape as a {@link Coordinate}.
+   *
+   * @return The center of the Shape as a {@link Coordinate}.
+   */
+  public abstract Coordinate getCenter();
 
 }

@@ -172,5 +172,44 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
     //TODO: Implement shapes.Line#skew(Skewer)
   }
 
-
+  /**
+   * Returns the center of the Line as a {@link Coordinate}.
+   *
+   * @return The center of the Line as a {@link Coordinate}.
+   */
+  @Override
+  public Coordinate getCenter() {
+    if (coordinates.size() == 0) {
+      return new Coordinate(0, 0);
+    }
+    Double minX = null;
+    Double maxX = null;
+    Double minY = null;
+    Double maxY = null;
+    for (Coordinate coordinate : coordinates) {
+      double currentX = coordinate.getX();
+      double currentY = coordinate.getY();
+      if (minX == null) {
+        minX = currentX;
+        maxX = currentX;
+        minY = currentY;
+        maxY = currentY;
+      }
+      else {
+        if (currentX < minX) {
+          minX = currentX;
+        }
+        if (currentX > maxX) {
+          maxX = currentX;
+        }
+        if (currentY < minY) {
+          minY = currentY;
+        }
+        if (currentY > maxY) {
+          maxY = currentY;
+        }
+      }
+    }
+    return new Coordinate((minX + maxX) / 2, (minY + maxY) / 2);
+  }
 }
