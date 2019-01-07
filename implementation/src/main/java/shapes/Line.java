@@ -116,20 +116,30 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   }
 
   /**
+   * Helper function. Translates and returns a single {@link Coordinate} using a {@link Translater}.
+   *
+   * @param coordinate The {@link Coordinate} to translate.
+   * @param translater The translation to apply to the Coordinate.
+   * @return The translated {@link Coordinate}.
+   */
+  private static Coordinate translateCoordinate(Coordinate coordinate, Translater translater) {
+    double newX = coordinate.getX() + translater.getTranslation().getX();
+    double newY = coordinate.getY() + translater.getTranslation().getY();
+    return new Coordinate(newX, newY);
+  }
+
+  /**
    * Translates the Line using a {@link Translater}.
    *
    * @param translater The translation to apply to the Line.
    */
   @Override
   public void translate(Translater translater) {
-    double newX;
-    double newY;
 
-    for (Coordinate tempCoordinate : coordinates) {
-      newX = tempCoordinate.getX() + translater.getTranslation().getX();
-      newY = tempCoordinate.getY() + translater.getTranslation().getY();
-      tempCoordinate = new Coordinate(newX, newY);
-    }
+    List<Coordinate> newCoordinates = new ArrayList<>();
+    coordinates.forEach(
+        coordinate -> newCoordinates.add(translateCoordinate(coordinate, translater))
+    );
   }
 
   /**
