@@ -8,6 +8,8 @@ import shapes.transform.Scaler;
 import shapes.transform.ShapeTransformer;
 import shapes.transform.Translatable;
 import shapes.transform.Translater;
+import shapes.transform.UniformScalable;
+import shapes.transform.UniformScaler;
 
 /**
  * Represents a Circle on the canvas. This class extends {@link Shape} by a center {@link
@@ -17,7 +19,7 @@ import shapes.transform.Translater;
  * @see RegularPolygon
  * @see Star
  */
-public class Circle extends Shape implements Translatable, Rotatable {
+public class Circle extends Shape implements Translatable, Rotatable, UniformScalable {
 
   private Coordinate center;
   private double radius;
@@ -145,4 +147,13 @@ public class Circle extends Shape implements Translatable, Rotatable {
     //TODO: Implement shapes.Circle#rotate(Rotator)
   }
 
+  /**
+   * Scales the circle using a {@link UniformScaler}.
+   *
+   * @param scaler The scaler to apply to the Circle.
+   */
+  @Override
+  public void scale(UniformScaler scaler) {
+    //TODO: Implement shapes.Circle#scale(UniformScaler)
+  }
 }

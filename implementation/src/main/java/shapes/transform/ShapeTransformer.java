@@ -22,6 +22,15 @@ public class ShapeTransformer {
   }
 
   /**
+   * Returns <code>true</code> if none of the transformations are set.
+   *
+   * @return <code>true</code> if none of the transformations are set, <code>false</code> otherwise.
+   */
+  public boolean isNull() {
+    return translater == null && rotator == null && scaler == null && skewer == null;
+  }
+
+  /**
    * Returns the translation component of this transformation
    *
    * @return The translation component of this transformation

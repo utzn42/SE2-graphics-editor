@@ -4,6 +4,8 @@ import facilitators.Coordinate;
 import shapes.transform.ShapeTransformer;
 import shapes.transform.Translatable;
 import shapes.transform.Translater;
+import shapes.transform.UniformScalable;
+import shapes.transform.UniformScaler;
 
 /**
  * Represents a Text element on the canvas.
@@ -11,7 +13,7 @@ import shapes.transform.Translater;
  *
  * @see Shape
  */
-public class Text extends Shape implements Translatable {
+public class Text extends Shape implements Translatable, UniformScalable {
 
   private Coordinate center;
   private String displayText;
@@ -176,5 +178,15 @@ public class Text extends Shape implements Translatable {
     double newY = center.getY() + translater.getTranslation().getY();
 
     center = new Coordinate(newX, newY);
+  }
+
+  /**
+   * Scales the Text element using a {@link UniformScaler}
+   *
+   * @param scaler The scaler to apply to the Text element
+   */
+  @Override
+  public void scale(UniformScaler scaler) {
+    //TODO: Implement shapes.Text#scale(UniformScaler)
   }
 }
