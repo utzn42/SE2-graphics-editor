@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
 import facilitators.Coordinate;
 import java.io.Serializable;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.Transformation;
 
 /**
  * Represents a shape on the canvas. It defines the basic operations and attributes of a shape.
@@ -160,14 +160,14 @@ public abstract class Shape implements Serializable {
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the shape.
+   * Applies a transformation, given as a {@link Transformation}, to the shape.
    * The {@link shapes.transform.Translatable Translatable}, {@link shapes.transform.Rotatable Rotatable},
    * {@link shapes.transform.Scalable Scalable} and {@link shapes.transform.Skewable Skewable} interfaces
    * can be used to determine whether a transformation can be applied or not.
    *
    * @param transformer The transformation to apply to the shape.
    */
-  public abstract void applyTransformation(ShapeTransformer transformer);
+  public abstract void applyTransformation(Transformation transformer);
 
   /**
    * Returns a String representation of the Shape's attributes as chained HTML attributes.

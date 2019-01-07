@@ -1,7 +1,7 @@
 package canvas;
 
 import facilitators.Iterator;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.Transformation;
 
 /**
  * Represents an element on a {@link Canvas}. Defines basic functionality any element on a canvas
@@ -26,11 +26,11 @@ public abstract class CanvasElement {
   }
 
   /**
-   * Transforms the CanvasElement using a {@link ShapeTransformer}.
+   * Transforms the CanvasElement using a {@link Transformation}.
    *
-   * @param shapeTransformer the transformation to be applied to the CanvasElement.
+   * @param transformation The transformation to be applied to the CanvasElement.
    */
-  public abstract void transform(ShapeTransformer shapeTransformer);
+  public abstract void transform(Transformation transformation);
 
   public Iterator<CanvasElement> createIterator() {                                                 //TODO: Fix multiple inheritance issues.
     return null;

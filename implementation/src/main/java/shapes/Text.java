@@ -1,11 +1,11 @@
 package shapes;
 
 import facilitators.Coordinate;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.Transformation;
 import shapes.transform.Translatable;
-import shapes.transform.Translater;
+import shapes.transform.TranslationTransformation;
 import shapes.transform.UniformScalable;
-import shapes.transform.UniformScaler;
+import shapes.transform.UniformScaleTransformation;
 
 /**
  * Represents a Text element on the canvas.
@@ -122,15 +122,15 @@ public class Text extends Shape implements Translatable, UniformScalable {
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the Text element.
+   * Applies a transformation, given as a {@link Transformation}, to the Text element.
    * The Text class is non-transformable, so the following transformations will cause an error:
    * rotate, scale, skew
    *
    * @param transformer The transformation to apply to the Text element.
    */
   @Override
-  public void applyTransformation(ShapeTransformer transformer) {
-    if (transformer.getRotation() != null ||
+  public void applyTransformation(Transformation transformer) {
+    if (transformer.getRotationTransformation() != null ||
         transformer.getScale() != null ||
         transformer.getSkew() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
@@ -168,25 +168,25 @@ public class Text extends Shape implements Translatable, UniformScalable {
   }
 
   /**
-   * Translates the Text element using a {@link Translater}.
+   * Translates the Text element using a {@link TranslationTransformation}.
    *
-   * @param translater The translation to apply to the Text element.
+   * @param translationTransformation The translation to apply to the Text element.
    */
   @Override
-  public void translate(Translater translater) {
-    double newX = center.getX() + translater.getTranslation().getX();
-    double newY = center.getY() + translater.getTranslation().getY();
+  public void translate(TranslationTransformation translationTransformation) {
+    double newX = center.getX() + translationTransformation.getTranslation().getX();
+    double newY = center.getY() + translationTransformation.getTranslation().getY();
 
     center = new Coordinate(newX, newY);
   }
 
   /**
-   * Scales the Text element using a {@link UniformScaler}
+   * Scales the Text element using a {@link UniformScaleTransformation}
    *
    * @param scaler The scaler to apply to the Text element
    */
   @Override
-  public void scale(UniformScaler scaler) {
+  public void scale(UniformScaleTransformation scaler) {
     //TODO: Implement shapes.Text#scale(UniformScaler)
   }
 }

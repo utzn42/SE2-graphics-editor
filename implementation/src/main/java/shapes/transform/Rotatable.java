@@ -1,12 +1,15 @@
 package shapes.transform;
 
+/**
+ * Specifies a class that can be transformed using a {@link RotationTransformation}.
+ */
 public interface Rotatable {
 
   /**
-   * Rotates the object using a {@link Rotator}
+   * Rotates the object using a {@link RotationTransformation}.
    *
-   * @param rotator The rotation to apply to the object
+   * @param transformation The rotation to apply to the object.
    */
-  void rotate(Rotator rotator);
+  void rotate(RotationTransformation transformation);
 
 }

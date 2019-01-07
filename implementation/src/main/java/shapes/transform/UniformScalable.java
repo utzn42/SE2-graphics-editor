@@ -1,12 +1,15 @@
 package shapes.transform;
 
+/**
+ * Specifies a class that can be transformed using a {@link UniformScaleTransformation}.
+ */
 public interface UniformScalable {
 
   /**
-   * Scales the object using a {@link UniformScaler}
+   * Uniformly scales the object using a {@link UniformScaleTransformation}.
    *
-   * @param scaler The scaler to apply to the object
+   * @param transformation The transformation to apply to the object.
    */
-  void scale(UniformScaler scaler);
+  void scale(UniformScaleTransformation transformation);
 
 }

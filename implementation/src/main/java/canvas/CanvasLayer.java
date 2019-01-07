@@ -3,7 +3,7 @@ package canvas;
 import facilitators.Iterator;
 import facilitators.NullIterator;
 import shapes.Shape;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.Transformation;
 
 /**
  * A layer is a container for a single {@link Shape}.
@@ -41,18 +41,18 @@ public class CanvasLayer extends CanvasElement {
    */
 
   public Iterator<CanvasElement> createIterator() {
-    return new NullIterator();
+    return new NullIterator<>();
   }
 
   /**
-   * Applies transformation, given as a {@link ShapeTransformer}, to the contained {@link Shape}.
+   * Applies transformation, given as a {@link Transformation}, to the contained {@link Shape}.
    *
-   * @param shapeTransformer the transformation to be applied to the {@link Shape}.
+   * @param transformation the transformation to be applied to the {@link Shape}.
    */
 
   @Override
-  public void transform(ShapeTransformer shapeTransformer) {
-    //TODO: Implement canvas.CanvasLayer#transform(ShapeTransformer)
+  public void transform(Transformation transformation) {
+    //TODO: Implement canvas.CanvasLayer#transform(Transformation)
   }
 
 }

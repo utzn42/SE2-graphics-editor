@@ -2,14 +2,12 @@ package shapes;
 
 import facilitators.Coordinate;
 import shapes.transform.Rotatable;
-import shapes.transform.Rotator;
-import shapes.transform.Scalable;
-import shapes.transform.Scaler;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.RotationTransformation;
+import shapes.transform.Transformation;
 import shapes.transform.Translatable;
-import shapes.transform.Translater;
+import shapes.transform.TranslationTransformation;
 import shapes.transform.UniformScalable;
-import shapes.transform.UniformScaler;
+import shapes.transform.UniformScaleTransformation;
 
 /**
  * Represents a Circle on the canvas. This class extends {@link Shape} by a center {@link
@@ -80,13 +78,13 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the Circle. The Circle class
+   * Applies a transformation, given as a {@link Transformation}, to the Circle. The Circle class
    * is non-transformable, so the following transformations will cause an error: skew
    *
    * @param transformer The transformation to apply to the Circle.
    */
   @Override
-  public void applyTransformation(ShapeTransformer transformer) {
+  public void applyTransformation(Transformation transformer) {
     if (transformer.getScale() != null ||
         transformer.getSkew() != null) {
       throw new IllegalArgumentException(
@@ -95,8 +93,8 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
     if (transformer.getTranslation() != null) {
       translate(transformer.getTranslation());
     }
-    if (transformer.getRotation() != null) {
-      rotate(transformer.getRotation());
+    if (transformer.getRotationTransformation() != null) {
+      rotate(transformer.getRotationTransformation());
     }
   }
 
@@ -125,35 +123,35 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
   }
 
   /**
-   * Translates the Circle using a {@link Translater}.
+   * Translates the Circle using a {@link TranslationTransformation}.
    *
-   * @param translater The translation to apply to the Circle.
+   * @param translationTransformation The translation to apply to the Circle.
    */
   @Override
-  public void translate(Translater translater) {
-    double newX = center.getX() + translater.getTranslation().getX();
-    double newY = center.getY() + translater.getTranslation().getY();
+  public void translate(TranslationTransformation translationTransformation) {
+    double newX = center.getX() + translationTransformation.getTranslation().getX();
+    double newY = center.getY() + translationTransformation.getTranslation().getY();
 
     center = new Coordinate(newX, newY);
   }
 
   /**
-   * Rotates the Circle using a {@link Rotator}.
+   * Rotates the Circle using a {@link RotationTransformation}.
    *
-   * @param rotator The rotation to apply to the Circle.
+   * @param rotationTransformation The rotation to apply to the Circle.
    */
   @Override
-  public void rotate(Rotator rotator) {
+  public void rotate(RotationTransformation rotationTransformation) {
     //TODO: Implement shapes.Circle#rotate(Rotator)
   }
 
   /**
-   * Scales the circle using a {@link UniformScaler}.
+   * Scales the circle using a {@link UniformScaleTransformation}.
    *
    * @param scaler The scaler to apply to the Circle.
    */
   @Override
-  public void scale(UniformScaler scaler) {
+  public void scale(UniformScaleTransformation scaler) {
     //TODO: Implement shapes.Circle#scale(UniformScaler)
   }
 }

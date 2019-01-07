@@ -1,12 +1,15 @@
 package shapes.transform;
 
+/**
+ * Specifies a class that can be transformed using a {@link TranslationTransformation}.
+ */
 public interface Translatable {
 
   /**
-   * Translates the object using a {@link Translater}
+   * Translates the object using a {@link TranslationTransformation}.
    *
-   * @param translater The translation to apply to the object
+   * @param translationTransformation The transformation to apply to the object.
    */
-  void translate(Translater translater);
+  void translate(TranslationTransformation translationTransformation);
 
 }

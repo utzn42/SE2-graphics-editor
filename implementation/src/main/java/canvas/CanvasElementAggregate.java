@@ -4,7 +4,7 @@ import facilitators.Aggregate;
 import facilitators.Iterator;
 import java.util.ArrayList;
 import java.util.List;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.Transformation;
 
 /**
  * An iterable aggregate that can hold any number of {@link CanvasElement CanvasElements}.
@@ -56,13 +56,13 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Transforms each {@link CanvasElement} within the aggregate using a {@link ShapeTransformer}
+   * Transforms each {@link CanvasElement} within the aggregate using a {@link Transformation}
    *
-   * @param shapeTransformer the transformation to be applied to each {@link CanvasElement}
+   * @param transformation the transformation to be applied to each {@link CanvasElement}
    */
   @Override
-  public void transform(ShapeTransformer shapeTransformer) {
-    //TODO: Implement canvas.CanvasElementAggregate#transform(ShapeTransformer)
+  public void transform(Transformation transformation) {
+    //TODO: Implement canvas.CanvasElementAggregate#transform(Transformation)
   }
 
 }

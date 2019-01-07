@@ -4,14 +4,14 @@ import facilitators.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import shapes.transform.Rotatable;
-import shapes.transform.Rotator;
+import shapes.transform.RotationTransformation;
 import shapes.transform.Scalable;
-import shapes.transform.Scaler;
-import shapes.transform.ShapeTransformer;
+import shapes.transform.ScaleTransformation;
+import shapes.transform.Transformation;
 import shapes.transform.Skewable;
-import shapes.transform.Skewer;
+import shapes.transform.SkewTransformation;
 import shapes.transform.Translatable;
-import shapes.transform.Translater;
+import shapes.transform.TranslationTransformation;
 
 /**
  * Represents a Line on the canvas. This class extends {@link Shape} by an array of {@link
@@ -64,18 +64,18 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   }
 
   /**
-   * Applies a transformation, given as a {@link ShapeTransformer}, to the Line. The Line class is
+   * Applies a transformation, given as a {@link Transformation}, to the Line. The Line class is
    * non-transformable, but all transformations should still be applicable.
    *
    * @param transformer The transformation to apply to the Line.
    */
   @Override
-  public void applyTransformation(ShapeTransformer transformer) {
+  public void applyTransformation(Transformation transformer) {
     if (transformer.getTranslation() != null) {
       translate(transformer.getTranslation());
     }
-    if (transformer.getRotation() != null) {
-      rotate(transformer.getRotation());
+    if (transformer.getRotationTransformation() != null) {
+      rotate(transformer.getRotationTransformation());
     }
     if (transformer.getScale() != null) {
       scale(transformer.getScale());
@@ -116,59 +116,59 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   }
 
   /**
-   * Helper function. Translates and returns a single {@link Coordinate} using a {@link Translater}.
+   * Helper function. Translates and returns a single {@link Coordinate} using a {@link TranslationTransformation}.
    *
    * @param coordinate The {@link Coordinate} to translate.
-   * @param translater The translation to apply to the Coordinate.
+   * @param translationTransformation The translation to apply to the Coordinate.
    * @return The translated {@link Coordinate}.
    */
-  private static Coordinate translateCoordinate(Coordinate coordinate, Translater translater) {
-    double newX = coordinate.getX() + translater.getTranslation().getX();
-    double newY = coordinate.getY() + translater.getTranslation().getY();
+  private static Coordinate translateCoordinate(Coordinate coordinate, TranslationTransformation translationTransformation) {
+    double newX = coordinate.getX() + translationTransformation.getTranslation().getX();
+    double newY = coordinate.getY() + translationTransformation.getTranslation().getY();
     return new Coordinate(newX, newY);
   }
 
   /**
-   * Translates the Line using a {@link Translater}.
+   * Translates the Line using a {@link TranslationTransformation}.
    *
-   * @param translater The translation to apply to the Line.
+   * @param translationTransformation The translation to apply to the Line.
    */
   @Override
-  public void translate(Translater translater) {
+  public void translate(TranslationTransformation translationTransformation) {
 
     List<Coordinate> newCoordinates = new ArrayList<>();
     coordinates.forEach(
-        coordinate -> newCoordinates.add(translateCoordinate(coordinate, translater))
+        coordinate -> newCoordinates.add(translateCoordinate(coordinate, translationTransformation))
     );
   }
 
   /**
-   * Rotates the Line using a {@link Rotator}.
+   * Rotates the Line using a {@link RotationTransformation}.
    *
-   * @param rotator The rotation to apply to the Line.
+   * @param rotationTransformation The rotation to apply to the Line.
    */
   @Override
-  public void rotate(Rotator rotator) {
+  public void rotate(RotationTransformation rotationTransformation) {
     //TODO: Implement shapes.Line#rotate(Rotator)
   }
 
   /**
-   * Scales the Line using a {@link Scaler}.
+   * Scales the Line using a {@link ScaleTransformation}.
    *
-   * @param scaler The scaler to apply to the Line.
+   * @param scaleTransformation The scaler to apply to the Line.
    */
   @Override
-  public void scale(Scaler scaler) {
+  public void scale(ScaleTransformation scaleTransformation) {
     //TODO: Implement shapes.Line#scale(Scaler)
   }
 
   /**
-   * Skews the Line using a {@link Skewer}.
+   * Skews the Line using a {@link SkewTransformation}.
    *
-   * @param skewer The skew to apply to the Line.
+   * @param skewTransformation The skew to apply to the Line.
    */
   @Override
-  public void skew(Skewer skewer) {
+  public void skew(SkewTransformation skewTransformation) {
     //TODO: Implement shapes.Line#skew(Skewer)
   }
 

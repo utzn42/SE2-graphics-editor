@@ -1,14 +1,14 @@
 package facilitators;
 
-public class NullIterator implements Iterator {
+public class NullIterator<T> implements Iterator<T> {
 
   @Override
-  public Object first() {
+  public T first() {
     return null;
   }
 
   @Override
-  public Object next() {
+  public T next() {
     return null;
   }
 
@@ -18,7 +18,7 @@ public class NullIterator implements Iterator {
   }
 
   @Override
-  public Object currentItem() {
+  public T currentItem() {
     return null;
   }
 }

@@ -1,12 +1,15 @@
 package shapes.transform;
 
+/**
+ * Specifies a class that can be transformed using a {@link ScaleTransformation}.
+ */
 public interface Scalable {
 
   /**
-   * Scales the object using a {@link Scaler}
+   * Scales the object using a {@link ScaleTransformation}.
    *
-   * @param scaler The scaler to apply to the object
+   * @param transformation The transformation to apply to the object.
    */
-  void scale(Scaler scaler);
+  void scale(ScaleTransformation transformation);
 
 }

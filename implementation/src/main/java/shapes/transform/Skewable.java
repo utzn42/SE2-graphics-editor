@@ -1,12 +1,15 @@
 package shapes.transform;
 
+/**
+ * Specifies a class that can be transformed using a {@link SkewTransformation}.
+ */
 public interface Skewable {
 
   /**
-   * Skews the object using a {@link Skewer}
+   * Skews the object using a {@link SkewTransformation}.
    *
-   * @param skewer The skew to apply to the object
+   * @param transformation The transformation to apply to the object.
    */
-  void skew(Skewer skewer);
+  void skew(SkewTransformation transformation);
 
 }

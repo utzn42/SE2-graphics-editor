@@ -3,29 +3,29 @@ package shapes.transform;
 import facilitators.Coordinate;
 
 /**
- * Translation component of a {@link ShapeTransformer}.
+ * Translation component of a {@link Transformation}.
  * Holds values for moving an object in x- and y-direction.
  */
-public class Translater {
+public class TranslationTransformation {
 
   private Coordinate translation;
 
   /**
-   * Creates a Translater given values for x- and y-translation as a {@link Coordinate}.
+   * Creates a TranslationTransformation given values for x- and y-translation as a {@link Coordinate}.
    *
    * @param translation The values by which to translate.
    */
-  public Translater(Coordinate translation) {
+  public TranslationTransformation(Coordinate translation) {
     this.translation = translation;
   }
 
   /**
-   * Creates a Translater given values for x- and y-translation.
+   * Creates a TranslationTransformation given values for x- and y-translation.
    *
    * @param translationX The value by which to translate in x-direction.
    * @param translationY The value by which to translate in y-direction.
    */
-  public Translater(double translationX, double translationY) {
+  public TranslationTransformation(double translationX, double translationY) {
     this.translation = new Coordinate(translationX, translationY);
   }
 
@@ -55,6 +55,10 @@ public class Translater {
    */
   public void setTranslation(double x, double y) {
     this.translation = new Coordinate(x, y);
+  }
+
+  String getHTMLAttribute() {
+    return "translate(" + translation.getX() + " " + translation.getY() + ")";
   }
 
 }

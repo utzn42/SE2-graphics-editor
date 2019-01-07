@@ -3,29 +3,29 @@ package shapes.transform;
 import facilitators.Coordinate;
 
 /**
- * Skew component of a {@link ShapeTransformer}.
+ * Skew component of a {@link Transformation}.
  * Holds skew values in x- and y-direction to skew an object with.
  */
-public class Skewer {
+public class SkewTransformation {
 
   private Coordinate skew;
 
   /**
-   * Creates a Skewer given skew values for the x- and y-direction as a {@link Coordinate}.
+   * Creates a SkewTransformation given skew values for the x- and y-direction as a {@link Coordinate}.
    *
    * @param skew The skew in x- and y-direction.
    */
-  public Skewer(Coordinate skew) {
+  public SkewTransformation(Coordinate skew) {
     this.skew = skew;
   }
 
   /**
-   * Creates a Skewer given skew values for the x- and y-direction.
+   * Creates a SkewTransformation given skew values for the x- and y-direction.
    *
    * @param skewX The skew in x-direction.
    * @param skewY The skew in y-direction.
    */
-  public Skewer(double skewX, double skewY) {
+  public SkewTransformation(double skewX, double skewY) {
     this.skew = new Coordinate(skewX, skewY);
   }
 
@@ -55,6 +55,10 @@ public class Skewer {
    */
   public void setSkew(double x, double y) {
     this.skew = new Coordinate(x, y);
+  }
+
+  String getHTMLAttribute() {
+    return "skewX=(" + skew.getX() + ") skewY=(" + skew.getY() + ")";
   }
 
 }
