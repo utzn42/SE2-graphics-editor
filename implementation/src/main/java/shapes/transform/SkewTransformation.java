@@ -9,6 +9,7 @@ import facilitators.Coordinate;
 public class SkewTransformation {
 
   private Coordinate skew;
+  //TODO: shapes.transform.SkewTransformation: Add skew origin
 
   /**
    * Creates a SkewTransformation given skew values for the x- and y-direction as a {@link Coordinate}.

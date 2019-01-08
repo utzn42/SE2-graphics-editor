@@ -56,7 +56,7 @@ public class Transformation {
    *
    * @return The rotation component of this transformation
    */
-  public RotationTransformation getRotationTransformation() {
+  public RotationTransformation getRotation() {
     return rotationTransformation;
   }
 
@@ -65,7 +65,7 @@ public class Transformation {
    *
    * @param rotationTransformation The new rotation component for this transformation
    */
-  public void setRotationTransformation(RotationTransformation rotationTransformation) {
+  public void setRotation(RotationTransformation rotationTransformation) {
     this.rotationTransformation = rotationTransformation;
   }
 

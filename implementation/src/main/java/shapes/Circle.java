@@ -1,6 +1,7 @@
 package shapes;
 
 import facilitators.Coordinate;
+import facilitators.CoordinateMath;
 import shapes.transform.Rotatable;
 import shapes.transform.RotationTransformation;
 import shapes.transform.Transformation;
@@ -46,6 +47,7 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
    *
    * @return The center {@link Coordinate} of the Circle.
    */
+  @Override
   public Coordinate getCenter() {
     return center;
   }
@@ -85,7 +87,8 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
    */
   @Override
   public void applyTransformation(Transformation transformer) {
-    if (transformer.getScale() != null ||
+    if ((transformer.getScale() != null
+        && !(transformer.getScale() instanceof UniformScaleTransformation)) ||
         transformer.getSkew() != null) {
       throw new IllegalArgumentException(
           "Cannot add transform attribute to non-transformable Shape!");
@@ -93,8 +96,12 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
     if (transformer.getTranslation() != null) {
       translate(transformer.getTranslation());
     }
-    if (transformer.getRotationTransformation() != null) {
-      rotate(transformer.getRotationTransformation());
+    if (transformer.getRotation() != null) {
+      rotate(transformer.getRotation());
+    }
+    if (transformer.getScale() != null
+        && transformer.getScale() instanceof UniformScaleTransformation) {
+      scale((UniformScaleTransformation) transformer.getScale());
     }
   }
 
@@ -125,33 +132,32 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
   /**
    * Translates the Circle using a {@link TranslationTransformation}.
    *
-   * @param translationTransformation The translation to apply to the Circle.
+   * @param transformation The transformation to apply to the Circle.
    */
   @Override
-  public void translate(TranslationTransformation translationTransformation) {
-    double newX = center.getX() + translationTransformation.getTranslation().getX();
-    double newY = center.getY() + translationTransformation.getTranslation().getY();
-
-    center = new Coordinate(newX, newY);
+  public void translate(TranslationTransformation transformation) {
+    center = CoordinateMath.translateByCoordinate(center, transformation.getTranslation());
   }
 
   /**
    * Rotates the Circle using a {@link RotationTransformation}.
    *
-   * @param rotationTransformation The rotation to apply to the Circle.
+   * @param transformation The transformation to apply to the Circle.
    */
   @Override
-  public void rotate(RotationTransformation rotationTransformation) {
-    //TODO: Implement shapes.Circle#rotate(Rotator)
+  public void rotate(RotationTransformation transformation) {
+    center = CoordinateMath.rotateAroundCoordinate(center, transformation.getRotationAngle(),
+        transformation.getRotationCenter());
   }
 
   /**
    * Scales the circle using a {@link UniformScaleTransformation}.
    *
-   * @param scaler The scaler to apply to the Circle.
+   * @param transformation The transformation to apply to the Circle.
    */
   @Override
-  public void scale(UniformScaleTransformation scaler) {
-    //TODO: Implement shapes.Circle#scale(UniformScaler)
+  public void scale(UniformScaleTransformation transformation) {
+    radius *= transformation.getScale().getX();
   }
+
 }

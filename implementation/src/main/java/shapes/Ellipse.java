@@ -1,6 +1,7 @@
 package shapes;
 
 import facilitators.Coordinate;
+import facilitators.CoordinateMath;
 import shapes.transform.Scalable;
 import shapes.transform.ScaleTransformation;
 import shapes.transform.Transformation;
@@ -46,6 +47,7 @@ public class Ellipse extends Shape implements Translatable, Scalable {
    *
    * @return The center {@link Coordinate} of the Ellipse.
    */
+  @Override
   public Coordinate getCenter() {
     return center;
   }
@@ -100,19 +102,19 @@ public class Ellipse extends Shape implements Translatable, Scalable {
    * The Ellipse class is non-transformable, so the following transformations will cause an error:
    * rotate, skew
    *
-   * @param transformer The transformation to apply to the Ellipse.
+   * @param transformation The transformation to apply to the Ellipse.
    */
   @Override
-  public void applyTransformation(Transformation transformer) {
-    if (transformer.getRotationTransformation() != null ||
-        transformer.getSkew() != null) {
+  public void applyTransformation(Transformation transformation) {
+    if (transformation.getRotation() != null ||
+        transformation.getSkew() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
     }
-    if (transformer.getTranslation() != null) {
-      translate(transformer.getTranslation());
+    if (transformation.getTranslation() != null) {
+      translate(transformation.getTranslation());
     }
-    if (transformer.getScale() != null) {
-      scale(transformer.getScale());
+    if (transformation.getScale() != null) {
+      scale(transformation.getScale());
     }
   }
 
@@ -145,23 +147,22 @@ public class Ellipse extends Shape implements Translatable, Scalable {
   /**
    * Translates the Ellipse using a {@link TranslationTransformation}.
    *
-   * @param translationTransformation The translation to apply to the Ellipse.
+   * @param transformation The transformation to apply to the Ellipse.
    */
   @Override
-  public void translate(TranslationTransformation translationTransformation) {
-    double newX = center.getX() + translationTransformation.getTranslation().getX();
-    double newY = center.getY() + translationTransformation.getTranslation().getY();
-
-    center = new Coordinate(newX, newY);
+  public void translate(TranslationTransformation transformation) {
+    center = CoordinateMath.translateByCoordinate(center, transformation.getTranslation());
   }
 
   /**
    * Scales the Ellipse using a {@link ScaleTransformation}.
    *
-   * @param scaleTransformation The scaler to apply to the Ellipse.
+   * @param transformation The transformation to apply to the Ellipse.
    */
   @Override
-  public void scale(ScaleTransformation scaleTransformation) {
-    //TODO: Implement shapes.Ellipse#scale(Scaler)
+  public void scale(ScaleTransformation transformation) {
+    radiusX *= transformation.getScale().getX();
+    radiusY *= transformation.getScale().getY();
   }
+
 }

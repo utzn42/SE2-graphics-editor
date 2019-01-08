@@ -1,6 +1,7 @@
 package shapes;
 
 import facilitators.Coordinate;
+import facilitators.CoordinateMath;
 import shapes.transform.Transformation;
 import shapes.transform.Translatable;
 import shapes.transform.TranslationTransformation;
@@ -54,6 +55,7 @@ public class Text extends Shape implements Translatable, UniformScalable {
    *
    * @return The center {@link Coordinate} of the Text element.
    */
+  @Override
   public Coordinate getCenter() {
     return center;
   }
@@ -126,17 +128,22 @@ public class Text extends Shape implements Translatable, UniformScalable {
    * The Text class is non-transformable, so the following transformations will cause an error:
    * rotate, scale, skew
    *
-   * @param transformer The transformation to apply to the Text element.
+   * @param transformation The transformation to apply to the Text element.
    */
   @Override
-  public void applyTransformation(Transformation transformer) {
-    if (transformer.getRotationTransformation() != null ||
-        transformer.getScale() != null ||
-        transformer.getSkew() != null) {
+  public void applyTransformation(Transformation transformation) {
+    if (transformation.getRotation() != null ||
+        (transformation.getScale() != null
+            && !(transformation.getScale() instanceof UniformScaleTransformation)) ||
+        transformation.getSkew() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
     }
-    if (transformer.getTranslation() != null) {
-      translate(transformer.getTranslation());
+    if (transformation.getTranslation() != null) {
+      translate(transformation.getTranslation());
+    }
+    if (transformation.getScale() != null
+        && transformation.getScale() instanceof UniformScaleTransformation) {
+      scale((UniformScaleTransformation) transformation.getScale());
     }
   }
 
@@ -170,23 +177,20 @@ public class Text extends Shape implements Translatable, UniformScalable {
   /**
    * Translates the Text element using a {@link TranslationTransformation}.
    *
-   * @param translationTransformation The translation to apply to the Text element.
+   * @param transformation The transformation to apply to the Text element.
    */
   @Override
-  public void translate(TranslationTransformation translationTransformation) {
-    double newX = center.getX() + translationTransformation.getTranslation().getX();
-    double newY = center.getY() + translationTransformation.getTranslation().getY();
-
-    center = new Coordinate(newX, newY);
+  public void translate(TranslationTransformation transformation) {
+    center = CoordinateMath.translateByCoordinate(center, transformation.getTranslation());
   }
 
   /**
    * Scales the Text element using a {@link UniformScaleTransformation}
    *
-   * @param scaler The scaler to apply to the Text element
+   * @param transformation The transformation to apply to the Text element
    */
   @Override
-  public void scale(UniformScaleTransformation scaler) {
-    //TODO: Implement shapes.Text#scale(UniformScaler)
+  public void scale(UniformScaleTransformation transformation) {
+    fontSize *= transformation.getScale().getX();
   }
 }

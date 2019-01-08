@@ -9,6 +9,7 @@ import facilitators.Coordinate;
 public class ScaleTransformation {
 
   private Coordinate scale;
+  //TODO: shapes.transform.ScaleTransformation: Add scale origin
 
   /**
    * Creates a ScaleTransformation using a {@link Coordinate}.

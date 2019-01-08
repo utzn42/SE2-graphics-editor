@@ -77,17 +77,14 @@ public class RegularPolygon extends Circle {
    * The RegularPolygon class is non-transformable, so the following transformations will cause an error:
    * rotate, skew
    *
-   * @param transformer The transformation to apply to the RegularPolygon.
+   * @param transformation The transformation to apply to the RegularPolygon.
    */
   @Override
-  public void applyTransformation(Transformation transformer) {
-    if (transformer.getRotationTransformation() != null ||
-        transformer.getSkew() != null || transformer.getScale() != null) {
+  public void applyTransformation(Transformation transformation) {
+    if (transformation.getRotation() != null) {
       throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
     }
-    if (transformer.getTranslation() != null) {
-      translate(transformer.getTranslation());
-    }
+    super.applyTransformation(transformation);
   }
 
   /**
