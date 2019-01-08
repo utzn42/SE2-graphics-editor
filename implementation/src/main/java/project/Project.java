@@ -1,13 +1,14 @@
 package project;
 
 import canvas.Canvas;
+import java.io.Serializable;
 
 /**
  * Represents a project that has a unique ID and a working canvas.
  *
  * @see Canvas
  */
-public interface Project {
+public interface Project extends Serializable {
 
   /**
    * Returns the project ID

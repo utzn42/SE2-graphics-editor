@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * This class is used to store the projects persistently on the server. Its part of the Observer Pattern and gets notified if something in the canvas of a project changes.
  * If the observer gets notified, the {@link LocalFileManager} updates the "project.ser" file and stores the new project or updates the canvas in an existing project.
  * @param <T> describes the type. In our case {@link canvas.Canvas}
+ * @deprecated Use {@link ProjectSerializer} and {@link ProjectObserver} instead.
  */
 public class LocalFileManager<T extends Serializable> implements FileManager<T> {
 

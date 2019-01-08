@@ -8,13 +8,25 @@ import canvas.Canvas;
  */
 public class ProjectProxy implements Project {
 
+  private static final long serialVersionUID = 1L;
+
   private String projectID;
   private LoadedProject project;
 
   /**
-   * Returns the project's ID as normal
+   * Creates a ProjectProxy with the given ID.
    *
-   * @return the project's ID
+   * @param projectID The project ID.
+   */
+  public ProjectProxy(String projectID) {
+    this.projectID = projectID;
+    project = null;
+  }
+
+  /**
+   * Returns the project's ID as normal.
+   *
+   * @return The project's ID.
    */
   @Override
   public String getProjectID() {
@@ -23,9 +35,9 @@ public class ProjectProxy implements Project {
   }
 
   /**
-   * Fetches the project if it has not been loaded yet and returns the canvas as normal
+   * Fetches the project if it has not been loaded yet and returns the canvas as normal.
    *
-   * @return the working canvas
+   * @return The working canvas.
    */
   @Override
   public Canvas getCanvas() {
