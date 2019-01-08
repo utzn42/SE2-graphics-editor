@@ -1,14 +1,16 @@
-package shapes.transform;
+package shapes.transform.atomic;
 
 import facilitators.Coordinate;
+import shapes.transform.Transformation;
 
 /**
  * Translation component of a {@link Transformation}.
  * Holds values for moving an object in x- and y-direction.
  */
-public class TranslationTransformation {
+public class TranslationTransformation implements AtomicTransformation {
 
   private Coordinate translation;
+  private static final AtomicTransformationType type = AtomicTransformationType.TRANSLATION;
 
   /**
    * Creates a TranslationTransformation given values for x- and y-translation as a {@link Coordinate}.
@@ -57,7 +59,13 @@ public class TranslationTransformation {
     this.translation = new Coordinate(x, y);
   }
 
-  String getHTMLAttribute() {
+  @Override
+  public AtomicTransformationType getType() {
+    return type;
+  }
+
+  @Override
+  public String getHTMLAttribute() {
     return "translate(" + translation.getX() + " " + translation.getY() + ")";
   }
 

@@ -2,11 +2,10 @@ package shapes;
 
 import facilitators.Coordinate;
 import facilitators.CoordinateMath;
-import shapes.transform.Transformation;
 import shapes.transform.Translatable;
-import shapes.transform.TranslationTransformation;
+import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.UniformScalable;
-import shapes.transform.UniformScaleTransformation;
+import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * Represents a Text element on the canvas.
@@ -124,30 +123,6 @@ public class Text extends Shape implements Translatable, UniformScalable {
   }
 
   /**
-   * Applies a transformation, given as a {@link Transformation}, to the Text element.
-   * The Text class is non-transformable, so the following transformations will cause an error:
-   * rotate, scale, skew
-   *
-   * @param transformation The transformation to apply to the Text element.
-   */
-  @Override
-  public void applyTransformation(Transformation transformation) {
-    if (transformation.getRotation() != null ||
-        (transformation.getScale() != null
-            && !(transformation.getScale() instanceof UniformScaleTransformation)) ||
-        transformation.getSkew() != null) {
-      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
-    }
-    if (transformation.getTranslation() != null) {
-      translate(transformation.getTranslation());
-    }
-    if (transformation.getScale() != null
-        && transformation.getScale() instanceof UniformScaleTransformation) {
-      scale((UniformScaleTransformation) transformation.getScale());
-    }
-  }
-
-  /**
    * Returns a String representation of the Text element's attributes as chained HTML attributes.
    *
    * @return A String representation of the Text element's attributes as chained HTML attributes.
@@ -190,7 +165,10 @@ public class Text extends Shape implements Translatable, UniformScalable {
    * @param transformation The transformation to apply to the Text element
    */
   @Override
-  public void scale(UniformScaleTransformation transformation) {
-    fontSize *= transformation.getScale().getX();
+  public void uniformScale(UniformScaleTransformation transformation) {
+    fontSize *= transformation.getScale();
+    setStrokeWidth(getStrokeWidth() * transformation.getScale());
+    center = CoordinateMath.scaleVector(center, new Coordinate(transformation.getScale(),
+        transformation.getScale()), new Coordinate(0, 0));
   }
 }

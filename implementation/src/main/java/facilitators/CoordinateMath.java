@@ -84,7 +84,7 @@ public class CoordinateMath {
     // Take the point vertically aligned to the origin and horizontally aligned to the coordinate
     Coordinate originVertical = new Coordinate(origin.getX(), coordinateToSkew.getY());
     // See how rotation affects that point
-    Coordinate rotatedOriginVertical = rotateAroundCoordinate(originVertical, angleInDegrees, origin);
+    Coordinate rotatedOriginVertical = rotateAroundCoordinate(originVertical, -angleInDegrees, origin);
     // Follow the line through the origin and the rotated point back to the initial y-position
     // The result is the total translation on the x-axis for any point with that y-position
     // (which includes the given coordinate)

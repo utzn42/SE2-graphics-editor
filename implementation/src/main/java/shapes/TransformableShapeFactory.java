@@ -8,16 +8,12 @@ public class TransformableShapeFactory implements ShapeFactory {
 
   @Override
   public Circle createCircle() {
-    //TODO: Create class shapes.TransformableCircle
-    //TODO: Implement shapes.TransformableShapeFactory#createCircle()
-    return null;
+    return new TransformableCircle();
   }
 
   @Override
   public Ellipse createEllipse() {
-    //TODO: Create class shapes.TransformableEllipse
-    //TODO: Implement shapes.TransformableShapeFactory#createEllipse()
-    return null;
+    return new TransformableEllipse();
   }
 
   @Override
@@ -32,23 +28,17 @@ public class TransformableShapeFactory implements ShapeFactory {
 
   @Override
   public RegularPolygon createRegularPolygon() {
-    //TODO: Create class shapes.TransformableRegularPolygoon
-    //TODO: Implement shapes.TransformableShapeFactory#createRegularPolygon()
-    return null;
+    return new TransformableRegularPolygon();
   }
 
   @Override
   public Star createStar() {
-    //TODO: Create class shapes.TransformableStar
-    //TODO: Implement shapes.TransformableShapeFactory#createStar()
-    return null;
+    return new TransformableStar();
   }
 
   @Override
   public Text createText() {
-    //TODO: Create class shapes.TransformableText
-    //TODO: Implement shapes.TransformableShapeFactory#createText()
-    return null;
+    return new TransformableText();
   }
 
 }

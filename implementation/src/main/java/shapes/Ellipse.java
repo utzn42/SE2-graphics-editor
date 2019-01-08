@@ -3,10 +3,12 @@ package shapes;
 import facilitators.Coordinate;
 import facilitators.CoordinateMath;
 import shapes.transform.Scalable;
-import shapes.transform.ScaleTransformation;
+import shapes.transform.UniformScalable;
+import shapes.transform.atomic.ScaleTransformation;
 import shapes.transform.Transformation;
 import shapes.transform.Translatable;
-import shapes.transform.TranslationTransformation;
+import shapes.transform.atomic.TranslationTransformation;
+import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * Represents an Ellipse on the canvas.
@@ -14,7 +16,7 @@ import shapes.transform.TranslationTransformation;
  *
  * @see Shape
  */
-public class Ellipse extends Shape implements Translatable, Scalable {
+public class Ellipse extends Shape implements Translatable, UniformScalable, Scalable {
 
   private Coordinate center;
   private double radiusX;
@@ -98,27 +100,6 @@ public class Ellipse extends Shape implements Translatable, Scalable {
   }
 
   /**
-   * Applies a transformation, given as a {@link Transformation}, to the Ellipse.
-   * The Ellipse class is non-transformable, so the following transformations will cause an error:
-   * rotate, skew
-   *
-   * @param transformation The transformation to apply to the Ellipse.
-   */
-  @Override
-  public void applyTransformation(Transformation transformation) {
-    if (transformation.getRotation() != null ||
-        transformation.getSkew() != null) {
-      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
-    }
-    if (transformation.getTranslation() != null) {
-      translate(transformation.getTranslation());
-    }
-    if (transformation.getScale() != null) {
-      scale(transformation.getScale());
-    }
-  }
-
-  /**
    * Returns a String representation of the Ellipse's attributes as chained HTML attributes.
    *
    * @return A String representation of the Ellipse's attributes as chained HTML attributes.
@@ -155,6 +136,20 @@ public class Ellipse extends Shape implements Translatable, Scalable {
   }
 
   /**
+   * Scales the Ellipse using a {@link UniformScaleTransformation}.
+   *
+   * @param transformation The transformation to apply to the Ellipse.
+   */
+  @Override
+  public void uniformScale(UniformScaleTransformation transformation) {
+    radiusX *= transformation.getScale();
+    radiusY *= transformation.getScale();
+    setStrokeWidth(getStrokeWidth() * transformation.getScale());
+    center = CoordinateMath.scaleVector(center, new Coordinate(transformation.getScale(),
+        transformation.getScale()), new Coordinate(0, 0));
+  }
+
+  /**
    * Scales the Ellipse using a {@link ScaleTransformation}.
    *
    * @param transformation The transformation to apply to the Ellipse.
@@ -163,6 +158,8 @@ public class Ellipse extends Shape implements Translatable, Scalable {
   public void scale(ScaleTransformation transformation) {
     radiusX *= transformation.getScale().getX();
     radiusY *= transformation.getScale().getY();
+    center = CoordinateMath.scaleVector(center, transformation.getScale(),
+        new Coordinate(0, 0));
   }
 
 }

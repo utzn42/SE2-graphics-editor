@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
 import facilitators.Coordinate;
 import java.io.Serializable;
+import shapes.transform.ShapeTransformer;
 import shapes.transform.Transformation;
 
 /**
@@ -165,9 +166,11 @@ public abstract class Shape implements Serializable {
    * {@link shapes.transform.Scalable Scalable} and {@link shapes.transform.Skewable Skewable} interfaces
    * can be used to determine whether a transformation can be applied or not.
    *
-   * @param transformer The transformation to apply to the shape.
+   * @param transformation The transformation to apply to the shape.
    */
-  public abstract void applyTransformation(Transformation transformer);
+  public void applyTransformation(Transformation transformation) {
+    ShapeTransformer.transformShape(this, transformation);
+  }
 
   /**
    * Returns a String representation of the Shape's attributes as chained HTML attributes.

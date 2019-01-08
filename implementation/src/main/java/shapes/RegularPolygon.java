@@ -73,21 +73,6 @@ public class RegularPolygon extends Circle {
   }
 
   /**
-   * Applies a transformation, given as a {@link Transformation}, to the RegularPolygon.
-   * The RegularPolygon class is non-transformable, so the following transformations will cause an error:
-   * rotate, skew
-   *
-   * @param transformation The transformation to apply to the RegularPolygon.
-   */
-  @Override
-  public void applyTransformation(Transformation transformation) {
-    if (transformation.getRotation() != null) {
-      throw new IllegalArgumentException("Cannot add transform attribute to non-transformable Shape!");
-    }
-    super.applyTransformation(transformation);
-  }
-
-  /**
    * Returns a String representation of the RegularPolygon's attributes as chained HTML attributes.
    *
    * @return A String representation of the RegularPolygon's attributes as chained HTML attributes.

@@ -3,12 +3,11 @@ package shapes;
 import facilitators.Coordinate;
 import facilitators.CoordinateMath;
 import shapes.transform.Rotatable;
-import shapes.transform.RotationTransformation;
-import shapes.transform.Transformation;
+import shapes.transform.atomic.RotationTransformation;
 import shapes.transform.Translatable;
-import shapes.transform.TranslationTransformation;
+import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.UniformScalable;
-import shapes.transform.UniformScaleTransformation;
+import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * Represents a Circle on the canvas. This class extends {@link Shape} by a center {@link
@@ -18,7 +17,7 @@ import shapes.transform.UniformScaleTransformation;
  * @see RegularPolygon
  * @see Star
  */
-public class Circle extends Shape implements Translatable, Rotatable, UniformScalable {
+public class Circle extends Shape implements Translatable, UniformScalable {
 
   private Coordinate center;
   private double radius;
@@ -80,32 +79,6 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
   }
 
   /**
-   * Applies a transformation, given as a {@link Transformation}, to the Circle. The Circle class
-   * is non-transformable, so the following transformations will cause an error: skew
-   *
-   * @param transformer The transformation to apply to the Circle.
-   */
-  @Override
-  public void applyTransformation(Transformation transformer) {
-    if ((transformer.getScale() != null
-        && !(transformer.getScale() instanceof UniformScaleTransformation)) ||
-        transformer.getSkew() != null) {
-      throw new IllegalArgumentException(
-          "Cannot add transform attribute to non-transformable Shape!");
-    }
-    if (transformer.getTranslation() != null) {
-      translate(transformer.getTranslation());
-    }
-    if (transformer.getRotation() != null) {
-      rotate(transformer.getRotation());
-    }
-    if (transformer.getScale() != null
-        && transformer.getScale() instanceof UniformScaleTransformation) {
-      scale((UniformScaleTransformation) transformer.getScale());
-    }
-  }
-
-  /**
    * Returns a String representation of the Circle's attributes as chained HTML attributes.
    *
    * @return A String representation of the Circle's attributes as chained HTML attributes.
@@ -140,24 +113,16 @@ public class Circle extends Shape implements Translatable, Rotatable, UniformSca
   }
 
   /**
-   * Rotates the Circle using a {@link RotationTransformation}.
-   *
-   * @param transformation The transformation to apply to the Circle.
-   */
-  @Override
-  public void rotate(RotationTransformation transformation) {
-    center = CoordinateMath.rotateAroundCoordinate(center, transformation.getRotationAngle(),
-        transformation.getRotationCenter());
-  }
-
-  /**
    * Scales the circle using a {@link UniformScaleTransformation}.
    *
    * @param transformation The transformation to apply to the Circle.
    */
   @Override
-  public void scale(UniformScaleTransformation transformation) {
-    radius *= transformation.getScale().getX();
+  public void uniformScale(UniformScaleTransformation transformation) {
+    radius *= transformation.getScale();
+    setStrokeWidth(getStrokeWidth() * transformation.getScale());
+    center = CoordinateMath.scaleVector(center, new Coordinate(transformation.getScale(),
+        transformation.getScale()), new Coordinate(0, 0));
   }
 
 }

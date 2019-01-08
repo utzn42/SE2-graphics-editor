@@ -5,14 +5,15 @@ import facilitators.CoordinateMath;
 import java.util.ArrayList;
 import java.util.List;
 import shapes.transform.Rotatable;
-import shapes.transform.RotationTransformation;
+import shapes.transform.UniformScalable;
+import shapes.transform.atomic.RotationTransformation;
 import shapes.transform.Scalable;
-import shapes.transform.ScaleTransformation;
-import shapes.transform.Transformation;
+import shapes.transform.atomic.ScaleTransformation;
 import shapes.transform.Skewable;
-import shapes.transform.SkewTransformation;
+import shapes.transform.atomic.SkewTransformation;
 import shapes.transform.Translatable;
-import shapes.transform.TranslationTransformation;
+import shapes.transform.atomic.TranslationTransformation;
+import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * Represents a Line on the canvas. This class extends {@link Shape} by an array of {@link
@@ -21,7 +22,7 @@ import shapes.transform.TranslationTransformation;
  * @see Shape
  * @see Polygon
  */
-public class Line extends Shape implements Translatable, Rotatable, Scalable, Skewable {
+public class Line extends Shape implements Translatable, Rotatable, UniformScalable, Scalable, Skewable {
 
   private List<Coordinate> coordinates;
 
@@ -62,28 +63,6 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
    */
   public void setCoordinates(List<Coordinate> coordinates) {
     this.coordinates = coordinates;
-  }
-
-  /**
-   * Applies a transformation, given as a {@link Transformation}, to the Line. The Line class is
-   * non-transformable, but all transformations should still be applicable.
-   *
-   * @param transformation The transformation to apply to the Line.
-   */
-  @Override
-  public void applyTransformation(Transformation transformation) {
-    if (transformation.getTranslation() != null) {
-      translate(transformation.getTranslation());
-    }
-    if (transformation.getRotation() != null) {
-      rotate(transformation.getRotation());
-    }
-    if (transformation.getScale() != null) {
-      scale(transformation.getScale());
-    }
-    if (transformation.getSkew() != null) {
-      skew(transformation.getSkew());
-    }
   }
 
   /**
@@ -145,10 +124,31 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
     List<Coordinate> newCoordinates = new ArrayList<>();
     coordinates.forEach(
         coordinate -> newCoordinates.add(CoordinateMath.rotateAroundCoordinate(coordinate,
-            transformation.getRotationAngle(), transformation.getRotationCenter()))
+            transformation.getRotationAngle(), new Coordinate(0, 0)))
     );
 
     coordinates = newCoordinates;
+
+  }
+
+  /**
+   * Scales the Line using a {@link UniformScaleTransformation}.
+   *
+   * @param transformation The transformation to apply to the Line.
+   */
+  @Override
+  public void uniformScale(UniformScaleTransformation transformation) {
+
+    List<Coordinate> newCoordinates = new ArrayList<>();
+    coordinates.forEach(
+        coordinate -> newCoordinates.add(CoordinateMath.scaleVector(coordinate,
+            new Coordinate(transformation.getScale(), transformation.getScale()),
+            new Coordinate(0, 0)))
+    );
+
+    coordinates = newCoordinates;
+
+    setStrokeWidth(getStrokeWidth() * transformation.getScale());
 
   }
 
@@ -163,7 +163,7 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
     List<Coordinate> newCoordinates = new ArrayList<>();
     coordinates.forEach(
         coordinate -> newCoordinates.add(CoordinateMath.scaleVector(coordinate,
-            transformation.getScale(), getCenter()))
+            transformation.getScale(), new Coordinate(0, 0)))
     );
 
     coordinates = newCoordinates;
@@ -179,15 +179,17 @@ public class Line extends Shape implements Translatable, Rotatable, Scalable, Sk
   public void skew(SkewTransformation transformation) {
 
     List<Coordinate> newCoordinates = new ArrayList<>();
-    coordinates.forEach(
-        coordinate -> {
-          Coordinate coordXSkewed = CoordinateMath.skewX(coordinate,
-              transformation.getSkew().getX(), getCenter());
-          Coordinate coordXYSkewed = CoordinateMath.skewY(coordXSkewed,
-              transformation.getSkew().getY(), getCenter());
-          newCoordinates.add(coordXYSkewed);
-        }
-    );
+    if (transformation.getSkewAxis().toUpperCase().equals("X")) {
+      coordinates.forEach(
+          coordinate -> newCoordinates.add(CoordinateMath.skewX(coordinate,
+              transformation.getSkewAngle(), new Coordinate(0, 0)))
+      );
+    } else {
+      coordinates.forEach(
+          coordinate -> newCoordinates.add(CoordinateMath.skewY(coordinate,
+              transformation.getSkewAngle(), new Coordinate(0, 0)))
+      );
+    }
 
     coordinates = newCoordinates;
 

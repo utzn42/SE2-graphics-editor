@@ -1,15 +1,16 @@
-package shapes.transform;
+package shapes.transform.atomic;
 
 import facilitators.Coordinate;
+import shapes.transform.Transformation;
 
 /**
  * Scale component of a {@link Transformation}.
  * Holds factors in x- and y-direction to scale an object by.
  */
-public class ScaleTransformation {
+public class ScaleTransformation implements AtomicTransformation {
 
   private Coordinate scale;
-  //TODO: shapes.transform.ScaleTransformation: Add scale origin
+  private static final AtomicTransformationType type = AtomicTransformationType.SCALE;
 
   /**
    * Creates a ScaleTransformation using a {@link Coordinate}.
@@ -76,8 +77,14 @@ public class ScaleTransformation {
     this.scale = new Coordinate(scale, scale);
   }
 
-  String getHTMLAttribute() {
-    return "scale=(" + scale.getX() + " " + scale.getY() + ")";
+  @Override
+  public AtomicTransformationType getType() {
+    return type;
+  }
+
+  @Override
+  public String getHTMLAttribute() {
+    return "scale(" + scale.getX() + " " + scale.getY() + ")";
   }
 
 }

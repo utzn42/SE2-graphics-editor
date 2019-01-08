@@ -1,5 +1,7 @@
 package shapes.transform;
 
+import shapes.transform.atomic.RotationTransformation;
+
 /**
  * Specifies a class that can be transformed using a {@link RotationTransformation}.
  */

@@ -1,5 +1,7 @@
 package shapes.transform;
 
+import shapes.transform.atomic.UniformScaleTransformation;
+
 /**
  * Specifies a class that can be transformed using a {@link UniformScaleTransformation}.
  */
@@ -10,6 +12,6 @@ public interface UniformScalable {
    *
    * @param transformation The transformation to apply to the object.
    */
-  void scale(UniformScaleTransformation transformation);
+  void uniformScale(UniformScaleTransformation transformation);
 
 }
