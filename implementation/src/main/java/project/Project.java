@@ -1,14 +1,14 @@
 package project;
 
 import canvas.Canvas;
-import java.io.Serializable;
+import java.io.IOException;
 
 /**
  * Represents a project that has a unique ID and a working canvas.
  *
  * @see Canvas
  */
-public interface Project extends Serializable {
+public interface Project {
 
   /**
    * Returns the project ID
@@ -21,7 +21,9 @@ public interface Project extends Serializable {
    * Returns the working canvas
    *
    * @return the working canvas
+   * @throws IOException If an I/O error occurs while loading the canvas.
+   * @throws ClassNotFoundException If the Canvas class is not found.
    */
-  Canvas getCanvas();
+  Canvas getCanvas() throws IOException, ClassNotFoundException;
 
 }

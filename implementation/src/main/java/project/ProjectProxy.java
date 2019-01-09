@@ -1,14 +1,14 @@
 package project;
 
 import canvas.Canvas;
+import java.io.IOException;
+import persistence.ProjectSerializer;
 
 /**
  * Proxy class for {@link LoadedProject} objects.
  * Can be used to fetch the project from storage only when needed.
  */
 public class ProjectProxy implements Project {
-
-  private static final long serialVersionUID = 1L;
 
   private String projectID;
   private LoadedProject project;
@@ -30,8 +30,7 @@ public class ProjectProxy implements Project {
    */
   @Override
   public String getProjectID() {
-    //TODO: Implement project.ProjectProxy.getProjectID()
-    return null;
+    return projectID;
   }
 
   /**
@@ -40,9 +39,19 @@ public class ProjectProxy implements Project {
    * @return The working canvas.
    */
   @Override
-  public Canvas getCanvas() {
-    //TODO: Implement project.ProjectProxy.getCanvas()
-    return null;
+  public Canvas getCanvas() throws IOException, ClassNotFoundException {
+
+    if (project == null) {
+      Project project = ProjectSerializer.getProject(projectID);
+      if (project instanceof LoadedProject) {
+        this.project = (LoadedProject) project;
+      } else {
+        throw new IOException("Failed to get Project from local storage.");
+      }
+    }
+
+    return project.getCanvas();
+
   }
 
 }

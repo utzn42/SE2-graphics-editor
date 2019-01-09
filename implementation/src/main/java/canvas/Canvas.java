@@ -1,10 +1,14 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.NonTransformableShapeFactory;
 import shapes.Shape;
+import shapes.ShapeFactory;
+import shapes.TransformableShapeFactory;
 
 /**
  * The Canvas class is the container in which all layers with shapes are in. It is like the
@@ -14,12 +18,14 @@ import shapes.Shape;
  * @see Shape
  * @see Layer
  */
-@JsonIgnoreProperties({"state"})
+@JsonIgnoreProperties({"shapeFactory"})
 public class Canvas implements Serializable {
 
   private double width;
   private double height;
   private List<Layer> layers;
+  private boolean useTransformables;
+  private transient ShapeFactory shapeFactory;
 
   /**
    * This is the default constructor of the Canvas class. It gets called when the user calls the
@@ -30,6 +36,8 @@ public class Canvas implements Serializable {
     width = 200;
     height = 200;
     layers = new ArrayList<>();
+    useTransformables = true;
+    shapeFactory = new TransformableShapeFactory();
   }
 
   /**
@@ -42,6 +50,8 @@ public class Canvas implements Serializable {
     width = 200;
     height = 200;
     this.layers = layers;
+    useTransformables = true;
+    shapeFactory = new TransformableShapeFactory();
   }
 
   /**
@@ -93,6 +103,47 @@ public class Canvas implements Serializable {
   }
 
   /**
+   * Returns <code>true</code> if the Canvas allows the use of the HTML "transform" attribute for
+   * its Shapes.
+   *
+   * @return <code>true</code> if the Canvas allows the use of the HTML "transform" attribute for
+   * its Shapes, <code>false</code> otherwise.
+   */
+  public boolean doesUseTransformables() {
+    return useTransformables;
+  }
+
+  /**
+   * Sets whether to allow the use of the HTML "transform" attribute for Shapes on the Canvas.
+   * Changing this to <code>false</code> might cause existing transformations to be lost.
+   *
+   * @param useTransformables Set to <code>true</code> to allow the use of the HTML "transform"
+   * attribute for Shapes on the Canvas, <code>false</code> otherwise.
+   */
+  public void setUseTransformables(boolean useTransformables) {
+    this.useTransformables = useTransformables;
+    if (!useTransformables) {
+      shapeFactory = new NonTransformableShapeFactory();
+      //TODO: canvas.Canvas.setUseTransformables: Replace all transformable Shapes with non-transformables.
+    }
+    else {
+      shapeFactory = new TransformableShapeFactory();
+      //TODO: canvas.Canvas.setUseTransformables: Replace all non-transformable Shapes with transformables.
+    }
+  }
+
+
+  /**
+   * Returns the {@link ShapeFactory} this Canvas uses to create {@link Shape Shapes}.
+   *
+   * @return The ShapeFactory this Canvas uses to create Shapes.
+   */
+  public ShapeFactory getShapeFactory() {
+    return shapeFactory;
+  }
+
+
+  /**
    * Returns the SVG container for the HTML file.
    *
    * @return returns a {@link String} which contains the SVG container
@@ -109,6 +160,16 @@ public class Canvas implements Serializable {
     }
     stringBuilder.append("</svg>");
     return stringBuilder.toString();
+  }
+
+  private void readObject(java.io.ObjectInputStream oin)
+      throws IOException, ClassNotFoundException {
+    oin.defaultReadObject();
+    if (useTransformables) {
+      shapeFactory = new TransformableShapeFactory();
+    } else {
+      shapeFactory = new NonTransformableShapeFactory();
+    }
   }
 
 }

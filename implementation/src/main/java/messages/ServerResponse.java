@@ -22,12 +22,14 @@ public class ServerResponse extends Response {
   }
 
   /**
-   * The projectID gets assigned to the {@link ServerResponse}.
-   * @param projectID hash generated projectID by {@link facilitators.Hasher} in {@link String}
+   * Creates a new ServerResponse from the given project ID and {@link Canvas}.
+   *
+   * @param projectID The ID of the project.
+   * @param canvas The canvas of the project.
    */
-  public ServerResponse(String projectID) {
+  public ServerResponse(String projectID, Canvas canvas) {
     this.projectID = projectID;
-    canvas = null;
+    this.canvas = canvas;
   }
 
   /**

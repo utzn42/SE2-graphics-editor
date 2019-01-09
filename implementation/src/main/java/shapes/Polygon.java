@@ -11,6 +11,9 @@ import facilitators.Coordinate;
  */
 public class Polygon extends Line {
 
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.POLYGON;
+
   /**
    * Creates a new Polygon with default attributes.
    */
@@ -26,6 +29,11 @@ public class Polygon extends Line {
   @Override
   public String getHTML() {
     return super.getHTML().replaceAll("polyline", "polygon");
+  }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
   }
 
 }

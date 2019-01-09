@@ -1,23 +1,17 @@
 package shapes;
 
-import shapes.transform.Rotatable;
 import shapes.transform.ShapeTransformer;
-import shapes.transform.UniformScalable;
 import shapes.transform.atomic.RotationTransformation;
-import shapes.transform.Scalable;
-import shapes.transform.atomic.ScaleTransformation;
 import shapes.transform.atomic.SkewTransformation;
-import shapes.transform.Skewable;
 import shapes.transform.Transformation;
-import shapes.transform.Translatable;
-import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * A transformable {@link Ellipse}.
  * Can be transformed using any {@link Transformation}.
  */
-public class TransformableEllipse extends Ellipse implements Translatable, Rotatable, UniformScalable,
-    Scalable, Skewable {
+public class TransformableEllipse extends Ellipse implements TransformableShape {
+
+  private static final long serialVersionUID = 1L;
 
   private Transformation leftoverTransformation = new Transformation();
 
@@ -52,4 +46,10 @@ public class TransformableEllipse extends Ellipse implements Translatable, Rotat
   public void skew(SkewTransformation transformation) {
     leftoverTransformation.addTransformation(transformation);
   }
+
+  @Override
+  public Transformation getTransformations() {
+    return leftoverTransformation;
+  }
+
 }

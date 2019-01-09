@@ -3,7 +3,6 @@ package shapes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import facilitators.Colour;
 import facilitators.Coordinate;
 import java.io.Serializable;
@@ -27,14 +26,11 @@ import shapes.transform.Transformation;
  * @see Star
  * @see Text
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.CLASS,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "shapeClass"
-)
 @JsonRootName(value = "attributes")
 @JsonIgnoreProperties({"html"})
 public abstract class Shape implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private Colour fillColour;
   private Colour strokeColour;
@@ -202,5 +198,13 @@ public abstract class Shape implements Serializable {
    * @return The center of the Shape as a {@link Coordinate}.
    */
   public abstract Coordinate getCenter();
+
+  /**
+   * Returns the type of the Shape.
+   *
+   * @return The type of the Shape.
+   * @see ShapeType
+   */
+  public abstract ShapeType getShapeType();
 
 }

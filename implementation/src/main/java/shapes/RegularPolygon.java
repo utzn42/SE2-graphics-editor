@@ -3,7 +3,6 @@ package shapes;
 import facilitators.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
-import shapes.transform.Transformation;
 
 /**
  * Represents a regular Polygon on the canvas.
@@ -16,6 +15,9 @@ import shapes.transform.Transformation;
  * @see Star
  */
 public class RegularPolygon extends Circle {
+
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.REGULAR_POLYGON;
 
   private int edgeAmount;
 
@@ -102,4 +104,10 @@ public class RegularPolygon extends Circle {
   public String getHTML() {
     return "<polygon " + getHTMLAttributes() + "></polygon>";
   }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
+  }
+
 }

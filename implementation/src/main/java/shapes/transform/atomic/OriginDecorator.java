@@ -9,6 +9,8 @@ import facilitators.Coordinate;
  */
 public class OriginDecorator extends AtomicTransformationDecorator {
 
+  private static final long serialVersionUID = 1L;
+
   private final Coordinate origin;
   private final TranslationTransformation beforeTransformation;
   private final TranslationTransformation afterTransformation;

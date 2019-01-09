@@ -3,7 +3,9 @@ package persistence;
 import canvas.Canvas;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +84,7 @@ public class ProjectSerializer {
       initializeProjects();
     }
 
-    return projects;
+    return new HashMap<>(projects);
 
   }
 
@@ -118,12 +120,22 @@ public class ProjectSerializer {
    */
   public static boolean putProject(Project project) {
 
+    if (projects == null) {
+      initializeProjects();
+    }
+
     String projectID = project.getProjectID();
     createDirectories(getProjectDirectoryPath(projectID));
 
     try {
       Serializer.serialize(project.getCanvas(), getProjectFilePath(projectID));
-    } catch (IOException e) {
+      if (!(projects.containsKey(projectID))) {
+        List<String> projectIDs = new ArrayList<>(projects.keySet());
+        projectIDs.add(projectID);
+        IDList idList = new IDList(projectIDs);
+        Serializer.serialize(idList, projectIDListFilePath);
+      }
+    } catch (IOException | ClassNotFoundException e) {
       projectSerializerLogger.error("Failed to serialize Project with ID " + projectID + ".");
       return false;
     }

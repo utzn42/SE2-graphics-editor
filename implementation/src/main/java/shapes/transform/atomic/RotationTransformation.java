@@ -1,13 +1,15 @@
 package shapes.transform.atomic;
 
-import facilitators.Coordinate;
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
  * Rotation component of a {@link Transformation}.
  * Holds the rotation angle.
  */
-public class RotationTransformation implements AtomicTransformation {
+public class RotationTransformation implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private double rotationAngle;
   private static final AtomicTransformationType type = AtomicTransformationType.ROTATION;

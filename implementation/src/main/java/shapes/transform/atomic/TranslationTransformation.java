@@ -1,13 +1,16 @@
 package shapes.transform.atomic;
 
 import facilitators.Coordinate;
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
  * Translation component of a {@link Transformation}.
  * Holds values for moving an object in x- and y-direction.
  */
-public class TranslationTransformation implements AtomicTransformation {
+public class TranslationTransformation implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private Coordinate translation;
   private static final AtomicTransformationType type = AtomicTransformationType.TRANSLATION;

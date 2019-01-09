@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class Star extends RegularPolygon {
 
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.STAR;
+
   private double innerRadius;
 
   /**
@@ -77,6 +80,11 @@ public class Star extends RegularPolygon {
       coordinates.add(new Coordinate(xInner, yInner));
     }
     return coordinates;
+  }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
   }
 
 }

@@ -1,12 +1,16 @@
 package shapes.transform.atomic;
 
+import java.io.Serializable;
+
 /**
  * Provides support for decorating an {@link AtomicTransformation} with extra functionality by
  * extending this class.
  *
  * @see OriginDecorator
  */
-public class AtomicTransformationDecorator implements AtomicTransformation {
+public class AtomicTransformationDecorator implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private final AtomicTransformation transformation;
 

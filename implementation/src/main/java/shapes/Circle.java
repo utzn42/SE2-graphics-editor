@@ -2,8 +2,6 @@ package shapes;
 
 import facilitators.Coordinate;
 import facilitators.CoordinateMath;
-import shapes.transform.Rotatable;
-import shapes.transform.atomic.RotationTransformation;
 import shapes.transform.Translatable;
 import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.UniformScalable;
@@ -18,6 +16,9 @@ import shapes.transform.atomic.UniformScaleTransformation;
  * @see Star
  */
 public class Circle extends Shape implements Translatable, UniformScalable {
+
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.CIRCLE;
 
   private Coordinate center;
   private double radius;
@@ -123,6 +124,11 @@ public class Circle extends Shape implements Translatable, UniformScalable {
     setStrokeWidth(getStrokeWidth() * transformation.getScale());
     center = CoordinateMath.scaleVector(center, new Coordinate(transformation.getScale(),
         transformation.getScale()), new Coordinate(0, 0));
+  }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
   }
 
 }

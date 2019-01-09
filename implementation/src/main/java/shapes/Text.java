@@ -15,6 +15,9 @@ import shapes.transform.atomic.UniformScaleTransformation;
  */
 public class Text extends Shape implements Translatable, UniformScalable {
 
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.TEXT;
+
   private Coordinate center;
   private String displayText;
   private String font;
@@ -171,4 +174,10 @@ public class Text extends Shape implements Translatable, UniformScalable {
     center = CoordinateMath.scaleVector(center, new Coordinate(transformation.getScale(),
         transformation.getScale()), new Coordinate(0, 0));
   }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
+  }
+
 }

@@ -6,12 +6,14 @@ import download.CanvasToJPGConverter;
 import download.CanvasToPNGConverter;
 import download.CanvasToSVGConverter;
 import download.CanvasToImageConverter;
+import download.DownloadFormat;
 import facilitators.Hasher;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import observer.Observer;
 import observer.Subject;
@@ -23,158 +25,239 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import persistence.FileManager;
-import persistence.LocalFileManager;
+import persistence.ProjectObserver;
+import persistence.ProjectSerializer;
+import project.LoadedProject;
+import project.Project;
 import shapes.Shape;
+import shapes.ShapeType;
 
 /**
- * This class provides the logic which RESTHandler calls upon to deliver its functionality.
- *
- * @see RESTHandler
+ * This class provides the logic which {@link RESTHandler} calls upon to deliver its functionality.
+ * It relies on the {@link ProjectSerializer} class for storing and fetching {@link Project Projects}.
  */
 @Service
 public class ProjectService implements Subject {
 
   //TODO: Maybe allow layers and shapes to be "moved" up and down
 
-  private static long seedCounter = 0;
   private static Logger projectServiceLogger = LoggerFactory.getLogger(ProjectService.class);
-  private Map<String, Canvas> projects;
-  private ArrayList<Observer> observers;
+  private Map<String, Project> projects;
+  private List<Observer> observers;
 
   /**
-   * Creates a default ProjectService object. If previously stored projects or ID seeds are available, they are loaded into the object.
-   *
-   * @see LocalFileManager
+   * Creates a default ProjectService object. If previously stored projects are available, they are loaded into the object.
    */
   public ProjectService() {
     observers = new ArrayList<>();
-    FileManager<Canvas> fileManager = new LocalFileManager<>("./projects");
-    registerObserver(fileManager);
-    projects = fileManager.getStoredObjects();
-    seedCounter = fileManager.getSeedCounter();
+    registerObserver(new ProjectObserver());
+    projects = ProjectSerializer.getProjects();
   }
 
   /**
    * Creates a one-way hash of the ID seed.
    *
    * @return A 6-letter substring of the SHA-256 hash of the ID seed.
+   * @throws RuntimeException If creating a hash fails.
    */
-  public String createID() {
+  private String createID() {
+
+    String operationToLog = "Create new ID";
+
     String projectID;
     do {
-      Hasher hash = new Hasher(++seedCounter);
+      long seed;
+      try {
+        seed = ProjectSerializer.getAndIncrementSeed();
+      } catch (Exception e) {
+        projectServiceLogger.error("Operation failed: " + operationToLog);
+        throw new RuntimeException(e);
+      }
+      Hasher hash = new Hasher(seed);
       projectID = hash.getHash();
     } while (projects.containsKey(projectID));
+
+    projectServiceLogger.info("Operation successful: " + operationToLog);
     return projectID;
   }
 
 
   /**
-   * Creates a default canvas measuring 200*200px.
+   * Creates a new Project.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
-   * @return A default, empty canvas.
-   * @see Canvas
+   * @return A new Project with a default empty Canvas.
+   * @see Project
    */
-  public Canvas createCanvas(String projectID) {
-    if (projects.containsKey(projectID)) {
-      throw new IllegalArgumentException("Project ID " + projectID + " already exists!");
-    }
+  public Project createProject() {
 
-    Canvas blankCanvas = new Canvas();
-    projects.put(projectID, blankCanvas);
+    String operationToLog = "Create Project";
+
+    String projectID = createID();
+
+    Project newProject = new LoadedProject(projectID, new Canvas());
+
+    putProject(newProject);
+    projectServiceLogger.info("Operation successful: " + operationToLog);
+    return newProject;
+
+  }
+
+
+  private void putProject(Project project) {
+
+    projectServiceLogger.info("Storing project " + project.getProjectID() + " and notifying Observers");
+    projects.put(project.getProjectID(), project);
 
     notifyObservers();
-    return blankCanvas;
+    notifyObservers(project);
+
   }
 
 
   /**
-   * Adds a layer to the canvas which is specified by the project ID.
+   * Returns the {@link Project} with the given ID.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
-   * @return The canvas including the layer which was added.
+   * @param projectID The project ID.
+   * @return The Project with the given ID.
+   * @throws IllegalArgumentException If a Project with the given ID does not exist.
    */
-  public Canvas addLayer(String projectID) {
+  public Project getProject(String projectID) {
+
+    String operationToLog = "Project " + projectID + ": Get Project";
+
     if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new IllegalArgumentException("Project ID " + projectID + " does not exist!");
     }
 
-    projectServiceLogger.info("addLayer - (empty object)");
-
-    projects.get(projectID).getLayers().add(new Layer());
-
-    notifyObservers();
+    projectServiceLogger.info("Operation successful: " + operationToLog);
     return projects.get(projectID);
+
   }
 
 
   /**
-   * Adds a shape to a specified layer within the canvas, which is specified by the project ID.
+   * Adds a layer to the given {@link Project}.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
-   * @param layerIndex Is used to access the layer to which the shape shall be added.
-   * @param shapeClass Specifies the type of shape which is to be added, in order to call default constructors.
-   * @return A canvas including the added shape.
-   * @throws ClassNotFoundException Thrown if the shape class could not be found.
-   * @throws IllegalAccessException Thrown if the shape class constructor could not be called.
-   * @throws InstantiationException Thrown if an instance of the shape class could not be created.
+   * @param project The Project to add a layer to.
    */
-  public Canvas addShape(String projectID, int layerIndex, String shapeClass)
-      throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
-    }
+  public void addLayer(Project project) {
+    //TODO: main.input.ProjectService.addLayer(Project): Rework after integration of new layer structure
 
-    projectServiceLogger.info("addShape - Layer Index: " + layerIndex);
-    projectServiceLogger.info("         - Shape Class: " + shapeClass);
+    String operationToLog = "Project " + project.getProjectID() + ": Add new Layer";
 
-    Shape newShape;
+    Canvas projectCanvas;
     try {
-      newShape = (Shape) (Class.forName(shapeClass).newInstance());
-      projects.get(projectID).getLayers().get(layerIndex).getShapes().add(newShape);
-      projectServiceLogger.info("         - HTML: " + newShape.getHTML());
-    } catch (ClassNotFoundException e) {
-      projectServiceLogger.error("         - HTML: Failed to get Class");
-      throw new ClassNotFoundException("Class " + shapeClass + " does not exist!");
-    } catch (IllegalAccessException e) {
-      projectServiceLogger.error("         - HTML: Could not call Class constructor");
-      throw new IllegalAccessException("Could not call constructor for class " + shapeClass + "!");
-    } catch (InstantiationException e) {
-      projectServiceLogger.error("         - HTML: Could not instantiate Object for Class");
-      throw new InstantiationException("Failed to instantiate object of class " + shapeClass + "!");
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
     }
 
-    notifyObservers();
-    return projects.get(projectID);
+    projectCanvas.getLayers().add(new Layer());
+
+    putProject(project);
+    projectServiceLogger.info("Operation successful: " + operationToLog);
+
   }
 
 
   /**
-   * Modifies the width/height of a given canvas.
+   * Adds a {@link Shape} of the specified type to the specified {@link Project}.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param project The Project to add the Shape to.
+   * @param layerIndex The index of the Layer to add the Shape to.
+   * @param shapeType Specifies the type of shape which is to be added, in order to call default constructors.
+   * @throws IllegalArgumentException If the shape type could not be resolved.
+   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
+   */
+  public void addShape(Project project, int layerIndex, ShapeType shapeType)
+      throws IllegalArgumentException, IndexOutOfBoundsException {
+    //TODO: main.input.ProjectService.addShape(Project, int, ShapeType): Rework after integration of new layer structure
+
+    String operationToLog = "Project " + project.getProjectID() + ": Add new Shape of type "
+        + shapeType + " to Layer " + layerIndex;
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
+    }
+
+    Shape shape;
+    switch (shapeType) {
+      case CIRCLE:
+        shape = projectCanvas.getShapeFactory().createCircle();
+        break;
+      case ELLIPSE:
+        shape = projectCanvas.getShapeFactory().createEllipse();
+        break;
+      case LINE:
+        shape = projectCanvas.getShapeFactory().createLine();
+        break;
+      case POLYGON:
+        shape = projectCanvas.getShapeFactory().createPolygon();
+        break;
+      case REGULAR_POLYGON:
+        shape = projectCanvas.getShapeFactory().createRegularPolygon();
+        break;
+      case STAR:
+        shape = projectCanvas.getShapeFactory().createStar();
+        break;
+      case TEXT:
+        shape = projectCanvas.getShapeFactory().createText();
+        break;
+      default:
+        projectServiceLogger.error("Operation failed: " + operationToLog);
+        throw new IllegalArgumentException("Unknown Shape type: " + shapeType);
+    }
+
+    try {
+      projectCanvas.getLayers().get(layerIndex).getShapes().add(shape);
+    } catch (IndexOutOfBoundsException e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw e;
+    }
+
+    putProject(project);
+    projectServiceLogger.info("Operation success: " + operationToLog);
+
+  }
+
+
+  /**
+   * Modifies the width/height of the canvas of a Project.
+   *
+   * @param project The Project to modify.
    * @param width Specifies the new canvas width.
    * @param height Specifies the new canvas height.
-   * @return The canvas featuring the updated measurements.
+   * @throws IllegalArgumentException If the width or height is negative.
    */
-  public Canvas editCanvas(String projectID, double width, double height) {
+  public void editCanvas(Project project, double width, double height) {
+
+    String operationToLog = "Project " + project.getProjectID() + ": Set Canvas measurements to "
+        + width + "x" + height;
+
     if (width < 0 || height < 0) {
-      throw new IllegalArgumentException("Height and width must both be positive!");
-    }
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new IllegalArgumentException("Canvas width and height must both be positive!");
     }
 
-    projectServiceLogger.info("editCanvas - Width: " + width);
-    projectServiceLogger.info("           - Height: " + height);
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
+    }
 
-    projects.get(projectID).setWidth(width);
-    projects.get(projectID).setHeight(height);
+    projectCanvas.setWidth(width);
+    projectCanvas.setHeight(height);
 
-    notifyObservers();
-    return projects.get(projectID);
+    putProject(project);
+    projectServiceLogger.info("Operation success: " + operationToLog);
 
   }
 
@@ -182,22 +265,35 @@ public class ProjectService implements Subject {
   /**
    * Sets the visibility of a given layer.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param project The Project to edit.
    * @param layerIndex Is used to retrieve the desired layer from within the canvas.
    * @param isVisible Sets the layer (and therefore all of its shapes) to visible/invisible.
-   * @return A canvas where the visibility of a given layer within it has been modified
+   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
    */
-  public Canvas editLayer(String projectID, int layerIndex, boolean isVisible) {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+  public void editLayer(Project project, int layerIndex, boolean isVisible) {
+    //TODO: main.input.ProjectService.editLayer(Project, int, boolean): Rework after integration of new layer structure
+
+    String operationToLog = "Project " + project.getProjectID() + ": Set Layer " + layerIndex + " "
+        + (isVisible ? "visible" : "invisible");
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
     }
 
-    projectServiceLogger.info("editLayer - Layer Index: " + layerIndex);
-    projectServiceLogger.info("          - Visible: " + isVisible);
-    projects.get(projectID).getLayers().get(layerIndex).setVisible(isVisible);
+    try {
+      projectCanvas.getLayers().get(layerIndex).setVisible(isVisible);
+    } catch (IndexOutOfBoundsException e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw e;
+    }
 
-    notifyObservers();
-    return projects.get(projectID);
+    putProject(project);
+    projectServiceLogger.info("Operation successful: " + operationToLog);
+
   }
 
 
@@ -208,9 +304,11 @@ public class ProjectService implements Subject {
    * @param layerIndex Is used to retrieve the desired layer from within the canvas.
    * @param shapeIndex Is used to retrieve the desired shape from within the layer.
    * @param shape Passes the modified shape to the function
-   * @return Returns a canvas with a shape, which now includes the updated parameters.
    */
-  public Canvas editShape(String projectID, int layerIndex, int shapeIndex, Shape shape) {
+  public void editShape(String projectID, int layerIndex, int shapeIndex, Shape shape) {
+    //TODO: main.input.ProjectService.editShape(String, int, int, Shape): Rework after integration of new layer structure
+    throw new IllegalArgumentException("This function is not yet implemented!");
+    /*
     if (!projects.containsKey(projectID)) {
       throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
     }
@@ -222,6 +320,7 @@ public class ProjectService implements Subject {
 
     notifyObservers();
     return projects.get(projectID);
+    */
   }
 
 
@@ -229,115 +328,153 @@ public class ProjectService implements Subject {
    * Modifies the visual representation of a shape within a certain layer using the SVG format's inbuilt transform parameters.
    *
    * @param projectID Is used to retrieve the canvas based on the ID.
-   * @return A canvas where the specified shape is now modified in accordance with SVG's inbuilt transform parameters.
    */
-  public Canvas transformShape(String projectID) {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
-    }
-
-    // TODO: Transform Shape
-
-    return projects.get(projectID);
+  public void transformShape(String projectID) {
+    //TODO: main.input.ProjectService.transformShape(String): Rework after integration of new layer structure
+    throw new IllegalArgumentException("This function is not yet implemented!");
   }
 
 
   /**
    * Deletes a layer from the specified canvas.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param project The Project to delete the layer from.
    * @param layerIndex Specifies the layer which the user wishes to delete.
-   * @return A canvas without the layer specified by layerIndex.
+   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
    */
-  public Canvas deleteLayer(String projectID, int layerIndex) {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+  public void deleteLayer(Project project, int layerIndex) {
+    //TODO: main.input.ProjectService.deleteLayer(Project, int): Rework after integration of new layer structure
+
+    String operationToLog = "Project " + project.getProjectID() + ": Delete Layer " + layerIndex;
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
     }
 
-    projectServiceLogger.info("deleteLayer - Layer Index: " + layerIndex);
+    try {
+      projectCanvas.getLayers().remove(layerIndex);
+    } catch (IndexOutOfBoundsException e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw e;
+    }
 
-    projects.get(projectID).getLayers().remove(layerIndex);
+    putProject(project);
+    projectServiceLogger.info("Operation successful: " + operationToLog);
 
-    notifyObservers();
-    return projects.get(projectID);
   }
 
 
   /**
    * Deletes a certain shape within a layer of the canvas.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param project The Project to delete the Shape from.
    * @param layerIndex Specifies the layer within which the user wishes to delete the shape.
    * @param shapeIndex Specifies the exact shape which the user wishes to delete.
-   * @return A canvas without the deleted shape.
    */
-  public Canvas deleteShape(String projectID, int layerIndex, int shapeIndex) {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+  public void deleteShape(Project project, int layerIndex, int shapeIndex) {
+    //TODO: main.input.ProjectService.deleteShape(Project, int, int): Rework after integration of new layer structure
+
+    String operationToLog = "Project " + project.getProjectID() + ": Delete Shape " + shapeIndex
+        + " from Layer " + layerIndex;
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
     }
 
-    projectServiceLogger.info("deleteShape - Layer Index: " + layerIndex);
-    projectServiceLogger.info("            - Shape Index: " + shapeIndex);
+    try {
+      projectCanvas.getLayers().get(layerIndex).getShapes().remove(shapeIndex);
+    } catch (IndexOutOfBoundsException e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw e;
+    }
 
-    projects.get(projectID).getLayers().get(layerIndex).getShapes().remove(shapeIndex);
+    putProject(project);
+    projectServiceLogger.info("Operation successful: " + operationToLog);
 
-    return projects.get(projectID);
   }
 
 
   /**
    * Downloads a picture of the canvas in a format of choice.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
-   * @param type Specifies the desired file format.
+   * @param project Is used to retrieve the canvas based on the ID.
+   * @param format Specifies the desired file format.
    * @return A SVG, JPG or PNG file, which represents the canvas at the time of convert.
+   * @throws IllegalArgumentException If the download format could not be resolved.
    * @throws IOException If an I/O error occurs.
    * @throws TranscoderException If transcoding to the desired image format fails.
    */
-  public ResponseEntity<Object> download(String projectID, String type)
+  public ResponseEntity<Object> getDownloadResponseForType(Project project, DownloadFormat format)
       throws IOException, TranscoderException {
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
-    }
 
-    projectServiceLogger.info("Download in format: " + type);
+    String operationToLog = "Project " + project.getProjectID()
+        + ": Create download response for format " + format;
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
+    }
 
     CanvasToImageConverter canvasToImageConverter;
     String mimeType;
-    switch (type) {
-      case "svg":
+    switch (format) {
+      case SVG:
         canvasToImageConverter = new CanvasToSVGConverter();
         mimeType = "image/svg+xml";
         break;
-      case "png":
+      case PNG:
         canvasToImageConverter = new CanvasToPNGConverter();
         mimeType = "image/png";
         break;
-      case "jpg":
-      case "jpeg":
+      case JPG:
         canvasToImageConverter = new CanvasToJPGConverter();
         mimeType = "image/jpeg";
         break;
       default:
-        throw new IllegalArgumentException("Unknown file type");
+        projectServiceLogger.error("Operation failed: " + operationToLog);
+        throw new IllegalArgumentException("Unknown format");
     }
 
-    URI fileURI = canvasToImageConverter.convert(projects.get(projectID), projectID);
-    File file = new File(fileURI);
-    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
+    try {
 
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+      URI fileURI = canvasToImageConverter.convert(projectCanvas, project.getProjectID());
+      File file = new File(fileURI);
+      ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
 
-    return ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
-        MediaType.parseMediaType(mimeType)).body(resource);
+      HttpHeaders httpHeaders = new HttpHeaders();
+      httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+
+      ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(httpHeaders).contentLength(file.length()).contentType(
+          MediaType.parseMediaType(mimeType)).body(resource);
+      projectServiceLogger.info("Operation successful: " + operationToLog);
+
+      return responseEntity;
+
+    } catch (IOException | TranscoderException e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw e;
+    }
+
   }
 
 
   /**
-   * @return A Map of project IDs and corresponding canvasses.
+   * Returns a Map containing the Project IDs and respective Projects.
+   *
+   * @return A Map containing the Project IDs and respective Projects.
    */
-  public Map<String, Canvas> getProjects() {
+  public Map<String, Project> getProjects() {
     return projects;
   }
 
@@ -370,7 +507,7 @@ public class ProjectService implements Subject {
 
 
   /**
-   * Notifies the observers of a ProjectService object whether seedCounter or projects have been modified.
+   * Notifies the observers of a ProjectService object passing the entire projects Map as parameter.
    *
    * @see Subject
    * @see Observer
@@ -378,10 +515,22 @@ public class ProjectService implements Subject {
   @Override
   public void notifyObservers() {
     for (Observer o : observers) {
-      o.update(seedCounter);
       o.update(projects);
     }
   }
+
+
+  /**
+   * Notifies the observers of a ProjectService object passing the given Project as a parameter.
+   *
+   * @param project The project passed to the Observer's update function.
+   */
+  public void notifyObservers(Project project) {
+    for (Observer o : observers) {
+      o.update(project);
+    }
+  }
+
 }
 
 

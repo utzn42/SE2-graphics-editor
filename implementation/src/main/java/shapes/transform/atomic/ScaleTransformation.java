@@ -1,13 +1,16 @@
 package shapes.transform.atomic;
 
 import facilitators.Coordinate;
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
  * Scale component of a {@link Transformation}.
  * Holds factors in x- and y-direction to scale an object by.
  */
-public class ScaleTransformation implements AtomicTransformation {
+public class ScaleTransformation implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private Coordinate scale;
   private static final AtomicTransformationType type = AtomicTransformationType.SCALE;

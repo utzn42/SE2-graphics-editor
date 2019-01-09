@@ -1,12 +1,15 @@
 package shapes.transform.atomic;
 
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
  * Uniform scale component of a {@link Transformation}.
  * Holds a factor by which to uniformly scale an object by.
  */
-public class UniformScaleTransformation implements AtomicTransformation {
+public class UniformScaleTransformation implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private double scale;
   private static final AtomicTransformationType type = AtomicTransformationType.UNIFORM_SCALE;

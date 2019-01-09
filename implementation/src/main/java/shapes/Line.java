@@ -24,6 +24,9 @@ import shapes.transform.atomic.UniformScaleTransformation;
  */
 public class Line extends Shape implements Translatable, Rotatable, UniformScalable, Scalable, Skewable {
 
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.LINE;
+
   private List<Coordinate> coordinates;
 
   /**
@@ -235,4 +238,10 @@ public class Line extends Shape implements Translatable, Rotatable, UniformScala
     }
     return new Coordinate((minX + maxX) / 2, (minY + maxY) / 2);
   }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
+  }
+
 }

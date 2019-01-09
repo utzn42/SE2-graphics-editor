@@ -1,12 +1,15 @@
 package shapes.transform.atomic;
 
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
  * Skew component of a {@link Transformation}.
  * Holds a skew angle and axis to skew the object with.
  */
-public class SkewTransformation implements AtomicTransformation {
+public class SkewTransformation implements AtomicTransformation, Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private double skewAngle;
   private String skewAxis;

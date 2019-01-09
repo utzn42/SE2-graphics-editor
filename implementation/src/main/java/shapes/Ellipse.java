@@ -5,7 +5,6 @@ import facilitators.CoordinateMath;
 import shapes.transform.Scalable;
 import shapes.transform.UniformScalable;
 import shapes.transform.atomic.ScaleTransformation;
-import shapes.transform.Transformation;
 import shapes.transform.Translatable;
 import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.atomic.UniformScaleTransformation;
@@ -17,6 +16,9 @@ import shapes.transform.atomic.UniformScaleTransformation;
  * @see Shape
  */
 public class Ellipse extends Shape implements Translatable, UniformScalable, Scalable {
+
+  private static final long serialVersionUID = 1L;
+  private static final ShapeType shapeType = ShapeType.ELLIPSE;
 
   private Coordinate center;
   private double radiusX;
@@ -160,6 +162,11 @@ public class Ellipse extends Shape implements Translatable, UniformScalable, Sca
     radiusY *= transformation.getScale().getY();
     center = CoordinateMath.scaleVector(center, transformation.getScale(),
         new Coordinate(0, 0));
+  }
+
+  @Override
+  public ShapeType getShapeType() {
+    return shapeType;
   }
 
 }
