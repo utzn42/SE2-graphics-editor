@@ -26,6 +26,6 @@ public interface Subject {
    *
    * Should call {@link Observer#update(Object)} on the Observers.
    */
-  void notifyObservers();
+  void notifyObservers(Object obj);
 
 }

@@ -108,7 +108,6 @@ public class ProjectService implements Subject {
     projectServiceLogger.info("Storing project " + project.getProjectID() + " and notifying Observers");
     projects.put(project.getProjectID(), project);
 
-    notifyObservers();
     notifyObservers(project);
 
   }
@@ -507,27 +506,14 @@ public class ProjectService implements Subject {
 
 
   /**
-   * Notifies the observers of a ProjectService object passing the entire projects Map as parameter.
+   * Notifies the observers of a ProjectService object passing the given Object as a parameter.
    *
-   * @see Subject
-   * @see Observer
+   * @param obj The Object passed to the Observer's update function.
    */
   @Override
-  public void notifyObservers() {
+  public void notifyObservers(Object obj) {
     for (Observer o : observers) {
-      o.update(projects);
-    }
-  }
-
-
-  /**
-   * Notifies the observers of a ProjectService object passing the given Project as a parameter.
-   *
-   * @param project The project passed to the Observer's update function.
-   */
-  public void notifyObservers(Project project) {
-    for (Observer o : observers) {
-      o.update(project);
+      o.update(obj);
     }
   }
 
