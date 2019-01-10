@@ -25,7 +25,7 @@ public class RequestAddShape {
   @JsonCreator
   RequestAddShape(
       @JsonProperty("layerIndex") int layerIndex,
-      @JsonProperty("shapeClass") ShapeType shapeType
+      @JsonProperty("shapeType") ShapeType shapeType
   ) {
     this.layerIndex = layerIndex;
     this.shapeType = shapeType;
