@@ -40,6 +40,7 @@ public class CanvasLayer extends CanvasElement {
    * @return A default NullIterator
    */
 
+  @Override
   public Iterator<CanvasElement> createIterator() {
     return new NullIterator<>();
   }

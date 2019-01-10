@@ -32,8 +32,6 @@ public abstract class CanvasElement {
    */
   public abstract void transform(Transformation transformation);
 
-  public Iterator<CanvasElement> createIterator() {                                                 //TODO: Fix multiple inheritance issues.
-    return null;
-  }
+  public abstract Iterator<CanvasElement> createIterator();
 
 }
