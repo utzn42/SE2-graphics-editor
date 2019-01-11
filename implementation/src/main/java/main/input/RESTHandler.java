@@ -104,7 +104,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/addLayer/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/addLayer", method = RequestMethod.POST)
   public Response addLayer(@PathVariable String projectID,
       @RequestBody RequestAddLayer request) {
 
@@ -117,10 +117,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /addLayer/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/addLayer; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/addLayer/" + projectID);
+           "/" + projectID + "/addLayer");
 
     }
 
@@ -137,7 +137,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/addShape/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/addShape", method = RequestMethod.POST)
   public Response addShape(@PathVariable String projectID,
       @RequestBody RequestAddShape request) {
 
@@ -150,10 +150,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /addShape/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/addShape; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/addShape/" + projectID);
+          "/" + projectID + "/addShape");
 
     }
 
@@ -171,7 +171,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/editCanvas/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/editCanvas", method = RequestMethod.POST)
   public Response editCanvas(@PathVariable String projectID,
       @RequestBody RequestEditCanvas request) {
 
@@ -184,10 +184,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /editCanvas/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/editCanvas; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/editCanvas/" + projectID);
+          "/" + projectID + "/editCanvas");
 
     }
 
@@ -205,7 +205,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/editLayer/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/editLayer", method = RequestMethod.POST)
   public Response editLayer(@PathVariable String projectID,
       @RequestBody RequestEditLayer request) {
 
@@ -218,10 +218,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /editLayer/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/editLayer; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/editLayer/" + projectID);
+          "/" + projectID + "/editLayer");
 
     }
 
@@ -239,7 +239,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/editShape/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/editShape", method = RequestMethod.POST)
   public Response editShape(@PathVariable String projectID,
       @RequestBody RequestEditShape request) {
 
@@ -252,10 +252,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /editShape/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/editShape; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/editShape/" + projectID);
+          "/" + projectID + "/editShape");
 
     }
 
@@ -272,7 +272,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/transformShape/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/transformShape", method = RequestMethod.POST)
   public Response transformShape(@PathVariable String projectID,
       @RequestBody String request) {
 
@@ -285,10 +285,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /transformShape/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/transformShape; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/transformShape/" + projectID);
+          "/" + projectID + "/transformShape");
 
     }
 
@@ -306,7 +306,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/deleteLayer/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/deleteLayer", method = RequestMethod.POST)
   public Response deleteLayer(@PathVariable String projectID,
       @RequestBody RequestDeleteLayer request) {
 
@@ -319,10 +319,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /deleteLayer/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/deleteLayer; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/deleteLayer/" + projectID);
+          "/" + projectID + "/deleteLayer");
 
     }
 
@@ -340,7 +340,7 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/deleteShape/{projectID}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/deleteShape", method = RequestMethod.POST)
   public Response deleteShape(@PathVariable String projectID,
       @RequestBody RequestDeleteShape request) {
 
@@ -353,10 +353,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /deleteShape/" + projectID + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/deleteShape; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/deleteShape/" + projectID);
+          "/" + projectID + "/deleteShape");
 
     }
 
@@ -373,7 +373,7 @@ public class RESTHandler {
    */
   @CrossOrigin()
   @RequestMapping(produces = {"image/svg+xml", "image/png",
-      "image/jpeg"}, value = "/download/{projectID}/{format}", method = RequestMethod.GET)
+      "image/jpeg"}, value = "/{projectID}/download/{format}", method = RequestMethod.GET)
   public ResponseEntity<Object> download(@PathVariable String projectID, @PathVariable DownloadFormat format) {
 
     try {
@@ -383,7 +383,7 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /download/" + projectID + "/" + format + "; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/download/" + format + "; returning ErrorResponse");
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
