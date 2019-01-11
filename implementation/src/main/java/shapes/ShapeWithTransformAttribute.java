@@ -13,6 +13,8 @@ import shapes.transform.atomic.SkewTransformation;
 import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.atomic.UniformScaleTransformation;
 
+
+
 public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotatable, Scalable, Skewable,
     Translatable,
     UniformScalable {
@@ -69,12 +71,12 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
 
     // Apply directly all transformations applicable to a normal Shape of that type
     Transformation simpleTransformation = ShapeTransformer
-        .getLegalTransformationsForShape(shape, transformation);
-    shape.applyTransformation(simpleTransformation);
+        .getLegalTransformationsForShape(getShape(), transformation);
+    getShape().applyTransformation(simpleTransformation);
 
     // Add the rest to leftover transformations
     this.transformation = ShapeTransformer
-        .getIllegalTransformationsForShape(shape, transformation);
+        .getIllegalTransformationsForShape(getShape(), transformation);
 
   }
 
