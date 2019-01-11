@@ -61,7 +61,11 @@ class PersistenceTest {
     IDList testIDList = new IDList(idStringList);
     assertEquals(idStringList, testIDList.getIdList());
     persistenceTestLogger
-        .info("IDList creation test passed! Starting IDList serialization test...");
+        .info("IDList creation test passed! Starting IDList setting test...");
+
+    testIDList.setIdList(idStringList);
+    assertEquals(idStringList, testIDList.getIdList());
+    persistenceTestLogger.info("IDList setting test passed! Starting IDList serialization test.");
 
     String comparatorListPath = "projects/idListArray.ser";
     String testObjectListPath = "projects/idListObject.ser";
@@ -129,16 +133,40 @@ class PersistenceTest {
     persistenceTestLogger.info("projectSerializerTest() started.");
     testProjectList = ProjectSerializer.getProjects();
     assertTrue(testProjectList.isEmpty());
-    persistenceTestLogger.info("isEmpty() test was passed! Starting LoadedProject test..." + '\n');
+    persistenceTestLogger.info("isEmpty test was passed! Starting SeedIncrement test..." + '\n');
+
+    try {
+      assertEquals(0, ProjectSerializer.getAndIncrementSeed());
+    } catch (IOException e) {
+      fail("Failed to pass first seed iteration. " + e.getMessage());
+    }
+    try {
+      assertEquals(1, ProjectSerializer.getAndIncrementSeed());
+    } catch (IOException e) {
+      fail("Failed to pass second seed iteration. " + e.getMessage());
+    }
+    persistenceTestLogger
+        .info("SeedIncrement test was passed! Starting LoadedProject test..." + '\n');
 
     String loadedProjectHash = new Hasher(0).getHash();
     Project testLoadedProject = new LoadedProject(loadedProjectHash);
     testProjectList.put((loadedProjectHash), testLoadedProject);
     ProjectSerializer.putProject(testLoadedProject);
-    assertEquals(testProjectList, ProjectSerializer.getProjects());
+    Map<String, Project> testProjectList2 = new HashMap<>();
+    testProjectList2 = ProjectSerializer.getProjects();
+
+    assertEquals(testProjectList, testProjectList2);
+    try {
+      assertEquals(testProjectList.get(loadedProjectHash),
+          testProjectList2.get(loadedProjectHash));
+    } catch (Exception e) {
+      fail("Error in ProjectSerializer.getProject(String projectID): " + e.getMessage());
+    }
     persistenceTestLogger.info("LoadedProject test passed! Starting ProjectProxy test..." + '\n');
 
+    //finish ProjectProxy test
     Project testProjectProxy = new ProjectProxy(loadedProjectHash);
+    persistenceTestLogger.info("ProjectProxy test passed! ");
   }
 
   @Test
@@ -188,6 +216,7 @@ class PersistenceTest {
     }
 
     persistenceTestLogger.info("Object successfully deserialized!");
+    persistenceTestLogger.info("Serializer successfully passed test.");
 
     assertEquals(testString, deserializedTestString);
   }
