@@ -1,6 +1,6 @@
 package shapes.transform;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
 import facilitators.Coordinate;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import shapes.transform.atomic.UniformScaleTransformation;
  * <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform">SVG transform</a>.
  * The transformations are meant to be performed in the order that they are stored in.
  */
-@JsonIgnoreProperties({"htmlattribute"})
 public class Transformation implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -57,6 +56,7 @@ public class Transformation implements Serializable {
    *
    * @return The List of AtomicTransformations in this transformation.
    */
+  @JsonValue
   public List<AtomicTransformation> getTransformations() {
     return transformations;
   }

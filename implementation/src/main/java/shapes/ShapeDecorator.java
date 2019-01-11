@@ -1,17 +1,12 @@
 package shapes;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import facilitators.Colour;
 import facilitators.Coordinate;
 
-
-//TODO: implement missing text for JSON objects such as radius, etc.
-
-//@JsonIgnoreProperties({"shape"})
 public class ShapeDecorator extends Shape{
 
-  //@JsonIgnoreProperties({"html"})
-  @JsonValue
+  @JsonUnwrapped
   private final Shape shape;
 
   public ShapeDecorator(Shape shape){
