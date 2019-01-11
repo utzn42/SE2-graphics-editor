@@ -15,7 +15,8 @@ import project.ProjectProxy;
 
 public class ProjectSerializer {
 
-  private static final Logger projectSerializerLogger = LoggerFactory.getLogger(ProjectSerializer.class);
+  private static final Logger projectSerializerLogger = LoggerFactory
+      .getLogger(ProjectSerializer.class);
   private static final String baseDirectory = "projects";
   private static final String projectIDListFilePath = baseDirectory + "/projectIDList.ser";
   private static final String seedCounterFilePath = baseDirectory + "/seed.ser";
@@ -23,6 +24,10 @@ public class ProjectSerializer {
   private static boolean proxyProjects = true;
   private static Map<String, Project> projects = null;
   private static Long seedCounter = null;
+
+  public static void deleteProjects() {
+    projects = null;
+  }
 
   private static String getProjectDirectoryPath(String projectID) {
     return baseDirectory + "/" + projectID;
@@ -111,8 +116,8 @@ public class ProjectSerializer {
   }
 
   /**
-   * Stores a {@link Project} using its ID as key. Returns <code>true</code> if the Project has
-   * been successfully stored.
+   * Stores a {@link Project} using its ID as key. Returns <code>true</code> if the Project has been
+   * successfully stored.
    *
    * @param project The Project to store.
    * @return <code>true</code> if the Project has been successfully stored, <code>false</code> if
