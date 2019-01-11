@@ -105,10 +105,10 @@ public class ProjectService implements Subject {
 
   private void putProject(Project project) {
 
-    projectServiceLogger.info("Storing project " + project.getProjectID() + " and notifying Observers");
-    projects.put(project.getProjectID(), project);
+    projectServiceLogger.info("Notifying Observers that project " + project.getProjectID() + " has changed!");
 
     notifyObservers(project);
+    projects = ProjectSerializer.getProjects();
 
   }
 
@@ -186,7 +186,10 @@ public class ProjectService implements Subject {
     }
 
     Shape shape;
-    switch (shapeType) {
+
+    shape = projectCanvas.getShapeFactory().createShape(shapeType).getShape();
+
+    /*switch (shapeType) {
       case CIRCLE:
         shape = projectCanvas.getShapeFactory().createCircle();
         break;
@@ -211,7 +214,9 @@ public class ProjectService implements Subject {
       default:
         projectServiceLogger.error("Operation failed: " + operationToLog);
         throw new IllegalArgumentException("Unknown Shape type: " + shapeType);
-    }
+    }*/
+
+
 
     try {
       projectCanvas.getLayers().get(layerIndex).getShapes().add(shape);

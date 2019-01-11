@@ -1,5 +1,7 @@
 package shapes;
 
+import canvas.CanvasLayer;
+
 /**
  * Factory that can create non-transformable {@link Shape Shapes}. Non-transformable shapes can only
  * be transformed in ways that do not need a "transform" attribute appended to the HTML shape tag.
@@ -7,37 +9,17 @@ package shapes;
 public class NonTransformableShapeFactory implements ShapeFactory {
 
   @Override
-  public Circle createCircle() {
-    return new Circle();
+  public CanvasLayer createShape(ShapeType shapeType) {
+    switch(shapeType){
+      case CIRCLE: return new CanvasLayer(new Circle());
+      case ELLIPSE: return new CanvasLayer(new Ellipse());
+      case LINE: return new CanvasLayer(new Line());
+      case POLYGON: return new CanvasLayer(new Polygon());
+      case REGULAR_POLYGON: return new CanvasLayer(new RegularPolygon());
+      case STAR: return new CanvasLayer(new Star());
+      case TEXT: return new CanvasLayer(new Text());
+      default : return new CanvasLayer(new Circle());
+    }
   }
 
-  @Override
-  public Ellipse createEllipse() {
-    return new Ellipse();
-  }
-
-  @Override
-  public Line createLine() {
-    return new Line();
-  }
-
-  @Override
-  public Polygon createPolygon() {
-    return new Polygon();
-  }
-
-  @Override
-  public RegularPolygon createRegularPolygon() {
-    return new RegularPolygon();
-  }
-
-  @Override
-  public Star createStar() {
-    return new Star();
-  }
-
-  @Override
-  public Text createText() {
-    return new Text();
-  }
 }

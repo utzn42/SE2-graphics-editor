@@ -10,8 +10,8 @@ public interface Translatable {
   /**
    * Translates the object using a {@link TranslationTransformation}.
    *
-   * @param translationTransformation The transformation to apply to the object.
+   * @param transformation The transformation to apply to the object.
    */
-  void translate(TranslationTransformation translationTransformation);
+  void translate(TranslationTransformation transformation);
 
 }

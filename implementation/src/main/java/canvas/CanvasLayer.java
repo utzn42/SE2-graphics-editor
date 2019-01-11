@@ -15,6 +15,14 @@ public class CanvasLayer extends CanvasElement {
 
   private Shape shape;
 
+  public CanvasLayer(Shape shape) {
+    this.shape = shape;
+  }
+
+  public CanvasLayer() {
+    this.shape = null;
+  }
+
   /**
    * Returns the {@link Shape} this CanvasLayer is holding
    *
@@ -53,7 +61,7 @@ public class CanvasLayer extends CanvasElement {
 
   @Override
   public void transform(Transformation transformation) {
-    //TODO: Implement canvas.CanvasLayer#transform(Transformation)
+    //TODO: Implement canvas.CanvasLayer#transform(Transformation) - xandi
   }
 
 }
