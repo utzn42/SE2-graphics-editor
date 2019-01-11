@@ -59,7 +59,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   public String getHTML() {
     StringBuilder stringBuilder = new StringBuilder();
     for(CanvasElement element : elements){
-      stringBuilder.append(element.getHTML());
+      if(element.isVisible()) {
+        stringBuilder.append(element.getHTML());
+      }
     }
     return stringBuilder.toString();
   }

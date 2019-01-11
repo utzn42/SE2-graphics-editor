@@ -156,7 +156,9 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
+    //TODO: implement addLayer
 //    projectCanvas.getLayers().add(new CanvasLayer());
+    projectServiceLogger.error("Operation failed: " + operationToLog);
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
