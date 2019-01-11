@@ -2,6 +2,7 @@ package canvas;
 
 import facilitators.Iterator;
 import facilitators.NullIterator;
+import java.util.List;
 import shapes.Shape;
 import shapes.transform.Transformation;
 
@@ -52,6 +53,12 @@ public class CanvasLayer extends CanvasElement {
   public Iterator<CanvasElement> createIterator() {
     return new NullIterator<>();
   }
+
+  @Override
+  public String getHTML() {
+    return shape.getHTML();
+  }
+
 
   /**
    * Applies transformation, given as a {@link Transformation}, to the contained {@link Shape}.

@@ -1,6 +1,7 @@
 package canvas;
 
 import facilitators.Iterator;
+import java.util.List;
 import shapes.transform.Transformation;
 
 /**
@@ -33,5 +34,12 @@ public abstract class CanvasElement {
   public abstract void transform(Transformation transformation);
 
   public abstract Iterator<CanvasElement> createIterator();
+
+  public abstract String getHTML();
+
+  public long getId() {
+    return id;
+  }
+
 
 }

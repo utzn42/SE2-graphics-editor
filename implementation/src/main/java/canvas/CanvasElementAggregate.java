@@ -55,6 +55,16 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     return new CanvasElementIterator(this.iterator);
   }
 
+  @Override
+  public String getHTML() {
+    StringBuilder stringBuilder = new StringBuilder();
+    for(CanvasElement element : elements){
+      stringBuilder.append(element.getHTML());
+    }
+    return stringBuilder.toString();
+  }
+
+
   /**
    * Transforms each {@link CanvasElement} within the aggregate using a {@link Transformation}
    *

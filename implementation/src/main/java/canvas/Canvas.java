@@ -8,6 +8,7 @@ import java.util.List;
 import shapes.NonTransformableShapeFactory;
 import shapes.Shape;
 import shapes.ShapeFactory;
+import shapes.ShapeType;
 import shapes.TransformableShapeFactory;
 
 /**
@@ -23,7 +24,7 @@ public class Canvas implements Serializable {
 
   private double width;
   private double height;
-  private List<Layer> layers;
+  private List<CanvasElement> canvasElements;
   private boolean useTransformables;
   private transient ShapeFactory shapeFactory;
 
@@ -35,7 +36,7 @@ public class Canvas implements Serializable {
   public Canvas() {
     width = 200;
     height = 200;
-    layers = new ArrayList<>();
+    canvasElements = new ArrayList<>();
     useTransformables = true;
     shapeFactory = new TransformableShapeFactory();
   }
@@ -44,12 +45,12 @@ public class Canvas implements Serializable {
    * This constructor creates a canvas already with layers. We chose a default value of 200x200, but
    * the user can change its actual size all the time when needed.
    *
-   * @param layers a {@link List} of {@link Layer}
+   * @param canvasElements a {@link List} of {@link Layer}
    */
-  public Canvas(List<Layer> layers) {
+  public Canvas(List<CanvasElement> canvasElements) {
     width = 200;
     height = 200;
-    this.layers = layers;
+    this.canvasElements = canvasElements;
     useTransformables = true;
     shapeFactory = new TransformableShapeFactory();
   }
@@ -98,8 +99,8 @@ public class Canvas implements Serializable {
    *
    * @return a {@link List} of {@link Layer}
    */
-  public List<Layer> getLayers() {
-    return layers;
+  public List<CanvasElement> getLayers() {
+    return canvasElements;
   }
 
   /**
@@ -153,9 +154,9 @@ public class Canvas implements Serializable {
     stringBuilder.append("<svg width=\"").append(width)
         .append("\" height=\"").append(height)
         .append("\" baseProfile=\"full\" xmlns=\"http://www.w3.org/2000/svg\">");
-    for (Layer layer : layers) {
-      if (layer.isVisible()) {
-        stringBuilder.append(layer.getHTML());
+    for (CanvasElement canvasElement : canvasElements) {
+      if (canvasElement.isVisible()) {
+        stringBuilder.append(canvasElement.getHTML());
       }
     }
     stringBuilder.append("</svg>");
@@ -172,4 +173,21 @@ public class Canvas implements Serializable {
     }
   }
 
+  public void addShape(ShapeType shapeType) {
+    canvasElements.add(shapeFactory.createShape(shapeType));
+  }
+
+  public void addShape(ShapeType shapeType, long ElementID){
+    CanvasElement tempElement = findCanvasElementByID(ElementID);
+    canvasElements.add(canvasElements.indexOf(tempElement), shapeFactory.createShape(shapeType));
+  }
+
+  public CanvasElement findCanvasElementByID(long id){
+    for(CanvasElement element : canvasElements){
+      if(element.getId() == id){
+        return element;
+      }
+    }
+    return null;
+  }
 }

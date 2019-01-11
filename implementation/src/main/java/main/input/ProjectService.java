@@ -1,6 +1,9 @@
 package main.input;
 
 import canvas.Canvas;
+import canvas.CanvasElement;
+import canvas.CanvasElementAggregate;
+import canvas.CanvasLayer;
 import canvas.Layer;
 import download.CanvasToJPGConverter;
 import download.CanvasToPNGConverter;
@@ -153,7 +156,7 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    projectCanvas.getLayers().add(new Layer());
+//    projectCanvas.getLayers().add(new CanvasLayer());
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
@@ -219,7 +222,7 @@ public class ProjectService implements Subject {
 
 
     try {
-      projectCanvas.getLayers().get(layerIndex).getShapes().add(shape);
+//      projectCanvas.addShape(shapeType);
     } catch (IndexOutOfBoundsException e) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw e;
@@ -394,7 +397,7 @@ public class ProjectService implements Subject {
     }
 
     try {
-      projectCanvas.getLayers().get(layerIndex).getShapes().remove(shapeIndex);
+//      projectCanvas.getLayers().get(layerIndex).getShapes().remove(shapeIndex);
     } catch (IndexOutOfBoundsException e) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw e;
@@ -523,5 +526,3 @@ public class ProjectService implements Subject {
   }
 
 }
-
-
