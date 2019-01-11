@@ -6,7 +6,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import facilitators.Hasher;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -31,13 +36,72 @@ class PersistenceTest {
   @BeforeEach
   void cleanProjects() {
     File dir = new File(
-        "C:\\Users\\utzn\\Desktop\\g2018w_se2_0304\\projects");                           // how do I access this generally? Why does it work in persistence ("projects")?!
-    try {                                                                                           // Might need new directory structure
+        "projects");
+    try {
       FileUtils.cleanDirectory(dir);
       persistenceTestLogger.info("Successfully cleaned project directory.");
     } catch (IOException e) {
       fail("Could not clean project directory. " + e.getMessage());
     }
+  }
+
+  @Test
+  void idListTest() {
+    persistenceTestLogger.info("Starting IDList creation test..." + '\n');
+    ArrayList<String> idStringList = new ArrayList<String>();
+    idStringList.add(new Hasher(0).getHash());
+    idStringList.add(new Hasher(1).getHash());
+    idStringList.add(new Hasher(2).getHash());
+
+    IDList testIDList = new IDList(idStringList);
+    assertEquals(idStringList, testIDList.getIdList());
+    persistenceTestLogger
+        .info("IDList creation test passed! Starting IDList serialization test..." + '\n');
+
+    String comparatorListPath = "projects/idListArray.ser";
+    String testObjectListPath = "projects/idListObject.ser";
+
+    try {
+      ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(comparatorListPath));
+      oos.writeObject(idStringList);
+      oos.close();
+    } catch (IOException e) {
+      fail("Error serializing idStringList. " + e.getMessage());
+    }
+
+    try {
+      ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(testObjectListPath));
+      oos.writeObject(testIDList);
+      oos.close();
+    } catch (IOException e) {
+      fail("Error serializing testIDList. " + e.getMessage());
+    }
+
+    persistenceTestLogger.info("Both lists serialized. Attempting to deserialize...");
+
+    try {
+      ObjectInputStream in = new ObjectInputStream(new FileInputStream(comparatorListPath));
+      idStringList = (ArrayList<String>) in.readObject();
+      in.close();
+    } catch (Exception e) {
+      fail("Error deserializing idStringList. " + e.getMessage());
+    }
+
+    persistenceTestLogger.info("IDList array successfully deserialized.");
+
+    try {
+      ObjectInputStream in = new ObjectInputStream(new FileInputStream(testObjectListPath));
+      testIDList = (IDList) in.readObject();
+    } catch (Exception e) {
+      fail("Error deserializing testIDList. " + e.getMessage());
+    }
+
+    persistenceTestLogger.info("IDList object successfully deserialized.");
+
+    assertEquals(idStringList, testIDList.getIdList());
+    persistenceTestLogger
+        .info("IDLists match! " + '\n' + '\n' + "idListTest() was passed completely.");
+
   }
 
   @Test
