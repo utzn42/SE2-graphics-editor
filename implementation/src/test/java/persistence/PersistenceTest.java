@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import observer.Observer;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -31,22 +32,9 @@ class PersistenceTest {
       .getLogger(PersistenceTest.class);
   private static Map<String, Project> testProjectList = new HashMap<>();
 
-  /**
-   * Deletes files within projects directory in order to be able to work in a clean, standardized
-   * environment.
-   */
-  @BeforeEach
-  void cleanProjects() {
-    ProjectSerializer.deleteProjects();
-    persistenceTestLogger.info("Successfully reset projects");
-    File dir = new File(
-        "projects");
-    try {
-      FileUtils.cleanDirectory(dir);
-      persistenceTestLogger.info("Successfully cleaned project directory." + '\n');
-    } catch (IOException e) {
-      fail("cleanProjects(): Could not clean project directory. " + e.getMessage());
-    }
+  @AfterAll
+  static void testSuccess() {
+    persistenceTestLogger.info("All tests have been passed successfully!" + '\n');
   }
 
   @Test
@@ -219,5 +207,23 @@ class PersistenceTest {
     persistenceTestLogger.info("Serializer successfully passed test.");
 
     assertEquals(testString, deserializedTestString);
+  }
+
+  /**
+   * Deletes files within projects directory in order to be able to work in a clean, standardized
+   * environment.
+   */
+  @BeforeEach
+  void cleanProjects() {
+    ProjectSerializer.deleteProjects();
+    persistenceTestLogger.info("Successfully reset projects.");
+    File dir = new File(
+        "projects");
+    try {
+      FileUtils.cleanDirectory(dir);
+      persistenceTestLogger.info("Successfully cleaned project directory." + '\n');
+    } catch (IOException e) {
+      fail("cleanProjects(): Could not clean project directory. " + e.getMessage());
+    }
   }
 }
