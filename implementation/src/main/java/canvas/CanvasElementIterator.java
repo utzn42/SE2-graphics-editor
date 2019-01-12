@@ -76,4 +76,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   public CanvasElement currentItem() {
     return stack.peek().currentItem();
   }
+
+  @Override
+  public void removeItem() {
+    stack.pop().currentItem();
+  }
 }

@@ -35,4 +35,6 @@ public interface Iterator<T> {
    */
   T currentItem();
 
+  void removeItem();
+
 }

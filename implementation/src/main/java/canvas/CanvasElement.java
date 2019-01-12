@@ -23,6 +23,31 @@ public abstract class CanvasElement {
     this.visible = visible;
   }
 
+  public void addItem(CanvasElement item) {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
+  }
+
+  public CanvasElement getItem(int index) {
+    throw new UnsupportedOperationException(
+        "getItem() cannot be called directly from CanvasElement!");
+  }
+
+  public boolean deleteItem(int index) {
+    throw new UnsupportedOperationException(
+        "deleteItem() cannot be called directly from CanvasElement!");
+  }
+
+  public boolean deleteItem(CanvasElement item) {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
+  }
+
+  public void addItem() {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
+  }
+
   public boolean isVisible() {
     return visible;
   }
