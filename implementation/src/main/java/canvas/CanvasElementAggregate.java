@@ -2,10 +2,8 @@ package canvas;
 
 import facilitators.Aggregate;
 import facilitators.Iterator;
-import facilitators.ListIterator;
 import java.util.ArrayList;
 import java.util.List;
-import shapes.ShapeWithTransformAttribute;
 import shapes.transform.Transformation;
 
 /**
@@ -15,12 +13,10 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
 
   private static final long serialVersionUID = 1L;
 
-  transient Iterator<CanvasElement> iterator;
   private List<CanvasElement> elements;
 
   public CanvasElementAggregate(long id) {
     super(id);
-    iterator = null;
     elements = new ArrayList<>();
   }
 
@@ -39,7 +35,6 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     elements.addAll(aggregate.asList());
   }
 
-
   @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
     return elements.get(index);
@@ -54,7 +49,6 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   public void setItem(int index, CanvasElement item) throws IndexOutOfBoundsException {
     elements.set(index, item);
   }
-
 
   @Override
   public boolean deleteItem(int index) {
@@ -79,13 +73,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     return elements.size();
   }
 
-
   @Override
   public Iterator<CanvasElement> createIterator() {
-    if (iterator == null) {
-      iterator = new CanvasElementIterator(new ListIterator(elements));
-    }
-    return iterator;
+    return new CanvasElementIterator(this);
   }
 
   @Override

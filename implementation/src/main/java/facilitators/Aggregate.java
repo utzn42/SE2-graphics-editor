@@ -57,7 +57,6 @@ public interface Aggregate<T> {
    */
   void setItem(int index, T item) throws IndexOutOfBoundsException;
 
-
   /**
    * Removes the item at the specified index
    *

@@ -169,7 +169,6 @@ public class Canvas implements Serializable {
   }
 
 
-
   /**
    * Returns the {@link ShapeFactory} this Canvas uses to create {@link Shape Shapes}.
    *
