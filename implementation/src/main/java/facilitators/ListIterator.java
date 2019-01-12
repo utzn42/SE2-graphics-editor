@@ -3,6 +3,7 @@ package facilitators;
 import canvas.CanvasElement;
 import java.util.List;
 
+
 public class ListIterator implements Iterator {
 
   List<CanvasElement> elements;
@@ -13,30 +14,24 @@ public class ListIterator implements Iterator {
   }
 
   @Override
-  public Object first() {
-    return elements.get(0);
-  }
-
-  @Override
   public Object next() {
     return elements.get(index++);
   }
 
   @Override
-  public boolean isDone() {
+  public boolean hasNext() {
     if (index == elements.size()) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
+  }
+
+  public void set(CanvasElement canvasElement) {
+    elements.set(index, canvasElement);
   }
 
   @Override
-  public Object currentItem() {
-    return elements.get(index);
-  }
-
-  @Override
-  public void removeItem() {
+  public void remove() {
     elements.remove(index);
   }
 }

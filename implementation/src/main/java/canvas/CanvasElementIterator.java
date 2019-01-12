@@ -22,15 +22,6 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   }
 
   /**
-   *
-   */
-
-  @Override
-  public CanvasElement first() {
-    return null;
-  }
-
-  /**
    * Sequentially iterates through all children of the node.
    *
    * @return The next leaf or first leaf of the next node, respectively.
@@ -38,7 +29,7 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
 
   @Override
   public CanvasElement next() {
-    if (!isDone()) {
+    if (hasNext()) {
       Iterator<CanvasElement> iterator = stack.peek();
       CanvasElement element = iterator.next();
 
@@ -58,27 +49,28 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
    */
 
   @Override
-  public boolean isDone() {
+  public boolean hasNext() {
     if (stack.empty()) {
-      return true;
+      return false;
     } else {
       Iterator<CanvasElement> iterator = stack.peek();
-      if (iterator.isDone()) {
+      if (!iterator.hasNext()) {
         stack.pop();
-        return isDone();
+        return hasNext();
       } else {
-        return false;
+        return true;
       }
     }
   }
 
-  @Override
-  public CanvasElement currentItem() {
-    return stack.peek().currentItem();
+  public void set() {
+    Iterator<CanvasElement> iterator = stack.peek();
+    iterator.set
   }
 
   @Override
-  public void removeItem() {
-    stack.pop().currentItem();
+  public void remove() {
+    Iterator<CanvasElement> iterator = stack.peek();
+    iterator.remove();
   }
 }

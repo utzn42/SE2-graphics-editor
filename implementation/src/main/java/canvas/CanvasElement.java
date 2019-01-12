@@ -75,6 +75,4 @@ public abstract class CanvasElement {
   public long getId() {
     return id;
   }
-
-
 }
