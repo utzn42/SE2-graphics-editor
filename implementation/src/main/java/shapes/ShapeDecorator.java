@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import facilitators.Colour;
 import facilitators.Coordinate;
 
+/**
+ * Decorator which lets you decorate {@link Shape}s with transform attributes.
+ *
+ * @see ShapeWithTransformAttribute
+ */
 public class ShapeDecorator extends Shape{
 
   @JsonUnwrapped

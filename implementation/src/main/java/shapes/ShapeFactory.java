@@ -8,9 +8,10 @@ import canvas.CanvasLayer;
 public interface ShapeFactory {
 
   /**
-   * Creates a {@link Circle} with default attributes.
+   * Creates a {@link CanvasLayer} which holds a shape.
    *
-   * @return The created {@link Circle}.
+   * @param shapeType decides which shape gets created in {@link CanvasLayer}
+   * @return The created {@link CanvasLayer}.
    */
   CanvasLayer createShape(ShapeType shapeType);
 
