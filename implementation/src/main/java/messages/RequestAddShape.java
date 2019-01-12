@@ -2,6 +2,7 @@ package messages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 import shapes.ShapeType;
 
 /**
@@ -13,30 +14,21 @@ import shapes.ShapeType;
  */
 public class RequestAddShape {
 
-  //TODO: Add a parameter for the new shape's position
-  private final int layerIndex;
   private final ShapeType shapeType;
+  private final Optional<Long> insertAfterID;
 
   /**
    * The constructor assigns the properties of the JSON object to the class attributes. The constructor gets called when the addShape method from the {@link main.input.RESTHandler} gets called.
-   * @param layerIndex the index of the layer in {@link Integer} where the shape gets added
-   * @param shapeType the type of shape which should get added
+   * @param insertAfterID ({@link Optional}) The ID of the element after which to insert the new Shape.
+   * @param shapeType The type of shape which should get added.
    */
   @JsonCreator
   RequestAddShape(
-      @JsonProperty("layerIndex") int layerIndex,
-      @JsonProperty("shapeType") ShapeType shapeType
+      @JsonProperty("shapeType") ShapeType shapeType,
+      @JsonProperty("insertAfterID") Optional<Long> insertAfterID
   ) {
-    this.layerIndex = layerIndex;
     this.shapeType = shapeType;
-  }
-
-  /**
-   * Returns the index of the layer where the new shape should get added. Gets called when the addShape method in {@link main.input.ProjectService} gets called.
-   * @return returns the layerIndex in {@link Integer}
-   */
-  public int getLayerIndex() {
-    return layerIndex;
+    this.insertAfterID = insertAfterID;
   }
 
   /**
@@ -46,4 +38,15 @@ public class RequestAddShape {
   public ShapeType getShapeType() {
     return shapeType;
   }
+
+  /**
+   * Returns an {@link Optional} containing the ID of the element after which to insert the new Shape, if present.
+   * Gets called when the addShape method in {@link main.input.ProjectService} gets called.
+   *
+   * @return An {@link Optional} containing the ID of the element after which to insert the new Shape, if present.
+   */
+  public Optional<Long> getInsertAfterID() {
+    return insertAfterID;
+  }
+
 }

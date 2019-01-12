@@ -1,6 +1,8 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import facilitators.Iterator;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import shapes.NonTransformableShapeFactory;
 import shapes.Shape;
 import shapes.ShapeFactory;
 import shapes.ShapeType;
+import shapes.ShapeWithTransformAttribute;
 import shapes.TransformableShapeFactory;
 
 /**
@@ -25,7 +28,7 @@ public class Canvas implements Serializable {
   private double width;
   private double height;
   private List<CanvasElement> canvasElements;
-  private boolean useTransformables;
+  private boolean allowTransformAttribute;
   private transient ShapeFactory shapeFactory;
 
   /**
@@ -37,7 +40,7 @@ public class Canvas implements Serializable {
     width = 200;
     height = 200;
     canvasElements = new ArrayList<>();
-    useTransformables = true;
+    allowTransformAttribute = true;
     shapeFactory = new TransformableShapeFactory();
   }
 
@@ -51,7 +54,7 @@ public class Canvas implements Serializable {
     width = 200;
     height = 200;
     this.canvasElements = canvasElements;
-    useTransformables = true;
+    allowTransformAttribute = true;
     shapeFactory = new TransformableShapeFactory();
   }
 
@@ -99,7 +102,8 @@ public class Canvas implements Serializable {
    *
    * @return a {@link List} of {@link Layer}
    */
-  public List<CanvasElement> getLayers() {
+  @JsonProperty("elements")
+  public List<CanvasElement> getCanvasElements() {
     return canvasElements;
   }
 
@@ -110,27 +114,67 @@ public class Canvas implements Serializable {
    * @return <code>true</code> if the Canvas allows the use of the HTML "transform" attribute for
    * its Shapes, <code>false</code> otherwise.
    */
-  public boolean doesUseTransformables() {
-    return useTransformables;
+  @JsonProperty("allowTransformAttribute")
+  public boolean doesAllowTransformAttribute() {
+    return allowTransformAttribute;
   }
 
   /**
    * Sets whether to allow the use of the HTML "transform" attribute for Shapes on the Canvas.
    * Changing this to <code>false</code> might cause existing transformations to be lost.
    *
-   * @param useTransformables Set to <code>true</code> to allow the use of the HTML "transform"
+   * @param allowTransformAttribute Set to <code>true</code> to allow the use of the HTML "transform"
    * attribute for Shapes on the Canvas, <code>false</code> otherwise.
    */
-  public void setUseTransformables(boolean useTransformables) {
-    this.useTransformables = useTransformables;
-    if (!useTransformables) {
-      shapeFactory = new NonTransformableShapeFactory();
-      //TODO: canvas.Canvas.setUseTransformables: Replace all transformable Shapes with non-transformables.
+  public void setAllowTransformAttribute(boolean allowTransformAttribute) {
+
+    if (this.allowTransformAttribute != allowTransformAttribute) {
+
+      this.allowTransformAttribute = allowTransformAttribute;
+
+      if (!allowTransformAttribute) {
+        shapeFactory = new NonTransformableShapeFactory();
+        canvasElements.forEach(canvasElement -> {
+
+          Iterator<CanvasElement> iterator = canvasElement.createIterator();
+          while(!iterator.isDone()) {
+            CanvasElement currentElement = iterator.next();
+
+            if (currentElement instanceof CanvasLayer) {
+              CanvasLayer layer = (CanvasLayer) currentElement;
+              if (layer.getShape() instanceof ShapeWithTransformAttribute) {
+                ShapeWithTransformAttribute shape = (ShapeWithTransformAttribute) layer.getShape();
+                layer.setShape(shape.getShape());
+              }
+            }
+
+          }
+
+        });
+      }
+
+      else {
+        shapeFactory = new TransformableShapeFactory();
+        canvasElements.forEach(canvasElement -> {
+
+          Iterator<CanvasElement> iterator = canvasElement.createIterator();
+          while(!iterator.isDone()) {
+            CanvasElement currentElement = iterator.next();
+
+            if (currentElement instanceof CanvasLayer) {
+              CanvasLayer layer = (CanvasLayer) currentElement;
+              if (!(layer.getShape() instanceof ShapeWithTransformAttribute)) {
+                layer.setShape(new ShapeWithTransformAttribute(layer.getShape()));
+              }
+            }
+
+          }
+
+        });
+      }
+
     }
-    else {
-      shapeFactory = new TransformableShapeFactory();
-      //TODO: canvas.Canvas.setUseTransformables: Replace all non-transformable Shapes with transformables.
-    }
+
   }
 
 
@@ -166,7 +210,7 @@ public class Canvas implements Serializable {
   private void readObject(java.io.ObjectInputStream oin)
       throws IOException, ClassNotFoundException {
     oin.defaultReadObject();
-    if (useTransformables) {
+    if (allowTransformAttribute) {
       shapeFactory = new TransformableShapeFactory();
     } else {
       shapeFactory = new NonTransformableShapeFactory();

@@ -1,10 +1,6 @@
 package main.input;
 
 import canvas.Canvas;
-import canvas.CanvasElement;
-import canvas.CanvasElementAggregate;
-import canvas.CanvasLayer;
-import canvas.Layer;
 import download.CanvasToJPGConverter;
 import download.CanvasToPNGConverter;
 import download.CanvasToSVGConverter;
@@ -18,6 +14,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
+import messages.RequestAddShape;
+import messages.RequestEditCanvas;
 import observer.Observer;
 import observer.Subject;
 import org.apache.batik.transcoder.TranscoderException;
@@ -33,7 +32,6 @@ import persistence.ProjectSerializer;
 import project.LoadedProject;
 import project.Project;
 import shapes.Shape;
-import shapes.ShapeType;
 
 /**
  * This class provides the logic which {@link RESTHandler} calls upon to deliver its functionality.
@@ -157,7 +155,7 @@ public class ProjectService implements Subject {
     }
 
     //TODO: implement addLayer
-//    projectCanvas.getLayers().add(new CanvasLayer());
+//    projectCanvas.getCanvasElements().add(new CanvasLayer());
     projectServiceLogger.error("Operation failed: " + operationToLog);
 
     putProject(project);
@@ -170,17 +168,18 @@ public class ProjectService implements Subject {
    * Adds a {@link Shape} of the specified type to the specified {@link Project}.
    *
    * @param project The Project to add the Shape to.
-   * @param layerIndex The index of the Layer to add the Shape to.
-   * @param shapeType Specifies the type of shape which is to be added, in order to call default constructors.
-   * @throws IllegalArgumentException If the shape type could not be resolved.
-   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
+   * @param request The {@link RequestAddShape} object containing the values for the modification.
+   * @throws IllegalArgumentException If the shape type could not be resolved or the element ID
+   * after which to insert the Shape does not exist.
    */
-  public void addShape(Project project, int layerIndex, ShapeType shapeType)
+  public void addShape(Project project, RequestAddShape request)
       throws IllegalArgumentException, IndexOutOfBoundsException {
-    //TODO: main.input.ProjectService.addShape(Project, int, ShapeType): Rework after integration of new layer structure
 
     String operationToLog = "Project " + project.getProjectID() + ": Add new Shape of type "
-        + shapeType + " to Layer " + layerIndex;
+        + request.getShapeType() +
+        (request.getInsertAfterID().isPresent()
+            ? " after Element " + request.getInsertAfterID().get()
+            : " at default position");
 
     Canvas projectCanvas;
     try {
@@ -190,44 +189,10 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    Shape shape;
-
-    shape = projectCanvas.getShapeFactory().createShape(shapeType).getShape();
-
-    /*switch (shapeType) {
-      case CIRCLE:
-        shape = projectCanvas.getShapeFactory().createCircle();
-        break;
-      case ELLIPSE:
-        shape = projectCanvas.getShapeFactory().createEllipse();
-        break;
-      case LINE:
-        shape = projectCanvas.getShapeFactory().createLine();
-        break;
-      case POLYGON:
-        shape = projectCanvas.getShapeFactory().createPolygon();
-        break;
-      case REGULAR_POLYGON:
-        shape = projectCanvas.getShapeFactory().createRegularPolygon();
-        break;
-      case STAR:
-        shape = projectCanvas.getShapeFactory().createStar();
-        break;
-      case TEXT:
-        shape = projectCanvas.getShapeFactory().createText();
-        break;
-      default:
-        projectServiceLogger.error("Operation failed: " + operationToLog);
-        throw new IllegalArgumentException("Unknown Shape type: " + shapeType);
-    }*/
-
-
-
-    try {
-//      projectCanvas.addShape(shapeType);
-    } catch (IndexOutOfBoundsException e) {
-      projectServiceLogger.error("Operation failed: " + operationToLog);
-      throw e;
+    if (request.getInsertAfterID().isPresent()) {
+      projectCanvas.addShape(request.getShapeType(), request.getInsertAfterID().get());
+    } else {
+      projectCanvas.addShape(request.getShapeType());
     }
 
     putProject(project);
@@ -237,19 +202,23 @@ public class ProjectService implements Subject {
 
 
   /**
-   * Modifies the width/height of the canvas of a Project.
+   * Modifies the width, height or both of the canvas of a Project. Also allows setting whether
+   * to allow the HTML "transform" attribute on elements.
    *
    * @param project The Project to modify.
-   * @param width Specifies the new canvas width.
-   * @param height Specifies the new canvas height.
+   * @param request The {@link RequestEditCanvas} object containing the values for the modification.
    * @throws IllegalArgumentException If the width or height is negative.
    */
-  public void editCanvas(Project project, double width, double height) {
+  public void editCanvas(Project project, RequestEditCanvas request) {
 
-    String operationToLog = "Project " + project.getProjectID() + ": Set Canvas measurements to "
-        + width + "x" + height;
+    StringJoiner operationToLogJoiner = new StringJoiner(", ", "Project " + project.getProjectID() + ": Edit Canvas: ", "");
+    request.getWidth().ifPresent(width -> operationToLogJoiner.add("width=" + width));
+    request.getHeight().ifPresent(height -> operationToLogJoiner.add("height=" + height));
+    request.doesAllowTransformAttribute().ifPresent(allowTransformAttribute -> operationToLogJoiner.add("allowTransformAttribute=" + allowTransformAttribute));
+    String operationToLog = operationToLogJoiner.toString();
 
-    if (width < 0 || height < 0) {
+    if (request.getWidth().isPresent() && request.getWidth().get() < 0
+        || request.getHeight().isPresent() && request.getHeight().get() < 0) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw new IllegalArgumentException("Canvas width and height must both be positive!");
     }
@@ -262,8 +231,9 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    projectCanvas.setWidth(width);
-    projectCanvas.setHeight(height);
+    request.getWidth().ifPresent(projectCanvas::setWidth);
+    request.getHeight().ifPresent(projectCanvas::setHeight);
+    request.doesAllowTransformAttribute().ifPresent(projectCanvas::setAllowTransformAttribute);
 
     putProject(project);
     projectServiceLogger.info("Operation success: " + operationToLog);
@@ -294,7 +264,7 @@ public class ProjectService implements Subject {
     }
 
     try {
-      projectCanvas.getLayers().get(layerIndex).setVisible(isVisible);
+      projectCanvas.getCanvasElements().get(layerIndex).setVisible(isVisible);
     } catch (IndexOutOfBoundsException e) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw e;
@@ -324,7 +294,7 @@ public class ProjectService implements Subject {
 
     projectServiceLogger.info("editShape - " + shape.getHTML());
 
-    projects.get(projectID).getLayers().get(layerIndex).getShapes()
+    projects.get(projectID).getCanvasElements().get(layerIndex).getShapes()
         .set(shapeIndex, shape);
 
     notifyObservers();
@@ -365,7 +335,7 @@ public class ProjectService implements Subject {
     }
 
     try {
-      projectCanvas.getLayers().remove(layerIndex);
+      projectCanvas.getCanvasElements().remove(layerIndex);
     } catch (IndexOutOfBoundsException e) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw e;
@@ -399,7 +369,7 @@ public class ProjectService implements Subject {
     }
 
     try {
-//      projectCanvas.getLayers().get(layerIndex).getShapes().remove(shapeIndex);
+//      projectCanvas.getCanvasElements().get(layerIndex).getShapes().remove(shapeIndex);
     } catch (IndexOutOfBoundsException e) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
       throw e;

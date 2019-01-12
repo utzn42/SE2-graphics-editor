@@ -144,7 +144,7 @@ public class RESTHandler {
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.addShape(project, request.getLayerIndex(), request.getShapeType());
+      projectService.addShape(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
@@ -178,7 +178,7 @@ public class RESTHandler {
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.editCanvas(project, request.getWidth(), request.getHeight());
+      projectService.editCanvas(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
