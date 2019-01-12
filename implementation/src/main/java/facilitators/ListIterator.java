@@ -1,14 +1,14 @@
 package facilitators;
 
 import canvas.CanvasElement;
-import java.util.ArrayList;
+import java.util.List;
 
-public class ArrayListIterator implements Iterator {
+public class ListIterator implements Iterator {
 
-  ArrayList<CanvasElement> elements;
+  List<CanvasElement> elements;
   int index = 0;
 
-  public ArrayListIterator(ArrayList<CanvasElement> elements) {
+  public ListIterator(List<CanvasElement> elements) {
     this.elements = elements;
   }
 
