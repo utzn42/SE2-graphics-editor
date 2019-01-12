@@ -12,7 +12,9 @@ import shapes.transform.Transformation;
  */
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
-  Iterator<CanvasElement> iterator;
+  private static final long serialVersionUID = 1L;
+
+  transient Iterator<CanvasElement> iterator;
   private List<CanvasElement> elements;
 
   public CanvasElementAggregate(long id) {

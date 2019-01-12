@@ -14,6 +14,8 @@ import shapes.transform.Transformation;
  */
 public class CanvasLayer extends CanvasElement {
 
+  private static final long serialVersionUID = 1L;
+
   private Shape shape;
 
   public CanvasLayer(long id, Shape shape) {
