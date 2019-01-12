@@ -20,13 +20,13 @@ class CanvasTest {
   void canvasElementAggregateTest() {
     canvasTestLogger.info("Starting CanvasElementAggregate tests...");
 
-    CanvasElementAggregate canvasTest = new CanvasElementAggregate();
+    CanvasElementAggregate canvasTest = new CanvasElementAggregate(0);
     canvasTestLogger.info("Successfully created test object.");
 
-    CanvasElementAggregate aggregateElementTest = new CanvasElementAggregate();
-    CanvasLayer layerElementTest1 = new CanvasLayer();
-    CanvasLayer layerElementTest2 = new CanvasLayer();
-    CanvasLayer layerElementTest3 = new CanvasLayer();
+    CanvasElementAggregate aggregateElementTest = new CanvasElementAggregate(0);
+    CanvasLayer layerElementTest1 = new CanvasLayer(1);
+    CanvasLayer layerElementTest2 = new CanvasLayer(2);
+    CanvasLayer layerElementTest3 = new CanvasLayer(3);
     canvasTest.addItem(aggregateElementTest);
     canvasTest.addItem(layerElementTest1);
     canvasTest.addItem(layerElementTest2);
@@ -63,9 +63,9 @@ class CanvasTest {
         .info("Successfully invoked both deleteItem() methods and passed size constraint checks.");
     canvasTestLogger.info("Starting iterator tests...");
 
-    CanvasElementAggregate level2Agg = new CanvasElementAggregate();
-    CanvasLayer level2Layer = new CanvasLayer();
-    CanvasLayer level3Layer = new CanvasLayer();
+    CanvasElementAggregate level2Agg = new CanvasElementAggregate(4);
+    CanvasLayer level2Layer = new CanvasLayer(5);
+    CanvasLayer level3Layer = new CanvasLayer(6);
 
     canvasTest.getItem(0).addItem(level2Agg);
     canvasTest.getItem(0).addItem(level2Layer);
