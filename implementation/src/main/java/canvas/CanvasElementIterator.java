@@ -75,13 +75,41 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
 
   @Override
   public void remove() {
-    aggregate.deleteItem(currentIndex);
+    if (invalidated || currentIndex == -1) {
+      return;
+    }
+    if (childIterator != null && childIterator.currentItem() != null) {
+      childIterator.remove();
+    } else {
+      aggregate.deleteItem(currentIndex);
+    }
     invalidated = true;
   }
 
   @Override
   public void set(CanvasElement item) {
-    aggregate.setItem(currentIndex, item);
+    if (invalidated || currentIndex == -1) {
+      return;
+    }
+    if (childIterator != null && childIterator.currentItem() != null) {
+      childIterator.set(item);
+    } else {
+      aggregate.setItem(currentIndex, item);
+    }
+    invalidated = true;
+  }
+
+  @Override
+  public void insert(CanvasElement item) {
+    if (invalidated || currentIndex == -1) {
+      return;
+    }
+    if (childIterator != null && childIterator.currentItem() != null) {
+      childIterator.insert(item);
+    } else {
+      aggregate.addItem(item, currentIndex);
+    }
+    invalidated = true;
   }
 
 }

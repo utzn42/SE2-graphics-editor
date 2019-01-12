@@ -17,6 +17,15 @@ public interface Aggregate<T> {
   void addItem(T item);
 
   /**
+   * Adds an item at the specified index to the Aggregate. Pushes the original item with that
+   * index and all following items back an index.
+   *
+   * @param item The item to add to the Aggregate.
+   * @param index The index at which to insert the item.
+   */
+  void addItem(T item, int index);
+
+  /**
    * Adds all items in the given Aggregate to this Aggregate.
    *
    * @param aggregate The Aggregate to add all items from.

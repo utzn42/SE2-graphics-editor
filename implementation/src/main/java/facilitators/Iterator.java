@@ -40,4 +40,11 @@ public interface Iterator<T> {
    */
   void set(T item);
 
+  /**
+   * Adds the given object to the collection before the current object.
+   *
+   * @param item The object to insert.
+   */
+  void insert(T item);
+
 }
