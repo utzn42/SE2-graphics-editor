@@ -50,9 +50,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   @Override
   public Iterator<CanvasElement> createIterator() {
     if (iterator == null) {
-      iterator = new CanvasElementIterator(this.createIterator());
+      iterator = new CanvasElementIterator((Iterator) elements.iterator());
     }
-    return new CanvasElementIterator(this.iterator);
+    return iterator;
   }
 
   @Override
