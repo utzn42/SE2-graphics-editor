@@ -13,6 +13,11 @@ public class NullIterator<T> implements Iterator<T> {
   }
 
   @Override
+  public T get() {
+    return null;
+  }
+
+  @Override
   public void set(T item) {
     throw new UnsupportedOperationException("Can't set a NullIterator!");
   }

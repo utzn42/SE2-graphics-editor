@@ -27,6 +27,11 @@ public class ListIterator implements Iterator<CanvasElement> {
   }
 
   @Override
+  public CanvasElement get() {
+    return elements.get(index);
+  }
+
+  @Override
   public void set(CanvasElement item) {
     elements.set(index, item);
   }
