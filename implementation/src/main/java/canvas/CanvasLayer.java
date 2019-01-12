@@ -68,7 +68,7 @@ public class CanvasLayer extends CanvasElement {
 
   @Override
   public void transform(Transformation transformation) {
-    //TODO: Implement canvas.CanvasLayer#transform(Transformation) - xandi
+    shape.applyTransformation(transformation);
   }
 
 }
