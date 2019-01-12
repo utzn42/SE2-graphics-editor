@@ -27,9 +27,31 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   @Override
+  public void addItem(CanvasElement item, int index) {
+    elements.add(index, item);
+  }
+
+  @Override
+  public void addAll(Aggregate<CanvasElement> aggregate) {
+    elements.addAll(aggregate.asList());
+  }
+
+
+  @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
     return elements.get(index);
   }
+
+  @Override
+  public List<CanvasElement> asList() {
+    return new ArrayList<>(elements);
+  }
+
+  @Override
+  public void setItem(int index, CanvasElement item) throws IndexOutOfBoundsException {
+    elements.set(index, item);
+  }
+
 
   @Override
   public boolean deleteItem(int index) {
@@ -48,6 +70,12 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     }
     return false;
   }
+
+  @Override
+  public int size() {
+    return elements.size();
+  }
+
 
   @Override
   public Iterator<CanvasElement> createIterator() {
