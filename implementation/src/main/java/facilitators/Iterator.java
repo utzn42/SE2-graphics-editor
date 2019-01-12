@@ -23,6 +23,7 @@ public interface Iterator<T> {
    */
   boolean hasNext();
 
+  Object get();
 
   void set(T item);
 
