@@ -23,5 +23,8 @@ public interface Iterator<T> {
    */
   boolean hasNext();
 
+
+  void set(T item);
+
   void remove();
 }

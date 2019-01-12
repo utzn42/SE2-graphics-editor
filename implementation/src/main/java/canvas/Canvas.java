@@ -143,7 +143,7 @@ public class Canvas implements Serializable {
     }
     else if (element instanceof CanvasElementAggregate) {
       Iterator<CanvasElement> iterator = ((CanvasElementAggregate) element).createIterator();
-      while(!iterator.isDone()) {
+      while (iterator.hasNext()) {
         CanvasElement currentElement = iterator.next();
         makeElementTransformable(currentElement);
       }
@@ -160,7 +160,7 @@ public class Canvas implements Serializable {
     }
     else if (element instanceof CanvasElementAggregate) {
       Iterator<CanvasElement> iterator = ((CanvasElementAggregate) element).createIterator();
-      while(!iterator.isDone()) {
+      while (iterator.hasNext()) {
         CanvasElement currentElement = iterator.next();
         makeElementNonTransformable(currentElement);
       }

@@ -81,7 +81,6 @@ class CanvasTest {
     assertEquals(level2Agg, testIterator.next());
     assertEquals(level3Layer, testIterator.next());
     assertEquals(level2Layer, testIterator.next());
-    CanvasElement testajde = testIterator.currentItem();
     assertEquals(layerElementTest1, testIterator.next());
     assertTrue(!testIterator.hasNext());
 
@@ -90,7 +89,6 @@ class CanvasTest {
 
     assertEquals("", canvasTest.getHTML());
     canvasTest.getItem(0).getItem(0).getItem(0).setVisible(true);
-    testajde = canvasTest.getItem(0).getItem(0).getItem(0);
     //canvasTest.getItem(0).getItem(0).getItem(0).setShape(new Circle());
   }
 }

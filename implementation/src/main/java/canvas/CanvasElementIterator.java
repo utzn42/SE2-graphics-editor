@@ -63,9 +63,10 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     }
   }
 
-  public void set() {
+  @Override
+  public void set(CanvasElement item) {
     Iterator<CanvasElement> iterator = stack.peek();
-    iterator.set
+    iterator.set(item);
   }
 
   @Override

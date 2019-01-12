@@ -4,7 +4,7 @@ import canvas.CanvasElement;
 import java.util.List;
 
 
-public class ListIterator implements Iterator {
+public class ListIterator implements Iterator<CanvasElement> {
 
   List<CanvasElement> elements;
   int index = 0;
@@ -14,7 +14,7 @@ public class ListIterator implements Iterator {
   }
 
   @Override
-  public Object next() {
+  public CanvasElement next() {
     return elements.get(index++);
   }
 
@@ -26,8 +26,9 @@ public class ListIterator implements Iterator {
     return true;
   }
 
-  public void set(CanvasElement canvasElement) {
-    elements.set(index, canvasElement);
+  @Override
+  public void set(CanvasElement item) {
+    elements.set(index, item);
   }
 
   @Override
