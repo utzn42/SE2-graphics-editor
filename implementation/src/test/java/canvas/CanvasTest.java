@@ -3,6 +3,7 @@ package canvas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import facilitators.Iterator;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,14 @@ class CanvasTest {
     canvasTestLogger.info(
         "Successfully created iterator, and received correct object upon second method call.");
 
+    assertEquals(aggregateElementTest, testIterator.next());
+    assertEquals(level2Agg, testIterator.next());
+    assertEquals(level3Layer, testIterator.next());
+    assertEquals(level2Layer, testIterator.next());
+    assertEquals(layerElementTest1, testIterator.next());
+    assertTrue(testIterator.isDone());
+    canvasTestLogger.info(
+        "Iterator worked through elements recursively and signalled end of stack successfully.");
 
   }
 

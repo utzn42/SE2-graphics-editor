@@ -19,7 +19,7 @@ public class ListIterator implements Iterator {
 
   @Override
   public Object next() {
-    return elements.get(++index);
+    return elements.get(index++);
   }
 
   @Override
