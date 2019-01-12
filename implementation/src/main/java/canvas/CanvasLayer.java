@@ -16,11 +16,13 @@ public class CanvasLayer extends CanvasElement {
 
   private Shape shape;
 
-  public CanvasLayer(Shape shape) {
+  public CanvasLayer(long id, Shape shape) {
+    super(id);
     this.shape = shape;
   }
 
-  public CanvasLayer() {
+  public CanvasLayer(long id) {
+    super(id);
     this.shape = null;
   }
 

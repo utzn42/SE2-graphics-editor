@@ -1,17 +1,27 @@
 package canvas;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import facilitators.Iterator;
-import java.util.List;
 import shapes.transform.Transformation;
 
 /**
  * Represents an element on a {@link Canvas}. Defines basic functionality any element on a canvas
  * needs to have.
  */
+@JsonIgnoreProperties({"html"})
 public abstract class CanvasElement {
 
-  private long id;
+  private final long id;
   private boolean visible;
+
+  public CanvasElement(long id) {
+    this.id = id;
+  }
+
+  public CanvasElement(long id, boolean visible) {
+    this.id = id;
+    this.visible = visible;
+  }
 
   public boolean isVisible() {
     return visible;

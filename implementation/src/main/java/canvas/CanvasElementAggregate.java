@@ -14,7 +14,8 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   Iterator<CanvasElement> iterator;
   private List<CanvasElement> elements;
 
-  public CanvasElementAggregate() {
+  public CanvasElementAggregate(long id) {
+    super(id);
     iterator = null;
     elements = new ArrayList<>();
   }

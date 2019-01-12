@@ -12,6 +12,6 @@ public interface ShapeFactory {
    *
    * @return The created {@link Circle}.
    */
-  CanvasLayer createShape(ShapeType shapeType);
+  CanvasLayer createShape(long id, ShapeType shapeType);
 
 }

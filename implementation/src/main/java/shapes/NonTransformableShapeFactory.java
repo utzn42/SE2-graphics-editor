@@ -9,16 +9,16 @@ import canvas.CanvasLayer;
 public class NonTransformableShapeFactory implements ShapeFactory {
 
   @Override
-  public CanvasLayer createShape(ShapeType shapeType) {
+  public CanvasLayer createShape(long id, ShapeType shapeType) {
     switch(shapeType){
-      case CIRCLE: return new CanvasLayer(new Circle());
-      case ELLIPSE: return new CanvasLayer(new Ellipse());
-      case LINE: return new CanvasLayer(new Line());
-      case POLYGON: return new CanvasLayer(new Polygon());
-      case REGULAR_POLYGON: return new CanvasLayer(new RegularPolygon());
-      case STAR: return new CanvasLayer(new Star());
-      case TEXT: return new CanvasLayer(new Text());
-      default : return new CanvasLayer(new Circle());
+      case CIRCLE: return new CanvasLayer(id, new Circle());
+      case ELLIPSE: return new CanvasLayer(id, new Ellipse());
+      case LINE: return new CanvasLayer(id, new Line());
+      case POLYGON: return new CanvasLayer(id, new Polygon());
+      case REGULAR_POLYGON: return new CanvasLayer(id, new RegularPolygon());
+      case STAR: return new CanvasLayer(id, new Star());
+      case TEXT: return new CanvasLayer(id, new Text());
+      default : return new CanvasLayer(id, new Circle());
     }
   }
 
