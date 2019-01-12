@@ -43,7 +43,7 @@ class ProjectTest {
 
   @Test
   void loadedProjectTest() {
-    projectTestLogger.info("Starting LoadedProject tests.");
+    projectTestLogger.info("Starting LoadedProject tests...");
     projectTest = new LoadedProject("testID");
     assertEquals("testID", projectTest.getProjectID());
     projectTestLogger.info("ID constructor successfully called.");
@@ -64,7 +64,7 @@ class ProjectTest {
 
   @Test
   void projectProxyTest() {
-    projectTestLogger.info("Starting ProjectProxy tests.");
+    projectTestLogger.info("Starting ProjectProxy tests...");
     projectTest = new ProjectProxy("testID");
     projectTestLogger.info("ProjectProxy constructor successfully called.");
     assertEquals("testID", projectTest.getProjectID());
