@@ -11,11 +11,10 @@ import shapes.transform.Transformation;
  */
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
-  Iterator<CanvasElement> iterator;
   private List<CanvasElement> elements;
 
-  public CanvasElementAggregate() {
-    iterator = null;
+  public CanvasElementAggregate(long id) {
+    super(id);
     elements = new ArrayList<>();
   }
 
@@ -25,8 +24,23 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   @Override
+  public void addAll(Aggregate<CanvasElement> aggregate) {
+    elements.addAll(aggregate.asList());
+  }
+
+  @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
     return elements.get(index);
+  }
+
+  @Override
+  public List<CanvasElement> asList() {
+    return new ArrayList<>(elements);
+  }
+
+  @Override
+  public void setItem(int index, CanvasElement item) throws IndexOutOfBoundsException {
+    elements.set(index, item);
   }
 
   @Override
@@ -48,11 +62,13 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   @Override
+  public int size() {
+    return elements.size();
+  }
+
+  @Override
   public Iterator<CanvasElement> createIterator() {
-    if (iterator == null) {
-      iterator = new CanvasElementIterator(this.createIterator());
-    }
-    return new CanvasElementIterator(this.iterator);
+    return new CanvasElementIterator(this);
   }
 
   @Override

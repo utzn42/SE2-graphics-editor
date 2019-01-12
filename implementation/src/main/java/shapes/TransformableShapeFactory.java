@@ -9,16 +9,16 @@ import canvas.CanvasLayer;
 public class TransformableShapeFactory implements ShapeFactory {
 
   @Override
-  public CanvasLayer createShape(ShapeType shapeType) {
+  public CanvasLayer createShape(long id, ShapeType shapeType) {
     switch(shapeType){
-      case CIRCLE: return new CanvasLayer(new ShapeWithTransformAttribute(new Circle()));
-      case ELLIPSE: return new CanvasLayer(new ShapeWithTransformAttribute(new Ellipse()));
-      case LINE: return new CanvasLayer(new ShapeWithTransformAttribute(new Line()));
-      case POLYGON: return new CanvasLayer(new ShapeWithTransformAttribute(new Polygon()));
-      case REGULAR_POLYGON: return new CanvasLayer(new ShapeWithTransformAttribute(new RegularPolygon()));
-      case STAR: return new CanvasLayer(new ShapeWithTransformAttribute(new Star()));
-      case TEXT: return new CanvasLayer(new ShapeWithTransformAttribute(new Text()));
-      default : return new CanvasLayer(new ShapeWithTransformAttribute(new Circle()));
+      case CIRCLE: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Circle()));
+      case ELLIPSE: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Ellipse()));
+      case LINE: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Line()));
+      case POLYGON: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Polygon()));
+      case REGULAR_POLYGON: return new CanvasLayer(id, new ShapeWithTransformAttribute(new RegularPolygon()));
+      case STAR: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Star()));
+      case TEXT: return new CanvasLayer(id, new ShapeWithTransformAttribute(new Text()));
+      default : return new CanvasLayer(id, new ShapeWithTransformAttribute(new Circle()));
     }
   }
 

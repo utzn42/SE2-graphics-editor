@@ -14,9 +14,9 @@ class CanvasElementAggregateTest {
 
   @Test
   void addItem() {
-    CanvasElementAggregate testItem = new CanvasElementAggregate();
-    CanvasLayer simpleItem = new CanvasLayer();
-    CanvasElementAggregate complexItem = new CanvasElementAggregate();
+    CanvasElementAggregate testItem = new CanvasElementAggregate(0);
+    CanvasLayer simpleItem = new CanvasLayer(0);
+    CanvasElementAggregate complexItem = new CanvasElementAggregate(0);
 
     testItem.addItem(simpleItem);
     assertEquals(simpleItem, testItem.getItem(0));

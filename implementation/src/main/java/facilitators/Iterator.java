@@ -8,13 +8,6 @@ package facilitators;
 public interface Iterator<T> {
 
   /**
-   * Returns the first object in the collection
-   *
-   * @return The first object in the collection
-   */
-  T first();
-
-  /**
    * Returns the next object in the collection
    *
    * @return The next object in the collection, or <code>null</code> if such an object does not exist
@@ -34,5 +27,17 @@ public interface Iterator<T> {
    * @return The current object
    */
   T currentItem();
+
+  /**
+   * Removes the current object.
+   */
+  void remove();
+
+  /**
+   * Sets the current object to the object given as parameter.
+   *
+   * @param item The object to set the current object to.
+   */
+  void set(T item);
 
 }

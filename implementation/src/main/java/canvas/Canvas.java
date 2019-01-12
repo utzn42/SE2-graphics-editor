@@ -28,6 +28,7 @@ public class Canvas implements Serializable {
   private double width;
   private double height;
   private List<CanvasElement> canvasElements;
+  private long shapeIDCount;
   private boolean allowTransformAttribute;
   private transient ShapeFactory shapeFactory;
 
@@ -40,20 +41,7 @@ public class Canvas implements Serializable {
     width = 200;
     height = 200;
     canvasElements = new ArrayList<>();
-    allowTransformAttribute = true;
-    shapeFactory = new TransformableShapeFactory();
-  }
-
-  /**
-   * This constructor creates a canvas already with layers. We chose a default value of 200x200, but
-   * the user can change its actual size all the time when needed.
-   *
-   * @param canvasElements a {@link List} of {@link Layer}
-   */
-  public Canvas(List<CanvasElement> canvasElements) {
-    width = 200;
-    height = 200;
-    this.canvasElements = canvasElements;
+    shapeIDCount = 0;
     allowTransformAttribute = true;
     shapeFactory = new TransformableShapeFactory();
   }
@@ -134,47 +122,49 @@ public class Canvas implements Serializable {
 
       if (!allowTransformAttribute) {
         shapeFactory = new NonTransformableShapeFactory();
-        canvasElements.forEach(canvasElement -> {
-
-          Iterator<CanvasElement> iterator = canvasElement.createIterator();
-          while(!iterator.isDone()) {
-            CanvasElement currentElement = iterator.next();
-
-            if (currentElement instanceof CanvasLayer) {
-              CanvasLayer layer = (CanvasLayer) currentElement;
-              if (layer.getShape() instanceof ShapeWithTransformAttribute) {
-                ShapeWithTransformAttribute shape = (ShapeWithTransformAttribute) layer.getShape();
-                layer.setShape(shape.getShape());
-              }
-            }
-
-          }
-
-        });
+        canvasElements.forEach(this::makeElementNonTransformable);
       }
 
       else {
         shapeFactory = new TransformableShapeFactory();
-        canvasElements.forEach(canvasElement -> {
-
-          Iterator<CanvasElement> iterator = canvasElement.createIterator();
-          while(!iterator.isDone()) {
-            CanvasElement currentElement = iterator.next();
-
-            if (currentElement instanceof CanvasLayer) {
-              CanvasLayer layer = (CanvasLayer) currentElement;
-              if (!(layer.getShape() instanceof ShapeWithTransformAttribute)) {
-                layer.setShape(new ShapeWithTransformAttribute(layer.getShape()));
-              }
-            }
-
-          }
-
-        });
+        canvasElements.forEach(this::makeElementTransformable);
       }
 
     }
 
+  }
+
+  private void makeElementTransformable(CanvasElement element) {
+    if (element instanceof CanvasLayer) {
+      CanvasLayer layer = (CanvasLayer) element;
+      if (!(layer.getShape() instanceof ShapeWithTransformAttribute)) {
+        layer.setShape(new ShapeWithTransformAttribute(layer.getShape()));
+      }
+    }
+    else if (element instanceof CanvasElementAggregate) {
+      Iterator<CanvasElement> iterator = ((CanvasElementAggregate) element).createIterator();
+      while(!iterator.isDone()) {
+        CanvasElement currentElement = iterator.next();
+        makeElementTransformable(currentElement);
+      }
+    }
+  }
+
+  private void makeElementNonTransformable(CanvasElement element) {
+    if (element instanceof CanvasLayer) {
+      CanvasLayer layer = (CanvasLayer) element;
+      if (layer.getShape() instanceof ShapeWithTransformAttribute) {
+        ShapeWithTransformAttribute decorator = (ShapeWithTransformAttribute) layer.getShape();
+        layer.setShape(decorator.getShape());
+      }
+    }
+    else if (element instanceof CanvasElementAggregate) {
+      Iterator<CanvasElement> iterator = ((CanvasElementAggregate) element).createIterator();
+      while(!iterator.isDone()) {
+        CanvasElement currentElement = iterator.next();
+        makeElementNonTransformable(currentElement);
+      }
+    }
   }
 
 
@@ -218,12 +208,12 @@ public class Canvas implements Serializable {
   }
 
   public void addShape(ShapeType shapeType) {
-    canvasElements.add(shapeFactory.createShape(shapeType));
+    canvasElements.add(shapeFactory.createShape(shapeIDCount++, shapeType));
   }
 
   public void addShape(ShapeType shapeType, long ElementID){
     CanvasElement tempElement = findCanvasElementByID(ElementID);
-    canvasElements.add(canvasElements.indexOf(tempElement), shapeFactory.createShape(shapeType));
+    canvasElements.add(canvasElements.indexOf(tempElement), shapeFactory.createShape(shapeIDCount++, shapeType));
   }
 
   public CanvasElement findCanvasElementByID(long id){
@@ -234,4 +224,5 @@ public class Canvas implements Serializable {
     }
     return null;
   }
+
 }
