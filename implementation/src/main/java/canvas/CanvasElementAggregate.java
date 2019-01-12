@@ -52,7 +52,7 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
 
   @Override
   public boolean deleteItem(int index) {
-    if ((index > 0) && (index < elements.size())) {
+    if ((index >= 0) && (index < elements.size())) {
       elements.remove(index);
       return true;
     }
