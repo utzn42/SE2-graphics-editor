@@ -21,6 +21,11 @@ public class CanvasLayer extends CanvasElement {
     this.shape = shape;
   }
 
+  public CanvasLayer(long id, boolean visible) {
+    super(id, visible);
+    this.shape = null;
+  }
+
   public CanvasLayer(long id) {
     super(id);
     this.shape = null;

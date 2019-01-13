@@ -1,94 +1,171 @@
 package canvas;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import facilitators.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import shapes.Circle;
+import shapes.Line;
+import shapes.Polygon;
+import shapes.ShapeFactory;
+import shapes.ShapeType;
+import shapes.TransformableShapeFactory;
+import shapes.transform.Transformation;
+import shapes.transform.atomic.TranslationTransformation;
 
 class CanvasTest {
 
   private static final Logger canvasTestLogger = LoggerFactory
       .getLogger(CanvasTest.class);
 
+  @AfterAll
+  static void testSuccess() {
+    canvasTestLogger.info("All tests have been passed successfully!" + '\n');
+  }
+
+  @Test
+  void canvasLayerTest() {
+    canvasTestLogger.info("Starting tests for CanvasLayer...");
+    CanvasLayer testLayer1 = new CanvasLayer(0);
+    Circle testCircle = new Circle();
+    CanvasLayer testLayer2 = new CanvasLayer(1, testCircle);
+    canvasTestLogger.info("Successfully created test objects.");
+
+    assertEquals(0, testLayer1.getId());
+    assertEquals(null, testLayer1.getShape());
+
+    assertEquals(1, testLayer2.getId());
+    assertEquals(testCircle, testLayer2.getShape());
+
+    canvasTestLogger.info("Successfully read expected parameters from test objects.");
+
+    Polygon testPolygon = new Polygon();
+    testLayer2.setShape(testPolygon);
+
+    assertEquals(testPolygon, testLayer2.getShape());
+
+    assertEquals(
+        "<polygon fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" points=\"0.0,0.0 100.0,100.0 0.0,100.0\"></polygon>",
+        testLayer2.getHTML());
+
+    canvasTestLogger.info("Successfully changed shape and read corresponding HTML output.");
+
+    canvasTestLogger.info("Attempting to apply transformations...");
+    Transformation translate = new Transformation();
+    translate.addTransformation(new TranslationTransformation(100, 0));
+    testLayer2.transform(translate);
+    assertEquals(
+        "<polygon fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" points=\"100.0,0.0 200.0,100.0 100.0,100.0\"></polygon>",
+        testLayer2.getHTML());
+    canvasTestLogger.info("Success applying translation to non-transformable shape.");
+
+    ShapeFactory testFac = new TransformableShapeFactory();
+
+    CanvasLayer testLayer3 = testFac.createShape(666, ShapeType.POLYGON);
+    testLayer3.transform(translate);
+    assertEquals(
+        "<polygon fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" points=\"100.0,0.0 200.0,100.0 100.0,100.0\"></polygon>",
+        testLayer2.getHTML());
+    canvasTestLogger.info("Success applying translation to transformable shape.");
+  }
 
   @Test
   void canvasElementAggregateTest() {
-    canvasTestLogger.info("Starting CanvasElementAggregate tests...");
-
-    CanvasElementAggregate canvasTest = new CanvasElementAggregate(0);
+    canvasTestLogger.info("Starting tests for CanvasElementAggregate...");
+    long testID = 0;
+    CanvasElementAggregate testCEA = new CanvasElementAggregate(testID++);
+    assertEquals(0, testCEA.getId());
     canvasTestLogger.info("Successfully created test object.");
 
-    CanvasElementAggregate aggregateElementTest = new CanvasElementAggregate(0);
-    CanvasLayer layerElementTest1 = new CanvasLayer(1);
-    CanvasLayer layerElementTest2 = new CanvasLayer(2);
-    CanvasLayer layerElementTest3 = new CanvasLayer(3);
-    canvasTest.addItem(aggregateElementTest);
-    canvasTest.addItem(layerElementTest1);
-    canvasTest.addItem(layerElementTest2);
-    canvasTest.addItem(layerElementTest3);
+    CanvasLayer testLayer1 = new CanvasLayer(testID++);
+    CanvasLayer testLayer2 = new CanvasLayer(testID++);
 
-    assertEquals(aggregateElementTest, canvasTest.getItem(0));
-    assertEquals(layerElementTest1, canvasTest.getItem(1));
-    assertEquals(layerElementTest2, canvasTest.getItem(2));
-    assertEquals(layerElementTest3, canvasTest.getItem(3));
+    testCEA.addItem(testLayer1);
+    testCEA.addItem(testLayer2, 0);
+    assertEquals(testLayer2, testCEA.getItem(0));
+    assertEquals(testLayer1, testCEA.getItem(1));
+    canvasTestLogger.info("addItem() functions inserted objects at correct positions.");
 
-    canvasTestLogger
-        .info("Successfully added both CanvasLayer and CanvasElementAggregate objects.");
+    CanvasElementAggregate testInsertCEA = new CanvasElementAggregate(testID++);
+    CanvasLayer testLayer3 = new CanvasLayer(testID++);
+    CanvasLayer testLayer4 = new CanvasLayer(testID++);
+    testCEA.addItem(testLayer3);
+    testCEA.addItem(testLayer4);
+    testCEA.addAll(testInsertCEA);
+    assertEquals(testLayer3, testCEA.getItem(2));
+    assertEquals(testLayer4, testCEA.getItem(3));
+    canvasTestLogger.info("Successfully called addAll() function.");
+
+    CanvasLayer newTestLayer4 = new CanvasLayer(testID++);
+    testCEA.setItem(3, newTestLayer4);
+    assertEquals(newTestLayer4, testCEA.getItem(3));
+    canvasTestLogger.info("Successfully replaced an item at desired index.");
+
+    testCEA.deleteItem(3);
+    testCEA.deleteItem(testLayer3);
+    testCEA.deleteItem(3);
+    testCEA.deleteItem(testLayer3);
+    assertEquals(2, testCEA.size());
+    assertEquals(testLayer2, testCEA.getItem(0));
+    assertEquals(testLayer1, testCEA.getItem(1));
+    canvasTestLogger.info("Successfully called deleteItem() methods and retrieved correct size.");
+
+    Iterator<CanvasElement> testIter = testCEA.createIterator();
+    assertEquals(testIter.next(), testCEA.createIterator().next());
+    canvasTestLogger.info("Successfully called createIterator.");
+
+    testCEA.getItem(0).setShape(new Circle());
+    testCEA.getItem(1).setShape(new Polygon());
+    testCEA.getItem(1).setVisible(false);
+    assertEquals(
+        "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"50.0\" cy=\"50.0\" r=\"50.0\"></circle>",
+        testCEA.getHTML());
+    canvasTestLogger.info("Successfully got HTML output.");
 
     Throwable exception =
-        assertThrows(IndexOutOfBoundsException.class, () -> canvasTest.getItem(4));
+        assertThrows(UnsupportedOperationException.class, () -> testCEA.setShape(new Line()));
     assertEquals(
-        "Index: 4, Size: 4",
+        "Can't set shape in a CanvasElementAggregate!",
         exception.getMessage());
-    canvasTestLogger.info("Successfully provoked exception while exceeding index limits.");
-
-    canvasTest.deleteItem(3);
-    assertFalse(canvasTest.deleteItem(3));
-    canvasTest.deleteItem(layerElementTest2);
-    assertFalse(canvasTest.deleteItem(layerElementTest2));
-    assertEquals(aggregateElementTest, canvasTest.getItem(0));
-    assertEquals(layerElementTest1, canvasTest.getItem(1));
-    exception =
-        assertThrows(IndexOutOfBoundsException.class, () -> canvasTest.getItem(2));
-    assertEquals(
-        "Index: 2, Size: 2",
-        exception.getMessage());
-
     canvasTestLogger
-        .info("Successfully invoked both deleteItem() methods and passed size constraint checks.");
-    canvasTestLogger.info("Starting iterator tests...");
+        .info("Successfully provoked an exception while attempting to set shape for aggregate.");
 
-    CanvasElementAggregate level2Agg = new CanvasElementAggregate(4);
-    CanvasLayer level2Layer = new CanvasLayer(5);
-    CanvasLayer level3Layer = new CanvasLayer(6);
+    Transformation translate = new Transformation();
+    translate.addTransformation(new TranslationTransformation(100, 0));
+    testCEA.transform(translate);
+    assertEquals(
+        "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"150.0\" cy=\"50.0\" r=\"50.0\"></circle>",
+        testCEA.getHTML());
+    canvasTestLogger.info("Successfully transformed shapes within test object.");
+  }
 
-    ((CanvasElementAggregate) canvasTest.getItem(0)).addItem(level2Agg);
-    ((CanvasElementAggregate) canvasTest.getItem(0)).addItem(level2Layer);
-    ((CanvasElementAggregate) ((CanvasElementAggregate) canvasTest.getItem(0)).getItem(0)).addItem(level3Layer);
-    canvasTestLogger.info("Successfully set up tree structure for iterator tests.");
+  @Test
+  void remainingCanvasElementTest() {
+    canvasTestLogger.info("Testing remaining CanvasElement methods...");
+    CanvasElement testObjects = new CanvasLayer(0, false);
+    testObjects.setVisible(true);
+    canvasTestLogger.info("Success!");
+  }
 
-    Iterator<CanvasElement> testIterator = canvasTest.createIterator();
-    assertEquals(testIterator, canvasTest.createIterator());
-    canvasTestLogger.info(
-        "Successfully created iterator, and received correct object upon second method call.");
-
-    assertEquals(aggregateElementTest, testIterator.next());
-    assertEquals(level2Agg, testIterator.next());
-    assertEquals(level3Layer, testIterator.next());
-    assertEquals(level2Layer, testIterator.next());
-    assertEquals(layerElementTest1, testIterator.next());
-    assertTrue(!testIterator.hasNext());
-
-    canvasTestLogger.info(
-        "Iterator worked through elements recursively and signalled end of stack successfully.");
-
-    assertEquals("", canvasTest.getHTML());
-    ((CanvasElementAggregate) ((CanvasElementAggregate) canvasTest.getItem(0)).getItem(0)).getItem(0).setVisible(true);
-    //canvasTest.getItem(0).getItem(0).getItem(0).setShape(new Circle());
+  @Test
+  void canvasTest() {
+    canvasTestLogger.info("Running Canvas tests...");
+    Canvas testCanvas = new Canvas();
+    assertEquals(200, testCanvas.getWidth());
+    assertEquals(200, testCanvas.getHeight());
+    testCanvas.setWidth(500);
+    testCanvas.setHeight(500);
+    assertEquals(500, testCanvas.getWidth());
+    assertEquals(500, testCanvas.getHeight());
+    List elements = new ArrayList<>();
+    assertEquals(elements, testCanvas.getCanvasElements());
+    assertEquals(true, testCanvas.doesAllowTransformAttribute());
+    canvasTestLogger.info("Test object passed basic tests.");
   }
 }
