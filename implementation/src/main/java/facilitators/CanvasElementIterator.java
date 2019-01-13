@@ -27,6 +27,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     }
   }
 
+  /**
+   * Returns <code>true</code> if the iterator has traversed the whole collection
+   *
+   * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise
+   */
   public boolean hasNext() {
     if (currentIndex + 1 >= aggregate.size() && (childIterator == null || !childIterator.hasNext())) {
       done = true;
@@ -34,6 +39,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     return !(invalidated || done);
   }
 
+  /**
+   * Returns the next object in the collection
+   *
+   * @return The next object in the collection, or <code>null</code> if such an object does not exist
+   */
   @Override
   public CanvasElement next() {
 
@@ -61,6 +71,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
 
   }
 
+  /**
+   * Returns the current object
+   *
+   * @return The current object
+   */
   @Override
   public CanvasElement currentItem() {
     if (invalidated || currentIndex == -1) {
@@ -72,6 +87,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     return aggregate.getItem(currentIndex);
   }
 
+  /**
+   * Removes the current object.
+   */
   @Override
   public void remove() {
     if (invalidated || currentIndex == -1) {
@@ -85,6 +103,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     invalidated = true;
   }
 
+  /**
+   * Sets the current object to the object given as parameter.
+   *
+   * @param item The object to set the current object to.
+   */
   @Override
   public void set(CanvasElement item) {
     if (invalidated || currentIndex == -1) {
@@ -98,6 +121,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     invalidated = true;
   }
 
+  /**
+   * Adds the given object to the collection before the current object.
+   *
+   * @param item The object to insert.
+   */
   @Override
   public void insert(CanvasElement item) {
     if (invalidated || currentIndex == -1) {

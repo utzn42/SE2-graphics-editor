@@ -16,6 +16,11 @@ public class Colour implements Serializable {
   private RGBColour rgbColour;
   private float opacity;
 
+  /**
+   * Creates a Colour out of {@link RGBColour} and opacity.
+   * @param rgbColour The {@link RGBColour}
+   * @param opacity The Opacity in {@link Float}
+   */
   @JsonCreator
   public Colour(
       @JsonProperty("rgbColour") RGBColour rgbColour,
