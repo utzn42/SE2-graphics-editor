@@ -77,6 +77,12 @@ public abstract class CanvasElement implements Serializable {
 
   public abstract void setShape(Shape shape);
 
+  public void addItem(CanvasElement item) {
+    throw new UnsupportedOperationException("Can't add an item in CanvasElement!");
+  }
+
+  ;
+
   /**
    * Transforms the CanvasElement using a {@link Transformation}.
    *

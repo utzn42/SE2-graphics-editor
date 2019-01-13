@@ -35,6 +35,10 @@ public class CanvasLayer extends CanvasElement {
     this.shape = null;
   }
 
+  public CanvasLayer(long id, boolean visible) {
+    super(id, visible);
+  }
+
   /**
    * Returns the {@link Shape} this CanvasLayer is holding
    *
