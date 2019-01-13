@@ -4,10 +4,11 @@ import download.DownloadFormat;
 import messages.ErrorResponse;
 import messages.RequestAddGroupLayer;
 import messages.RequestAddShape;
-import messages.RequestDeleteLayer;
+import messages.RequestMoveElement;
+import messages.RequestRemoveElement;
 import messages.RequestDeleteShape;
 import messages.RequestEditCanvas;
-import messages.RequestEditLayer;
+import messages.RequestEditElement;
 import messages.RequestModifyShape;
 import messages.RequestTransformElement;
 import messages.Response;
@@ -110,7 +111,7 @@ public class RESTHandler {
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.addLayer(project);
+      projectService.addGroupLayer(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
@@ -199,28 +200,28 @@ public class RESTHandler {
    * @param projectID The ID the client has been assigned in createProject().
    * @param request The HTTP POST request body, which specifies the layer which the user wishes to access and the desired visibility.
    * @return If successfully called, it returns the canvas where the visibility of the layer specified by request.getLayerIndex() has been edited.
-   * @see RequestEditLayer
+   * @see RequestEditElement
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/editLayer", method = RequestMethod.POST)
-  public Response editLayer(@PathVariable String projectID,
-      @RequestBody RequestEditLayer request) {
+  @RequestMapping(value = "/{projectID}/editElement", method = RequestMethod.POST)
+  public Response editElement(@PathVariable String projectID,
+      @RequestBody RequestEditElement request) {
 
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.editLayer(project, request.getLayerIndex(), request.isVisible());
+      projectService.editElement(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/editLayer; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/editElement; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/" + projectID + "/editLayer");
+          "/" + projectID + "/editElement");
 
     }
 
@@ -301,28 +302,28 @@ public class RESTHandler {
    * @param projectID The ID the client has been assigned in createProject().
    * @param request The HTTP POST request body, which specifies the layer which the user wishes to delete.
    * @return If successfully called, it returns an updated canvas which is missing the layer specified in request.getLayerIndex().
-   * @see RequestDeleteLayer
+   * @see RequestRemoveElement
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/deleteLayer", method = RequestMethod.POST)
-  public Response deleteLayer(@PathVariable String projectID,
-      @RequestBody RequestDeleteLayer request) {
+  @RequestMapping(value = "/{projectID}/removeElement", method = RequestMethod.POST)
+  public Response removeElement(@PathVariable String projectID,
+      @RequestBody RequestRemoveElement request) {
 
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.deleteLayer(project, request.getLayerIndex());
+      projectService.removeElement(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/deleteLayer; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/removeElement; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/" + projectID + "/deleteLayer");
+          "/" + projectID + "/removeElement");
 
     }
 

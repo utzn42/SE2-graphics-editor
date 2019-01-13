@@ -8,9 +8,7 @@ import download.CanvasToPNGConverter;
 import download.CanvasToSVGConverter;
 import download.CanvasToImageConverter;
 import download.DownloadFormat;
-import facilitators.Colour;
 import facilitators.Hasher;
-import facilitators.RGBColour;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -19,9 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import messages.RequestAddGroupLayer;
 import messages.RequestAddShape;
 import messages.RequestEditCanvas;
+import messages.RequestEditElement;
 import messages.RequestModifyShape;
+import messages.RequestMoveElement;
+import messages.RequestRemoveElement;
 import messages.RequestTransformElement;
 import messages.modifiers.shapes.ShapeModifier;
 import observer.Observer;
@@ -39,7 +41,6 @@ import persistence.ProjectSerializer;
 import project.LoadedProject;
 import project.Project;
 import shapes.Shape;
-import shapes.ShapeType;
 import shapes.transform.Transformation;
 
 /**
@@ -149,11 +150,11 @@ public class ProjectService implements Subject {
    * Adds a layer to the given {@link Project}.
    *
    * @param project The Project to add a layer to.
+   * @param request The {@link RequestAddGroupLayer} object containing the values for the modification.
    */
-  public void addLayer(Project project) {
-    //TODO: main.input.ProjectService.addGroupLayer(Project): Rework after integration of new layer structure
+  public void addGroupLayer(Project project, RequestAddGroupLayer request) {
 
-    String operationToLog = "Project " + project.getProjectID() + ": Add new Layer";
+    String operationToLog = "Project " + project.getProjectID() + ": Add Group Layer";
 
     Canvas projectCanvas;
     try {
@@ -163,8 +164,14 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-//    projectCanvas.getCanvasElements().add(new CanvasLayer());
-    projectServiceLogger.error("Operation failed: " + operationToLog);
+    if (request.getPlaceIntoElementID().isPresent()) {
+      projectCanvas.addGroupLayerIntoElement(request.getPlaceIntoElementID().get());
+    }
+    else if (request.getPlaceBeforeElementID().isPresent()) {
+      projectCanvas.addGroupLayer(request.getPlaceBeforeElementID().get());
+    } else {
+      projectCanvas.addGroupLayer();
+    }
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
@@ -185,8 +192,8 @@ public class ProjectService implements Subject {
 
     String operationToLog = "Project " + project.getProjectID() + ": Add new Shape of type "
         + request.getShapeType() +
-        (request.getInsertAfterElementID().isPresent()
-            ? " after Element " + request.getInsertAfterElementID().get()
+        (request.getPlaceBeforeElementID().isPresent()
+            ? " before Element " + request.getPlaceBeforeElementID().get()
             : " at default position");
 
     Canvas projectCanvas;
@@ -197,8 +204,11 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    if (request.getInsertAfterElementID().isPresent()) {
-      projectCanvas.addShape(request.getShapeType(), request.getInsertAfterElementID().get());
+    if (request.getPlaceIntoElementID().isPresent()) {
+      projectCanvas.addShapeIntoElement(request.getShapeType(), request.getPlaceIntoElementID().get());
+    }
+    else if (request.getPlaceBeforeElementID().isPresent()) {
+      projectCanvas.addShape(request.getShapeType(), request.getPlaceBeforeElementID().get());
     } else {
       projectCanvas.addShape(request.getShapeType());
     }
@@ -250,18 +260,15 @@ public class ProjectService implements Subject {
 
 
   /**
-   * Sets the visibility of a given layer.
+   * Sets the visibility of a given Element.
    *
    * @param project The Project to edit.
-   * @param layerIndex Is used to retrieve the desired layer from within the canvas.
-   * @param isVisible Sets the layer (and therefore all of its shapes) to visible/invisible.
-   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
+   * @param request The {@link RequestEditElement} object containing the values for the modification.
    */
-  public void editLayer(Project project, int layerIndex, boolean isVisible) {
-    //TODO: main.input.ProjectService.editLayer(Project, int, boolean): Rework after integration of new layer structure
+  public void editElement(Project project, RequestEditElement request) {
 
-    String operationToLog = "Project " + project.getProjectID() + ": Set Layer " + layerIndex + " "
-        + (isVisible ? "visible" : "invisible");
+    String operationToLog = "Project " + project.getProjectID() + ": Set Element "
+        + request.getElementID() + " " + (request.isVisible() ? "visible" : "invisible");
 
     Canvas projectCanvas;
     try {
@@ -271,12 +278,7 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    try {
-      projectCanvas.getCanvasElements().get(layerIndex).setVisible(isVisible);
-    } catch (IndexOutOfBoundsException e) {
-      projectServiceLogger.error("Operation failed: " + operationToLog);
-      throw e;
-    }
+    projectCanvas.findElementByID(request.getElementID()).setVisible(request.isVisible());
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
@@ -356,13 +358,11 @@ public class ProjectService implements Subject {
    * Deletes a layer from the specified canvas.
    *
    * @param project The Project to delete the layer from.
-   * @param layerIndex Specifies the layer which the user wishes to delete.
-   * @throws IndexOutOfBoundsException If the layer index is out of bounds.
+   * @param request The {@link RequestRemoveElement} object containing the values for the modification.
    */
-  public void deleteLayer(Project project, int layerIndex) {
-    //TODO: main.input.ProjectService.deleteLayer(Project, int): Rework after integration of new layer structure
+  public void removeElement(Project project, RequestRemoveElement request) {
 
-    String operationToLog = "Project " + project.getProjectID() + ": Delete Layer " + layerIndex;
+    String operationToLog = "Project " + project.getProjectID() + ": Remove Element " + request.getElementID();
 
     Canvas projectCanvas;
     try {
@@ -372,12 +372,7 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    try {
-      projectCanvas.getCanvasElements().remove(layerIndex);
-    } catch (IndexOutOfBoundsException e) {
-      projectServiceLogger.error("Operation failed: " + operationToLog);
-      throw e;
-    }
+    projectCanvas.removeElementByID(request.getElementID());
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);

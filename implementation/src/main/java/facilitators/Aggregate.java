@@ -66,14 +66,6 @@ public interface Aggregate<T> {
   boolean deleteItem(int index);
 
   /**
-   * Returns the number of items in the Aggregate.
-   *
-   * @return The number of items in the Aggregate.
-   */
-  int size();
-
-
-  /**
    * Removes the given item from the Aggregate
    *
    * @param item The item to be removed

@@ -212,9 +212,102 @@ public class Canvas implements Serializable {
     canvasElements.add(shapeFactory.createShape(shapeIDCount++, shapeType));
   }
 
-  public void addShape(ShapeType shapeType, long ElementID){
-    CanvasElement tempElement = findElementByID(ElementID);
-    canvasElements.add(canvasElements.indexOf(tempElement), shapeFactory.createShape(shapeIDCount++, shapeType));
+  public void addShape(ShapeType shapeType, long elementID) {
+    for (int i = 0; i < canvasElements.size(); ++i) {
+      if (canvasElements.get(i).getId() == elementID) {
+        canvasElements.add(i, shapeFactory.createShape(shapeIDCount++, shapeType));
+        return;
+      }
+      if (canvasElements.get(i) instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i)).createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == elementID) {
+            iterator.insert(shapeFactory.createShape(shapeIDCount++, shapeType));
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public void addShapeIntoElement(ShapeType shapeType, long elementID) {
+    for (CanvasElement canvasElement : canvasElements) {
+      if (canvasElement.getId() == elementID) {
+        if (canvasElement instanceof CanvasElementAggregate) {
+          ((CanvasElementAggregate) canvasElement)
+              .addItem(shapeFactory.createShape(shapeIDCount++, shapeType));
+        } else {
+          return;
+        }
+      }
+      if (canvasElement instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElement)
+            .createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == elementID) {
+            if (currentElement instanceof CanvasElementAggregate) {
+              ((CanvasElementAggregate) currentElement)
+                  .addItem(shapeFactory.createShape(shapeIDCount++, shapeType));
+            } else {
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public void addGroupLayer() {
+    canvasElements.add(new CanvasElementAggregate(shapeIDCount++));
+  }
+
+  public void addGroupLayer(long elementID) {
+    for (int i = 0; i < canvasElements.size(); ++i) {
+      if (canvasElements.get(i).getId() == elementID) {
+        canvasElements.add(i, new CanvasElementAggregate(shapeIDCount++));
+        return;
+      }
+      if (canvasElements.get(i) instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i)).createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == elementID) {
+            iterator.insert(new CanvasElementAggregate(shapeIDCount++));
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public void addGroupLayerIntoElement(long elementID) {
+    for (CanvasElement canvasElement : canvasElements) {
+      if (canvasElement.getId() == elementID) {
+        if (canvasElement instanceof CanvasElementAggregate) {
+          ((CanvasElementAggregate) canvasElement)
+              .addItem(new CanvasElementAggregate(shapeIDCount++));
+        } else {
+          return;
+        }
+      }
+      if (canvasElement instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElement)
+            .createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == elementID) {
+            if (currentElement instanceof CanvasElementAggregate) {
+              ((CanvasElementAggregate) currentElement)
+                  .addItem(new CanvasElementAggregate(shapeIDCount++));
+            } else {
+              return;
+            }
+          }
+        }
+      }
+    }
   }
 
   public CanvasElement findElementByID(long id){
@@ -245,6 +338,26 @@ public class Canvas implements Serializable {
           CanvasElement currentElement = iterator.next();
           if (currentElement.getId() == id) {
             iterator.set(canvasElement);
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public void removeElementByID(long id) {
+    for (int i = 0; i < canvasElements.size(); ++i) {
+      if (canvasElements.get(i).getId() == id) {
+        canvasElements.remove(i);
+        return;
+      }
+      if (canvasElements.get(i) instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i))
+            .createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == id) {
+            iterator.remove();
             return;
           }
         }

@@ -1,5 +1,6 @@
 package canvas;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import facilitators.Aggregate;
 import facilitators.Iterator;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   @Override
+  @JsonProperty("elements")
   public List<CanvasElement> asList() {
     return new ArrayList<>(elements);
   }

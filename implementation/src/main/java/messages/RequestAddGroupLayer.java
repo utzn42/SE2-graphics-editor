@@ -13,23 +13,23 @@ import java.util.Optional;
 public class RequestAddGroupLayer {
 
   private final Optional<Long> placeBeforeElementID;
-  private final Optional<List<Long>> groupElementIDs;
+  private final Optional<Long> placeIntoElementID;
 
   @JsonCreator()
   RequestAddGroupLayer(
       @JsonProperty("placeBeforeElementID") Optional<Long> placeBeforeElementID,
-      @JsonProperty("groupElementIDs") Optional<List<Long>> groupElementIDs)
+      @JsonProperty("placeIntoElementID") Optional<Long> placeIntoElementID)
   {
     this.placeBeforeElementID = placeBeforeElementID;
-    this.groupElementIDs = groupElementIDs;
+    this.placeIntoElementID = placeIntoElementID;
   }
 
   public Optional<Long> getPlaceBeforeElementID() {
     return placeBeforeElementID;
   }
 
-  public Optional<List<Long>> getGroupElementIDs() {
-    return groupElementIDs;
+  public Optional<Long> getPlaceIntoElementID() {
+    return placeIntoElementID;
   }
 
 }

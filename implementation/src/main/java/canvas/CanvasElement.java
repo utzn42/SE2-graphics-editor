@@ -1,6 +1,11 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import facilitators.Iterator;
 import java.io.Serializable;
 import shapes.transform.Transformation;
@@ -10,6 +15,15 @@ import shapes.transform.Transformation;
  * needs to have.
  */
 @JsonIgnoreProperties({"html"})
+@JsonTypeInfo(
+    use = Id.NAME,
+    include = As.PROPERTY,
+    property = "elementType"
+)
+@JsonSubTypes({
+    @Type(value = CanvasLayer.class, name = "LAYER"),
+    @Type(value = CanvasElementAggregate.class, name = "LAYER_GROUP")
+})
 public abstract class CanvasElement implements Serializable {
 
   private static final long serialVersionUID = 1L;
