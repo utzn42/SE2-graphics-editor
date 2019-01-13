@@ -39,7 +39,7 @@
       ]
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "Download"
   },
   {
@@ -160,7 +160,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "Project"
   },
   {
@@ -322,7 +322,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "Project"
   },
   {
@@ -477,7 +477,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements"
   },
   {
@@ -648,7 +648,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements"
   },
   {
@@ -803,7 +803,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements"
   },
   {
@@ -857,7 +857,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "fillColour.hex",
+            "field": "fillColour.rgbColour",
             "description": "<p>Hex value. Takes precedence over individual colour values.</p>"
           },
           {
@@ -903,7 +903,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "strokeColour.hex",
+            "field": "strokeColour.rgbColour",
             "description": "<p>Hex value. Takes precedence over individual colour values.</p>"
           },
           {
@@ -1151,7 +1151,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements"
   },
   {
@@ -1237,7 +1237,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements",
     "success": {
       "fields": {
@@ -1556,7 +1556,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "ProjectElements"
   },
   {
@@ -1697,35 +1697,7 @@
       }
     },
     "version": "0.0.0",
-    "filename": "./example.js",
+    "filename": "./serverapi.js",
     "groupTitle": "Project"
-  },
-  {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./doc/main.js",
-    "group": "Z__Bibliotheken_Documents_Uni_SW2_Software_Engineering_2_apidoc_doc_main_js",
-    "groupTitle": "Z__Bibliotheken_Documents_Uni_SW2_Software_Engineering_2_apidoc_doc_main_js",
-    "name": ""
   }
 ]
