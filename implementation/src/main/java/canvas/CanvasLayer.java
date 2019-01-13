@@ -4,6 +4,7 @@ import facilitators.Iterator;
 import facilitators.NullIterator;
 import java.util.List;
 import shapes.Shape;
+import shapes.ShapeWithTransformAttribute;
 import shapes.transform.Transformation;
 
 /**
@@ -13,6 +14,8 @@ import shapes.transform.Transformation;
  * @see CanvasElement
  */
 public class CanvasLayer extends CanvasElement {
+
+  private static final long serialVersionUID = 1L;
 
   private Shape shape;
 
@@ -70,7 +73,13 @@ public class CanvasLayer extends CanvasElement {
 
   @Override
   public void transform(Transformation transformation) {
-    shape.applyTransformation(transformation);
+    if (shape instanceof ShapeWithTransformAttribute) {
+      Transformation existingTransformations = ((ShapeWithTransformAttribute) shape).getTransformation();
+      existingTransformations.addTransformations(transformation);
+      shape.applyTransformation(existingTransformations);
+    } else {
+      shape.applyTransformation(transformation);
+    }
   }
 
 }

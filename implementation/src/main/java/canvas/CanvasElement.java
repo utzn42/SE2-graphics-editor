@@ -2,6 +2,7 @@ package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import facilitators.Iterator;
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
@@ -9,13 +10,16 @@ import shapes.transform.Transformation;
  * needs to have.
  */
 @JsonIgnoreProperties({"html"})
-public abstract class CanvasElement {
+public abstract class CanvasElement implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private final long id;
   private boolean visible;
 
   public CanvasElement(long id) {
     this.id = id;
+    this.visible = true;
   }
 
   public CanvasElement(long id, boolean visible) {

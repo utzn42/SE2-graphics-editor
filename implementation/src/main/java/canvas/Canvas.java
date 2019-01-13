@@ -13,6 +13,7 @@ import shapes.ShapeFactory;
 import shapes.ShapeType;
 import shapes.ShapeWithTransformAttribute;
 import shapes.TransformableShapeFactory;
+import shapes.transform.Transformation;
 
 /**
  * The Canvas class is the container in which all layers with shapes are in. It is like the
@@ -213,16 +214,38 @@ public class Canvas implements Serializable {
   }
 
   public void addShape(ShapeType shapeType, long ElementID){
-    CanvasElement tempElement = findCanvasElementByID(ElementID);
+    CanvasElement tempElement = findElementByID(ElementID);
     canvasElements.add(canvasElements.indexOf(tempElement), shapeFactory.createShape(shapeIDCount++, shapeType));
   }
 
-  public CanvasElement findCanvasElementByID(long id){
-    for(CanvasElement element : canvasElements){
-      if(element.getId() == id){
-        return element;
+  public CanvasElement findElementByID(long id){
+    for (CanvasElement element : canvasElements) {
+      Iterator<CanvasElement> iterator = element.createIterator();
+      while (iterator.hasNext()) {
+        CanvasElement currentElement = iterator.next();
+        if (currentElement.getId() == id) {
+          return currentElement;
+        }
       }
     }
     return null;
   }
+
+  public void updateElementByID(long id, CanvasElement canvasElement) {
+    for (CanvasElement element : canvasElements) {
+      Iterator<CanvasElement> iterator = element.createIterator();
+      while (iterator.hasNext()) {
+        CanvasElement currentElement = iterator.next();
+        if (currentElement.getId() == id) {
+          iterator.set(canvasElement);
+          return;
+        }
+      }
+    }
+  }
+
+  public void transformElementByID(long id, Transformation transformation) {
+    findElementByID(id).transform(transformation);
+  }
+
 }
