@@ -28,23 +28,23 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
     }
   }
 
-  public boolean isDone() {
-    if (currentIndex + 1 >= aggregate.size() && (childIterator == null || childIterator.isDone())) {
+  public boolean hasNext() {
+    if (currentIndex + 1 >= aggregate.size() && (childIterator == null || !childIterator.hasNext())) {
       done = true;
     }
-    return invalidated || done;
+    return !(invalidated || done);
   }
 
   @Override
   public CanvasElement next() {
 
-    if (isDone()) {
+    if (!hasNext()) {
       invalidated = true;
       return null;
     }
 
     if (childIterator != null) {
-      if (childIterator.isDone()) {
+      if (!childIterator.hasNext()) {
         childIterator = null;
       } else {
         return childIterator.next();

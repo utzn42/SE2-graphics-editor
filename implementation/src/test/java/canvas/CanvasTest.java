@@ -67,9 +67,9 @@ class CanvasTest {
     CanvasLayer level2Layer = new CanvasLayer(5);
     CanvasLayer level3Layer = new CanvasLayer(6);
 
-    canvasTest.getItem(0).addItem(level2Agg);
-    canvasTest.getItem(0).addItem(level2Layer);
-    canvasTest.getItem(0).getItem(0).addItem(level3Layer);
+    ((CanvasElementAggregate) canvasTest.getItem(0)).addItem(level2Agg);
+    ((CanvasElementAggregate) canvasTest.getItem(0)).addItem(level2Layer);
+    ((CanvasElementAggregate) ((CanvasElementAggregate) canvasTest.getItem(0)).getItem(0)).addItem(level3Layer);
     canvasTestLogger.info("Successfully set up tree structure for iterator tests.");
 
     Iterator<CanvasElement> testIterator = canvasTest.createIterator();
@@ -88,7 +88,7 @@ class CanvasTest {
         "Iterator worked through elements recursively and signalled end of stack successfully.");
 
     assertEquals("", canvasTest.getHTML());
-    canvasTest.getItem(0).getItem(0).getItem(0).setVisible(true);
+    ((CanvasElementAggregate) ((CanvasElementAggregate) canvasTest.getItem(0)).getItem(0)).getItem(0).setVisible(true);
     //canvasTest.getItem(0).getItem(0).getItem(0).setShape(new Circle());
   }
 }

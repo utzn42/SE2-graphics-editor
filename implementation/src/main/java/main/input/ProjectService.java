@@ -314,6 +314,7 @@ public class ProjectService implements Subject {
     shapeToModify = shapeModifier.apply(shapeToModify);
     ((CanvasLayer) element).setShape(shapeToModify);
 
+    putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
   }
 
@@ -346,8 +347,8 @@ public class ProjectService implements Subject {
       projectCanvas.transformElementByID(request.getElementID(), transformation);
     }
 
+    putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
-
   }
 
 

@@ -19,7 +19,7 @@ public interface Iterator<T> {
    *
    * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise
    */
-  boolean isDone();
+  boolean hasNext();
 
   /**
    * Returns the current object

@@ -219,11 +219,15 @@ public class Canvas implements Serializable {
 
   public CanvasElement findElementByID(long id){
     for (CanvasElement element : canvasElements) {
-      Iterator<CanvasElement> iterator = element.createIterator();
-      while (iterator.hasNext()) {
-        CanvasElement currentElement = iterator.next();
-        if (currentElement.getId() == id) {
-          return currentElement;
+      if (element.getId() == id) {
+        return element;
+      } else if (element instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) element).createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == id) {
+            return currentElement;
+          }
         }
       }
     }
@@ -231,13 +235,18 @@ public class Canvas implements Serializable {
   }
 
   public void updateElementByID(long id, CanvasElement canvasElement) {
-    for (CanvasElement element : canvasElements) {
-      Iterator<CanvasElement> iterator = element.createIterator();
-      while (iterator.hasNext()) {
-        CanvasElement currentElement = iterator.next();
-        if (currentElement.getId() == id) {
-          iterator.set(canvasElement);
-          return;
+    for (int i = 0; i < canvasElements.size(); ++i) {
+      if (canvasElements.get(i).getId() == id) {
+        canvasElements.set(i, canvasElement);
+      } else if (canvasElements.get(i) instanceof CanvasElementAggregate) {
+        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i))
+            .createIterator();
+        while (iterator.hasNext()) {
+          CanvasElement currentElement = iterator.next();
+          if (currentElement.getId() == id) {
+            iterator.set(canvasElement);
+            return;
+          }
         }
       }
     }

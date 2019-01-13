@@ -24,15 +24,15 @@ class IteratorTest {
     CanvasElement layerElement2 = new CanvasLayer(testID++);
     CanvasElement layerElement3 = new CanvasLayer(testID++);
 
-    testCollection.addItem(coll1);
-    testCollection.addItem(layerElement1);
-    testCollection.addItem(layerElement2);
-    testCollection.getItem(0).addItem(layerElement3);
+    ((CanvasElementAggregate) testCollection).addItem(coll1);
+    ((CanvasElementAggregate) testCollection).addItem(layerElement1);
+    ((CanvasElementAggregate) testCollection).addItem(layerElement2);
+    ((CanvasElementAggregate) ((CanvasElementAggregate) testCollection).getItem(0)).addItem(layerElement3);
 
-    Iterator<CanvasElement> testIterator = testCollection.createIterator();
+    Iterator<CanvasElement> testIterator = ((CanvasElementAggregate) testCollection).createIterator();
     System.out.println(testIterator.hasNext());
     CanvasElement coll1Copy = testIterator.next();
-    CanvasElement testIterItem = (CanvasElement) testIterator.get();
+    CanvasElement testIterItem = testIterator.currentItem();
     testIterator.remove();
   }
 

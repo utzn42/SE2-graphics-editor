@@ -1,9 +1,12 @@
 package shapes.transform.atomic;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * An atomic transformation that can be applied to an object and represented in an HTML "transform"
  * attribute.
  */
+@JsonIgnoreProperties({"htmlattribute"})
 public interface AtomicTransformation {
 
   /**
