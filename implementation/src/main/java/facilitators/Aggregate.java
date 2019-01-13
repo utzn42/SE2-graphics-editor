@@ -82,6 +82,13 @@ public interface Aggregate<T> {
   boolean deleteItem(T item);
 
   /**
+   * Returns the number of items in the Aggregate.
+   *
+   * @return The number of items in the Aggregate.
+   */
+  int size();
+
+  /**
    * Returns an {@link Iterator} over the Aggregate
    *
    * @return An {@link Iterator} over the Aggregate
