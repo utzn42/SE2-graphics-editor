@@ -2,12 +2,10 @@ package main.input;
 
 import download.DownloadFormat;
 import messages.ErrorResponse;
-import messages.RequestAddGroupLayer;
+import messages.RequestAddLayerGroup;
 import messages.RequestAddShape;
-import messages.RequestMoveElement;
 import messages.RequestRemoveElement;
-import messages.RequestDeleteShape;
-import messages.RequestEditCanvas;
+import messages.RequestEditProject;
 import messages.RequestEditElement;
 import messages.RequestModifyShape;
 import messages.RequestTransformElement;
@@ -99,28 +97,28 @@ public class RESTHandler {
    * @param request The HTTP POST request body transmitted by the client.
    * @return If successfully called, it returns a canvas which has an additional layer. Otherwise, a
    * basic ErrorResponse is returned.
-   * @see RequestAddGroupLayer
+   * @see RequestAddLayerGroup
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/addGroupLayer", method = RequestMethod.POST)
-  public Response addGroupLayer(@PathVariable String projectID,
-      @RequestBody RequestAddGroupLayer request) {
+  @RequestMapping(value = "/{projectID}/addLayerGroup", method = RequestMethod.POST)
+  public Response addLayerGroup(@PathVariable String projectID,
+      @RequestBody RequestAddLayerGroup request) {
 
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.addGroupLayer(project, request);
+      projectService.addLayerGroup(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/addGroupLayer; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/addLayerGroup; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-           "/" + projectID + "/addGroupLayer");
+           "/" + projectID + "/addLayerGroup");
 
     }
 
@@ -166,28 +164,28 @@ public class RESTHandler {
    * @param projectID The ID the client has been assigned in createProject().
    * @param request The HTTP POST request body, which specifies the desired height and width for the new canvas.
    * @return If successfully called, it returns a canvas which measures request.getWidth() in width and request.getHeight() in height.
-   * @see RequestEditCanvas
+   * @see RequestEditProject
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/editCanvas", method = RequestMethod.POST)
-  public Response editCanvas(@PathVariable String projectID,
-      @RequestBody RequestEditCanvas request) {
+  @RequestMapping(value = "/{projectID}/editProject", method = RequestMethod.POST)
+  public Response editProject(@PathVariable String projectID,
+      @RequestBody RequestEditProject request) {
 
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.editCanvas(project, request);
+      projectService.editProject(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/editCanvas; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/editProject; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/" + projectID + "/editCanvas");
+          "/" + projectID + "/editProject");
 
     }
 
@@ -240,7 +238,7 @@ public class RESTHandler {
    */
   @CrossOrigin()
   @RequestMapping(value = "/{projectID}/modifyShape", method = RequestMethod.POST)
-  public Response editShape(@PathVariable String projectID,
+  public Response modifyShape(@PathVariable String projectID,
       @RequestBody RequestModifyShape request) {
 
     try {
@@ -324,40 +322,6 @@ public class RESTHandler {
       return new ErrorResponse(
           e.getMessage(),
           "/" + projectID + "/removeElement");
-
-    }
-
-  }
-
-
-  /**
-   * Deletes a shape within a certain layer of the canvas.
-   *
-   * @param projectID The ID the client has been assigned in createProject().
-   * @param request The HTTP POST request body, which specifies the layer which the user wishes to delete.
-   * @return If successfully called, it returns a canvas with an updated layer which is missing the shape in request.getShapeIndex().
-   * @see RequestDeleteShape
-   * @see ServerResponse
-   * @see ErrorResponse
-   */
-  @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/deleteShape", method = RequestMethod.POST)
-  public Response deleteShape(@PathVariable String projectID,
-      @RequestBody RequestDeleteShape request) {
-
-    try {
-
-      Project project = projectService.getProject(projectID);
-      projectService.deleteShape(project, request.getLayerIndex(), request.getShapeIndex());
-
-      return new ServerResponse(project.getProjectID(), project.getCanvas());
-
-    } catch (Exception e) {
-
-      restHandlerLogger.error("Error in /" + projectID + "/deleteShape; returning ErrorResponse");
-      return new ErrorResponse(
-          e.getMessage(),
-          "/" + projectID + "/deleteShape");
 
     }
 

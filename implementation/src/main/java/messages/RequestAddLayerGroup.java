@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Request parameter object for POST {projectID}/addGroupLayer
+ * Request parameter object for POST {projectID}/addLayerGroup
  *
  * @see main.input.RESTHandler
  */
-public class RequestAddGroupLayer {
+public class RequestAddLayerGroup {
 
   private final Optional<Long> placeBeforeElementID;
   private final Optional<Long> placeIntoElementID;
 
   @JsonCreator()
-  RequestAddGroupLayer(
+  RequestAddLayerGroup(
       @JsonProperty("placeBeforeElementID") Optional<Long> placeBeforeElementID,
       @JsonProperty("placeIntoElementID") Optional<Long> placeIntoElementID)
   {

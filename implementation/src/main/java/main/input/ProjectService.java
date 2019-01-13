@@ -17,12 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
-import messages.RequestAddGroupLayer;
+import messages.RequestAddLayerGroup;
 import messages.RequestAddShape;
-import messages.RequestEditCanvas;
+import messages.RequestEditProject;
 import messages.RequestEditElement;
 import messages.RequestModifyShape;
-import messages.RequestMoveElement;
 import messages.RequestRemoveElement;
 import messages.RequestTransformElement;
 import messages.modifiers.shapes.ShapeModifier;
@@ -150,9 +149,9 @@ public class ProjectService implements Subject {
    * Adds a layer to the given {@link Project}.
    *
    * @param project The Project to add a layer to.
-   * @param request The {@link RequestAddGroupLayer} object containing the values for the modification.
+   * @param request The {@link RequestAddLayerGroup} object containing the values for the modification.
    */
-  public void addGroupLayer(Project project, RequestAddGroupLayer request) {
+  public void addLayerGroup(Project project, RequestAddLayerGroup request) {
 
     String operationToLog = "Project " + project.getProjectID() + ": Add Group Layer";
 
@@ -224,10 +223,10 @@ public class ProjectService implements Subject {
    * to allow the HTML "transform" attribute on elements.
    *
    * @param project The Project to modify.
-   * @param request The {@link RequestEditCanvas} object containing the values for the modification.
+   * @param request The {@link RequestEditProject} object containing the values for the modification.
    * @throws IllegalArgumentException If the width or height is negative.
    */
-  public void editCanvas(Project project, RequestEditCanvas request) {
+  public void editProject(Project project, RequestEditProject request) {
 
     StringJoiner operationToLogJoiner = new StringJoiner(", ", "Project " + project.getProjectID() + ": Edit Canvas: ", "");
     request.getWidth().ifPresent(width -> operationToLogJoiner.add("width=" + width));
@@ -373,40 +372,6 @@ public class ProjectService implements Subject {
     }
 
     projectCanvas.removeElementByID(request.getElementID());
-
-    putProject(project);
-    projectServiceLogger.info("Operation successful: " + operationToLog);
-
-  }
-
-
-  /**
-   * Deletes a certain shape within a layer of the canvas.
-   *
-   * @param project The Project to delete the Shape from.
-   * @param layerIndex Specifies the layer within which the user wishes to delete the shape.
-   * @param shapeIndex Specifies the exact shape which the user wishes to delete.
-   */
-  public void deleteShape(Project project, int layerIndex, int shapeIndex) {
-    //TODO: main.input.ProjectService.deleteShape(Project, int, int): Rework after integration of new layer structure
-
-    String operationToLog = "Project " + project.getProjectID() + ": Delete Shape " + shapeIndex
-        + " from Layer " + layerIndex;
-
-    Canvas projectCanvas;
-    try {
-      projectCanvas = project.getCanvas();
-    } catch (Exception e) {
-      projectServiceLogger.error("Operation failed: " + operationToLog);
-      throw new RuntimeException(e);
-    }
-
-    try {
-//      projectCanvas.getCanvasElements().get(layerIndex).getShapes().remove(shapeIndex);
-    } catch (IndexOutOfBoundsException e) {
-      projectServiceLogger.error("Operation failed: " + operationToLog);
-      throw e;
-    }
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);

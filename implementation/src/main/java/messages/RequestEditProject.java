@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Optional;
 
 /**
- * This class is used to store data of the request from the client if editCanvas in {@link main.input.RESTHandler} gets called and the user wants to edit the {@link canvas.Canvas}.
+ * This class is used to store data of the request from the client if editProject in {@link main.input.RESTHandler} gets called and the user wants to edit the {@link canvas.Canvas}.
  * It is necessary to access the data of the JSON object/body which the server receives from the client.
  *
  * @see main.input.RESTHandler
  * @see main.input.ProjectService
  */
-public class RequestEditCanvas {
+public class RequestEditProject {
 
   private final Optional<Double> width;
   private final Optional<Double> height;
@@ -28,7 +28,7 @@ public class RequestEditCanvas {
    * @see Optional
    */
   @JsonCreator()
-  public RequestEditCanvas(
+  public RequestEditProject(
       @JsonProperty("width") Optional<Double> width,
       @JsonProperty("height") Optional<Double> height,
       @JsonProperty("allowTransformAttribute") Optional<Boolean> allowTransformAttribute
@@ -40,7 +40,7 @@ public class RequestEditCanvas {
 
   /**
    * Returns an {@link Optional} field containing the new desired width of the canvas if set.
-   * Gets called when editCanvas in {@link main.input.ProjectService} gets called.
+   * Gets called when editProject in {@link main.input.ProjectService} gets called.
    * @return Returns an {@link Optional} object containing the width in {@link Double} if set.
    */
   public Optional<Double> getWidth() {
@@ -49,7 +49,7 @@ public class RequestEditCanvas {
 
   /**
    * Returns an {@link Optional} field containing the new desired height of the canvas if set.
-   * Gets called when editCanvas in {@link main.input.ProjectService} gets called.
+   * Gets called when editProject in {@link main.input.ProjectService} gets called.
    * @return Returns an {@link Optional} object containing the height in {@link Double} if set.
    */
   public Optional<Double> getHeight() {

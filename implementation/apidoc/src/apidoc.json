@@ -1,0 +1,19 @@
+{
+  "name": "SE2 API",
+  "version": "1.0.0",
+  "description": "Simple SVG drawing browser app",
+  "title": "SE2 API",
+  "url": "http://localhost:8080",
+  "order": [
+    "CreateProject",
+    "LoadProject",
+    "EditProject",
+    "AddShape",
+    "AddLayerGroup",
+    "ModifyShape",
+    "EditElement",
+    "TransformElement",
+    "RemoveElement",
+    "Download"
+  ]
+}
