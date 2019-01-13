@@ -34,7 +34,25 @@ class PersistenceTest {
 
   @AfterAll
   static void testSuccess() {
-    persistenceTestLogger.info("All tests have been passed successfully!" + '\n');
+    persistenceTestLogger.info("PersistenceTest has been passed successfully!" + '\n');
+  }
+
+  /**
+   * Deletes files within projects directory in order to be able to work in a clean, standardized
+   * environment.
+   */
+  @BeforeEach
+  void cleanProjects() {
+    ProjectSerializer.deleteProjects();
+    persistenceTestLogger.info("Successfully reset projects.");
+    File dir = new File(
+        "projects");
+    try {
+      FileUtils.cleanDirectory(dir);
+      persistenceTestLogger.info("Successfully cleaned project directory." + '\n');
+    } catch (IOException e) {
+      fail("cleanProjects(): Could not clean project directory. " + e.getMessage());
+    }
   }
 
   @Test
@@ -98,7 +116,7 @@ class PersistenceTest {
 
     assertEquals(idStringList, testIDList.getIdList());
     persistenceTestLogger
-        .info("IDLists match! " + '\n' + '\n' + "idListTest() was passed successfully.");
+        .info("IDLists match! idListTest() was passed successfully." + '\n');
 
   }
 
@@ -111,7 +129,8 @@ class PersistenceTest {
     projectObserverTest.update(loadedProjectTest);
     assertEquals(loadedProjectTest, ProjectSerializer.getProjects().get(loadedProjectHash));
     persistenceTestLogger
-        .info("ProjectObserver successfully updated ProjectSerializer with LoadedProject object.");
+        .info("ProjectObserver successfully updated ProjectSerializer with LoadedProject object!"
+            + '\n');
 
 
   }
@@ -121,7 +140,7 @@ class PersistenceTest {
     persistenceTestLogger.info("projectSerializerTest() started.");
     testProjectList = ProjectSerializer.getProjects();
     assertTrue(testProjectList.isEmpty());
-    persistenceTestLogger.info("isEmpty test was passed! Starting SeedIncrement test..." + '\n');
+    persistenceTestLogger.info("isEmpty test was passed! Starting SeedIncrement test...");
 
     try {
       assertEquals(0, ProjectSerializer.getAndIncrementSeed());
@@ -134,7 +153,7 @@ class PersistenceTest {
       fail("Failed to pass second seed iteration. " + e.getMessage());
     }
     persistenceTestLogger
-        .info("SeedIncrement test was passed! Starting LoadedProject test..." + '\n');
+        .info("SeedIncrement test was passed! Starting LoadedProject test...");
 
     String loadedProjectHash = new Hasher(0).getHash();
     Project testLoadedProject = new LoadedProject(loadedProjectHash);
@@ -143,6 +162,13 @@ class PersistenceTest {
     Map<String, Project> testProjectList2 = new HashMap<>();
     testProjectList2 = ProjectSerializer.getProjects();
 
+    try {
+      ProjectSerializer.getProject(loadedProjectHash);
+      persistenceTestLogger.info("Successfully fetched project " + loadedProjectHash + ".");
+    } catch (Exception e) {
+      fail("Couldn't load project " + loadedProjectHash + ". " + e.getMessage());
+    }
+
     assertEquals(testProjectList, testProjectList2);
     try {
       assertEquals(testProjectList.get(loadedProjectHash),
@@ -150,11 +176,25 @@ class PersistenceTest {
     } catch (Exception e) {
       fail("Error in ProjectSerializer.getProject(String projectID): " + e.getMessage());
     }
-    persistenceTestLogger.info("LoadedProject test passed! Starting ProjectProxy test..." + '\n');
+    persistenceTestLogger.info("LoadedProject test passed! Starting ProjectProxy test...");
 
     //finish ProjectProxy test
     Project testProjectProxy = new ProjectProxy(loadedProjectHash);
-    persistenceTestLogger.info("ProjectProxy test passed! ");
+    persistenceTestLogger.info("ProjectProxy test passed! " + '\n');
+
+    cleanProjects();
+    ProjectSerializer.setProxyProjects(false);
+    ProjectSerializer.getProjects();
+    persistenceTestLogger.info("Retrieved projects with proxyprojects flag set to false.");
+
+    Throwable exception =
+        assertThrows(Exception.class,
+            () -> ProjectSerializer.getProject("af5570"));
+    assertEquals("projects\\af5570\\af5570.ser (The system cannot find the path specified)",
+        exception.getMessage());
+    persistenceTestLogger
+        .info("Successfully provoked exception while attempting to load non-existent project.");
+    persistenceTestLogger.info("projectSerializerTest passed successfully!" + '\n');
   }
 
   @Test
@@ -207,23 +247,6 @@ class PersistenceTest {
     persistenceTestLogger.info("Serializer successfully passed test.");
 
     assertEquals(testString, deserializedTestString);
-  }
-
-  /**
-   * Deletes files within projects directory in order to be able to work in a clean, standardized
-   * environment.
-   */
-  @BeforeEach
-  void cleanProjects() {
-    ProjectSerializer.deleteProjects();
-    persistenceTestLogger.info("Successfully reset projects.");
-    File dir = new File(
-        "projects");
-    try {
-      FileUtils.cleanDirectory(dir);
-      persistenceTestLogger.info("Successfully cleaned project directory." + '\n');
-    } catch (IOException e) {
-      fail("cleanProjects(): Could not clean project directory. " + e.getMessage());
-    }
+    persistenceTestLogger.info("serializerTest passed successfully!" + '\n');
   }
 }

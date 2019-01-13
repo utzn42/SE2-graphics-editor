@@ -26,7 +26,7 @@ class CanvasTest {
 
   @AfterAll
   static void testSuccess() {
-    canvasTestLogger.info("All tests have been passed successfully!" + '\n');
+    canvasTestLogger.info("CanvasTest has been passed successfully!" + '\n');
   }
 
   @Test
@@ -73,6 +73,7 @@ class CanvasTest {
         "<polygon fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" points=\"100.0,0.0 200.0,100.0 100.0,100.0\"></polygon>",
         testLayer2.getHTML());
     canvasTestLogger.info("Success applying translation to transformable shape.");
+    canvasTestLogger.info("canvaslayerTest passed successfully." + '\n');
   }
 
   @Test
@@ -143,6 +144,7 @@ class CanvasTest {
         "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"150.0\" cy=\"50.0\" r=\"50.0\"></circle>",
         testCEA.getHTML());
     canvasTestLogger.info("Successfully transformed shapes within test object.");
+    canvasTestLogger.info("canvasElementAggregate tests have been passed successfully!" + '\n');
   }
 
   @Test
@@ -150,7 +152,7 @@ class CanvasTest {
     canvasTestLogger.info("Testing remaining CanvasElement methods...");
     CanvasElement testObjects = new CanvasLayer(0, false);
     testObjects.setVisible(true);
-    canvasTestLogger.info("Success!");
+    canvasTestLogger.info("Success!" + '\n');
   }
 
   @Test
