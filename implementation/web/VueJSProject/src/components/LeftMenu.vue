@@ -1,9 +1,9 @@
 <template>
-  <layer-menu />
+  <layer-menu-new />
 </template>
 
 <script>
-  import LayerMenu from "./menus/LayerMenu";
+  import LayerMenuNew from "./menus/LayerMenuNew";
 
   /**
    * This component renders the left menu.
@@ -14,7 +14,7 @@
     name: "LeftMenu",
 
     components: {
-      LayerMenu
+      LayerMenuNew
     }
 
   }

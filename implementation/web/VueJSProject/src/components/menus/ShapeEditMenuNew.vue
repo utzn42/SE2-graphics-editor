@@ -2,6 +2,9 @@
   <div v-if="shapeData !== null && shapeData !== undefined" class="shape-edit-form">
 
     <ul>
+
+      <li class="selected-dark">Shape Attributes</li>
+
       <template v-for="(attribute, key) in shapeData">
 
         <li>
@@ -57,10 +60,12 @@
 
       </template>
 
-    </ul>
+      <br />
+      <li class="confirm" v-on:click="edit()">
+        Apply Changes
+      </li>
 
-    <br />
-    <button v-on:click="edit()">Apply Changes</button>
+    </ul>
 
   </div>
 </template>
@@ -75,87 +80,53 @@
    */
   export default {
 
-    name: "ShapeEditMenu",
+    name: "ShapeEditMenuNew",
 
     data() {
       return {
-        canvasData: {
-          width: {
-            label: "Canvas Width",
-            type: "simple",
-            value: ""
-          },
-          height: {
-            label: "Canvas Height",
-            type: "simple",
-            value: ""
-          }
-        },
-        shapeType: null,
+        shapeType: "",
         shapeData: null,
         shapeModel: {},
-        selectedLayer: null,
-        selectedShape: null,
-        shapesRootPackage: "shapes"
+        selectedElement: {}
       }
     },
 
     methods: {
 
-      updateEdit: function(layerData) {
-        this.selectedLayer = layerData.selectedLayer;
-        this.selectedShape = layerData.selectedShape;
-        if (this.selectedLayer === -1 || this.selectedShape === -1) {
-          this.shapeClass = null;
-          this.shapeModel = {
-            width: this.canvasData.width.value,
-            height: this.canvasData.height.value
-          };
-          this.shapeData = this.canvasData;
-        }
-        else {
-          let shape = layerData.layers[this.selectedLayer].shapes[this.selectedShape];
+      updateEdit: function(element) {
+        this.selectedElement = element;
+        if (this.selectedElement.hasOwnProperty("shape")) {
+          let shape = this.selectedElement.shape;
           this.shapeModel = shape;
-          this.shapeClass = shape.shapeType;
+          this.shapeType = shape.shapeType;
           switch (this.shapeType) {
-            case this.shapesRootPackage + ".Circle":
+            case "CIRCLE":
               this.shapeData = new Circle(shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".RegularPolygon":
+            case "REGULAR_POLYGON":
               this.shapeData = new RegularPolygon(shape.edgeAmount, shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".Star":
+            case "STAR":
               this.shapeData = new Star(shape.innerRadius, shape.edgeAmount, shape.center, shape.radius, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".Ellipse":
+            case "ELLIPSE":
               this.shapeData = new Ellipse(shape.center, shape.radiusX, shape.radiusY, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".Line":
+            case "LINE":
               this.shapeData = new Line(shape.coordinates, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".Polygon":
+            case "POLYGON":
               this.shapeData = new Polygon(shape.coordinates, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
-            case this.shapesRootPackage + ".Text":
+            case "TEXT":
               this.shapeData = new Text(shape.center, shape.displayText, shape.font, shape.fontSize, shape.fillColour, shape.strokeColour, shape.strokeWidth, shape.opacity);
               break;
             default:
               console.log("Unexpected Type");
           }
+        } else {
+          this.shapeData = null;
         }
-      },
-
-      updateCanvasVars: function(canvas) {
-        this.canvasData.width = {
-          label: "Canvas Width",
-          type: "simple",
-          value: canvas.width
-        };
-        this.canvasData.height = {
-          label: "Canvas Height",
-          type: "simple",
-          value: canvas.height
-        };
       },
 
       addVertex: function (object) {
@@ -172,24 +143,14 @@
       },
 
       edit: function () {
-        if (this.selectedLayer !== -1 && this.selectedShape !== -1) {
-          dataBus.$emit('editShape', {
-            layerIndex: this.selectedLayer,
-            shapeIndex: this.selectedShape,
-            shape: this.shapeModel
-          });
-        } else {
-          dataBus.$emit('editCanvas', {
-            width: this.shapeModel.width,
-            height: this.shapeModel.height
-          });
-        }
+        this.shapeModel.elementID = this.selectedElement.id;
+        dataBus.$emit('modifyShape', this.shapeModel);
+        console.log(this.shapeModel);
       }
     },
 
     created: function () {
-      dataBus.$on('layersUpdated', (layerData) => this.updateEdit(layerData));
-      dataBus.$on('canvasUpdated', (canvas) => this.updateCanvasVars(canvas));
+      dataBus.$on('pushElement', (element) => this.updateEdit(element));
     }
 
   }

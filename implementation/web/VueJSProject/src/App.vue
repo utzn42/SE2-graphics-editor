@@ -48,10 +48,6 @@
       BottomBarMenu,
       Canvas,
       Connection
-    },
-
-    mounted: function () {
-      dataBus.$emit("create");
     }
 
   }
@@ -180,21 +176,38 @@
     background-color: darkred;
   }
 
-  button {
-    padding: 5px 10px;
-    border: none;
+  li.confirm, button {
     color: #ffffff;
     cursor: pointer;
     background: #227722;
+  }
+
+  button {
+    padding: 5px 10px;
+    border: none;
     margin: 0;
   }
 
-  button:hover {
+  li.confirm:hover, button:hover {
     background: #115511;
+  }
+
+  ul.horizontal-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul.horizontal-list li {
+    float: left;
   }
 
   .white-border {
     border: solid 2px white;
+  }
+
+  .shape-edit-form {
+    padding: 10px;
   }
 
 </style>

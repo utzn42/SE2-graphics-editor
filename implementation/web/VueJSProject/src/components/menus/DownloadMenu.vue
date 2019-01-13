@@ -3,9 +3,9 @@
 
     <label>Please select the desired image format: </label>
     <select v-model="fileType">
-      <option value="svg">SVG</option>
-      <option value="png">PNG</option>
-      <option value="jpg">JPG</option>
+      <option value="SVG">SVG</option>
+      <option value="PNG">PNG</option>
+      <option value="JPG">JPG</option>
     </select>
 
     <br />
@@ -29,7 +29,7 @@
 
     data() {
       return {
-        fileType: "svg"
+        fileType: "SVG"
       }
     },
 

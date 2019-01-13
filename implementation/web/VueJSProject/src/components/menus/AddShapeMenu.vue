@@ -1,27 +1,35 @@
 <template>
   <div class="add-shape-menu">
 
-    <ul class="shape-selection" v-if="layer !== -1" :class="{'modal-list': modal}">
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Line')">
+    <ul class="shape-selection" :class="{'modal-list': modal}">
+      <li class="clickable" v-on:click="addShape('LINE')">
         Line
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Circle')">
+      <li class="clickable" v-on:click="addShape('CIRCLE')">
         Circle
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Polygon')">
+      <li class="clickable" v-on:click="addShape('POLYGON')">
         Polygon
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.RegularPolygon')">
+      <li class="clickable" v-on:click="addShape('REGULAR_POLYGON')">
         Regular Polygon
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Ellipse')">
+      <li class="clickable" v-on:click="addShape('ELLIPSE')">
         Ellipse
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Star')">
+      <li class="clickable" v-on:click="addShape('STAR')">
         Star
       </li>
-      <li class="clickable" v-on:click="addShape(shapesRootPackage + '.Text')">
+      <li class="clickable" v-on:click="addShape('TEXT')">
         Text
+      </li>
+    </ul>
+
+    <hr />
+
+    <ul :class="{'modal-list': modal}">
+      <li class="clickable" v-on:click="addLayerGroup()">
+        Layer Group
       </li>
     </ul>
 
@@ -49,7 +57,9 @@
 
     props: {
       modal: Boolean,
-      layer: Number
+      elementId: Number,
+      addBefore: Boolean,
+      addInto: Boolean
     },
 
     data() {
@@ -59,15 +69,46 @@
     },
 
     methods: {
-      addShape: function(shapeClass) {
-        dataBus.$emit('addShape', {
-          layerIndex: this.layer,
-          shapeClass: shapeClass
-        });
+      addShape: function(shapeType) {
+        if (this.addInto) {
+          dataBus.$emit('addShape', {
+            shapeType: shapeType,
+            placeIntoElementID: this.elementId
+          });
+        } else if (this.addBefore) {
+          dataBus.$emit('addShape', {
+            shapeType: shapeType,
+            placeBeforeElementID: this.elementID
+          });
+        } else {
+          dataBus.$emit('addShape', {
+            shapeType: shapeType
+          })
+        }
+
         if (this.modal) {
           this.close();
         }
       },
+
+      addLayerGroup: function() {
+        if (this.addInto) {
+          dataBus.$emit('addLayerGroup', {
+            placeIntoElementID: this.elementId
+          });
+        } else if (this.addBefore) {
+          dataBus.$emit('addLayerGroup', {
+            placeBeforeElementID: this.elementId
+          });
+        } else {
+          dataBus.$emit('addLayerGroup', {});
+        }
+
+        if (this.modal) {
+          this.close();
+        }
+      },
+
       close: function() {
         this.$emit('close');
       }

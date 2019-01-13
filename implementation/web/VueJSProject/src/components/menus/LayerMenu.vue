@@ -15,7 +15,7 @@
         <div class="white-border" v-if="index === selectedLayer" style="margin-top:20px;">
           <ul>
             <li class="clickable" v-for="(shape, shapeIndex) in layer.shapes" :class="{selected: shapeIndex === selectedShape}" v-on:click.stop="selectShape(shapeIndex)">
-              Shape {{shapeIndex}} ({{shape.shapeClass.split(".").reverse()[0]}})
+              Shape {{shapeIndex}} ({{shape.shapeType.split(".").reverse()[0]}})
             </li>
           </ul>
           <hr v-if="layer.shapes.length > 0" />

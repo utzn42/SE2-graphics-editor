@@ -14,40 +14,6 @@
    * After sending a GET or POST request, it sends the response over the dataBus via a "response" event.
    * Note that any event that sends a POST request needs to include the request body.
    *
-   * Currently, it listens to the following events on the dataBus:
-   *   * "create":
-   *       => Sends a GET request to "<baseURL>/create".
-   *       This should always be done first, since it is needed to set up the projectID.
-   *       Required data: None
-   *   * "editCanvas":
-   *       => Sends a POST request to "<baseURL>/<projectID>/editCanvas".
-   *       Required data: (object) requestBody
-   *   * "addLayer":
-   *       => Sends a POST request to "<baseURL>/<projectID>/addLayer".
-   *       Required data: (object) requestBody
-   *   * "editLayer":
-   *       => Sends a POST request to "<baseURL>/<projectID>/editLayer".
-   *       Required data: (object) requestBody
-   *   * "deleteLayer":
-   *       => Sends a POST request to "<baseURL>/<projectID>/deleteLayer".
-   *       Required data: (object) requestBody
-   *   * "addShape":
-   *       => Sends a POST request to "<baseURL>/<projectID>/addShape".
-   *       Required data: (object) requestBody
-   *   * "editShape":
-   *       => Sends a POST request to "<baseURL>/<projectID>/editShape".
-   *       Required data: (object) requestBody
-   *   * "transformShape":
-   *       => Sends a POST request to "<baseURL>/<projectID>/transformShape".
-   *       Required data: (object) requestBody
-   *   * "deleteShape":
-   *       => Sends a POST request to "<baseURL>/<projectID>/deleteShape".
-   *       Required data: (object) requestBody
-   *   * "download":
-   *       => Opens "<baseURL>/<projectID>/download/<fileType>" in a new window.
-   *       This will not send a "response" event over the eventBus.
-   *       Required data: (String) fileType
-   *
    * props: baseUrl - The baseURL of the REST API
    */
   export default {
@@ -66,47 +32,66 @@
 
     methods: {
 
-      createCanvas: function() {
+      createProject: function() {
         console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/create\":");
         this.$http.get(this.baseUrl + "/create")
           .then(response => {
             console.log("DATA RECEIVED:");
             console.log(response);
-            this.projectID = response.body.projectID;
-            dataBus.$emit('response', response);
+            if (response.body.hasOwnProperty("canvas")) {
+              this.projectID = response.body.projectID;
+              dataBus.$emit('response', response);
+            }
+          })
+      },
+
+      loadProject: function(id) {
+        console.log("GET REQUEST TO URL=\"" + this.baseUrl + "/" + id + "\":");
+        this.$http.get(this.baseUrl + "/" + id)
+          .then(response => {
+            console.log("DATA RECEIVED:");
+            console.log(response);
+            if (response.body.hasOwnProperty("canvas")) {
+              this.projectID = response.body.projectID;
+              dataBus.$emit('response', response);
+            }
           })
       },
 
       postRequest: function(requestType, data) {
-        console.log("POST REQUEST TO URL=\"" + this.baseUrl + "/" + requestType + "/" + this.projectID + "\":");
+        console.log("POST REQUEST TO URL=\"" + this.baseUrl + "/" + this.projectID + "/" +  requestType + "\":");
         console.log("SENDING DATA:");
         console.log(data);
-        this.$http.post(this.baseUrl + "/" + requestType + "/" + this.projectID, data)
+        this.$http.post(this.baseUrl + "/" + this.projectID + "/" +  requestType, data)
           .then(response => {
             console.log("DATA RECEIVED:");
             console.log(response);
-            dataBus.$emit('response', response);
+            if (response.body.hasOwnProperty("canvas")) {
+              this.projectID = response.body.projectID;
+              dataBus.$emit('response', response);
+            }
           })
       },
 
       downloadRequest: function(fileType) {
-        console.log("OPENING URL=\"" + this.baseUrl + "/download/" + this.projectID + "\":");
-        window.open(this.baseUrl + "/download/" + this.projectID + "/" + fileType);
+        console.log("OPENING URL=\"/" + this.projectID + "/download/" + fileType + "\":");
+        window.open(this.baseUrl + "/" + this.projectID + "/download/" + fileType);
       }
 
     },
 
     created: function () {
-      dataBus.$on('create', () => this.createCanvas());
-      dataBus.$on('editCanvas', (data) => this.postRequest('editCanvas', data));
-      dataBus.$on('addLayer', (data) => this.postRequest('addLayer', data));
-      dataBus.$on('editLayer', (data) => this.postRequest('editLayer', data));
-      dataBus.$on('deleteLayer', (data) => this.postRequest('deleteLayer', data));
+      dataBus.$on('createProject', () => this.createProject());
+      dataBus.$on('loadProject', (id) => this.loadProject(id));
+      dataBus.$on('editProject', (data) => this.postRequest('editProject', data));
       dataBus.$on('addShape', (data) => this.postRequest('addShape', data));
-      dataBus.$on('editShape', (data) => this.postRequest('editShape', data));
-      dataBus.$on('transformShape', (data) => this.postRequest('transformShape', data));
-      dataBus.$on('deleteShape', (data) => this.postRequest('deleteShape', data));
+      dataBus.$on('addLayerGroup', (data) => this.postRequest('addLayerGroup', data));
+      dataBus.$on('modifyShape', (data) => this.postRequest('modifyShape', data));
+      dataBus.$on('editElement', (data) => this.postRequest('editElement', data));
+      dataBus.$on('transformElement', (data) => this.postRequest('transformElement', data));
+      dataBus.$on('removeElement', (data) => this.postRequest('removeElement', data));
       dataBus.$on('download', (fileType) => this.downloadRequest(fileType));
+      this.createProject();
     }
 
   }
