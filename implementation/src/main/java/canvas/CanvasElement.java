@@ -31,20 +31,37 @@ public abstract class CanvasElement implements Serializable {
   private final long id;
   private boolean visible;
 
+  /**
+   * Creates a visible {@link CanvasElement}.
+   * @param id The ID of the new element.
+   */
   public CanvasElement(long id) {
     this.id = id;
     this.visible = true;
   }
 
+  /**
+   * Creates a {@link CanvasElement} visible or not visible.
+   * @param id The ID of the new element.
+   * @param visible Indicates whether the element should be visible or not.
+   */
   public CanvasElement(long id, boolean visible) {
     this.id = id;
     this.visible = visible;
   }
 
+  /**
+   * Returns the ID of the element.
+   * @return The ID of the element in {@link Long}
+   */
   public long getId() {
     return id;
   }
 
+  /**
+   * Returns whether the element is visible or not.
+   * @return true if the element is visible, false if the element is not visible.
+   */
   public boolean isVisible() {
     return visible;
   }
@@ -65,6 +82,10 @@ public abstract class CanvasElement implements Serializable {
    */
   public abstract void transform(Transformation transformation);
 
+  /**
+   * Returns the HTML Code of the element.
+   * @return HTML Code of the element.
+   */
   public abstract String getHTML();
 
 }

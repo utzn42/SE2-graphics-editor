@@ -16,11 +16,20 @@ public class CanvasLayer extends CanvasElement {
 
   private Shape shape;
 
+  /**
+   * Creates a {@link CanvasLayer} and assignes an id and a shape.
+   * @param id The ID which will get assigned to the Layer.
+   * @param shape The {@link Shape} which will get assigned to the Layer.
+   */
   public CanvasLayer(long id, Shape shape) {
     super(id);
     this.shape = shape;
   }
 
+  /**
+   * Creates a {@link CanvasLayer} and assignes an id.
+   * @param id The ID which will get assigned to the Layer.
+   */
   public CanvasLayer(long id) {
     super(id);
     this.shape = null;
@@ -44,6 +53,10 @@ public class CanvasLayer extends CanvasElement {
     this.shape = shape;
   }
 
+  /**
+   * Returns the HTML Code of the element.
+   * @return HTML Code of the element.
+   */
   @Override
   public String getHTML() {
     return shape.getHTML();
@@ -55,7 +68,6 @@ public class CanvasLayer extends CanvasElement {
    *
    * @param transformation the transformation to be applied to the {@link Shape}.
    */
-
   @Override
   public void transform(Transformation transformation) {
     if (shape instanceof ShapeWithTransformAttribute) {
