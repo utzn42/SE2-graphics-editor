@@ -1,9 +1,12 @@
 package canvas;
 
 import facilitators.Aggregate;
+import facilitators.CanvasElementIterator;
 import facilitators.Iterator;
+import facilitators.ListIterator;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.ShapeWithTransformAttribute;
 import shapes.transform.Transformation;
 
 /**
@@ -11,10 +14,14 @@ import shapes.transform.Transformation;
  */
 public class CanvasElementAggregate extends CanvasElement implements Aggregate<CanvasElement> {
 
+  private static final long serialVersionUID = 1L;
+
+  transient Iterator<CanvasElement> iterator;
   private List<CanvasElement> elements;
 
   public CanvasElementAggregate(long id) {
     super(id);
+    iterator = null;
     elements = new ArrayList<>();
   }
 
@@ -33,6 +40,7 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     elements.addAll(aggregate.asList());
   }
 
+
   @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
     return elements.get(index);
@@ -48,9 +56,10 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     elements.set(index, item);
   }
 
+
   @Override
   public boolean deleteItem(int index) {
-    if ((index >= 0) && (index < elements.size())) {
+    if ((index > 0) && (index < elements.size())) {
       elements.remove(index);
       return true;
     }
@@ -71,9 +80,18 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     return elements.size();
   }
 
+
   @Override
   public Iterator<CanvasElement> createIterator() {
-    return new CanvasElementIterator(this);
+    if (iterator == null) {
+      iterator = new CanvasElementIterator(new ListIterator(elements));
+    }
+    return iterator;
+  }
+
+  @Override
+  public void resetIterator() {
+    iterator = null;
   }
 
   @Override
@@ -95,7 +113,7 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
    */
   @Override
   public void transform(Transformation transformation) {
-    //TODO: Implement canvas.CanvasElementAggregate#transform(Transformation) - xandi
+    elements.forEach(element -> element.transform(transformation));
   }
 
 }

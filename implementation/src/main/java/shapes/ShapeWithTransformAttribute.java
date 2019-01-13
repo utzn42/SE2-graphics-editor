@@ -15,7 +15,13 @@ import shapes.transform.atomic.SkewTransformation;
 import shapes.transform.atomic.TranslationTransformation;
 import shapes.transform.atomic.UniformScaleTransformation;
 
-public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotatable, Scalable, Skewable,
+/**
+ * Lets you decorate {@link Shape}s with transform attributes.
+ *
+ * @see ShapeDecorator
+ */
+public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotatable, Scalable,
+    Skewable,
     Translatable,
     UniformScalable {
 
@@ -65,7 +71,8 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
 
   @Override
   public String getHTML() {
-    return "<" + getShapeType().toString().toLowerCase() + " " + getHTMLAttributes() + "></" + getShapeType().toString().toLowerCase() + ">";
+    return "<" + getShapeType().toString().toLowerCase() + " " + getHTMLAttributes() + "></"
+        + getShapeType().toString().toLowerCase() + ">";
   }
 
   @Override
@@ -82,7 +89,7 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
 
   }
 
-  public Transformation getTransformation(){
+  public Transformation getTransformation() {
     return transformation;
   }
 

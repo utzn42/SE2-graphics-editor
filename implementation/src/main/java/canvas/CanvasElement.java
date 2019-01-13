@@ -1,6 +1,8 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import facilitators.Iterator;
+import java.io.Serializable;
 import shapes.transform.Transformation;
 
 /**
@@ -8,7 +10,9 @@ import shapes.transform.Transformation;
  * needs to have.
  */
 @JsonIgnoreProperties({"html"})
-public abstract class CanvasElement {
+public abstract class CanvasElement implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private final long id;
   private boolean visible;
@@ -23,8 +27,29 @@ public abstract class CanvasElement {
     this.visible = visible;
   }
 
-  public long getId() {
-    return id;
+  public void addItem(CanvasElement item) {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
+  }
+
+  public CanvasElement getItem(int index) {
+    throw new UnsupportedOperationException(
+        "getItem() cannot be called directly from CanvasElement!");
+  }
+
+  public boolean deleteItem(int index) {
+    throw new UnsupportedOperationException(
+        "deleteItem() cannot be called directly from CanvasElement!");
+  }
+
+  public boolean deleteItem(CanvasElement item) {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
+  }
+
+  public void addItem() {
+    throw new UnsupportedOperationException(
+        "addItem() cannot be called directly from CanvasElement!");
   }
 
   public boolean isVisible() {
@@ -47,7 +72,14 @@ public abstract class CanvasElement {
    */
   public abstract void transform(Transformation transformation);
 
+  public abstract Iterator<CanvasElement> createIterator();
+
+  public void resetIterator() {
+  }
+
   public abstract String getHTML();
 
-
+  public long getId() {
+    return id;
+  }
 }

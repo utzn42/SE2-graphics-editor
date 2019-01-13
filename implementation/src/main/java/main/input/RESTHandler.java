@@ -1,18 +1,17 @@
 package main.input;
 
 import download.DownloadFormat;
-import java.io.IOException;
 import messages.ErrorResponse;
-import messages.RequestAddLayer;
+import messages.RequestAddGroupLayer;
 import messages.RequestAddShape;
 import messages.RequestDeleteLayer;
 import messages.RequestDeleteShape;
 import messages.RequestEditCanvas;
 import messages.RequestEditLayer;
-import messages.RequestEditShape;
+import messages.RequestModifyShape;
+import messages.RequestTransformElement;
 import messages.Response;
 import messages.ServerResponse;
-import org.apache.batik.transcoder.TranscoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,14 +98,14 @@ public class RESTHandler {
    * @param request The HTTP POST request body transmitted by the client.
    * @return If successfully called, it returns a canvas which has an additional layer. Otherwise, a
    * basic ErrorResponse is returned.
-   * @see RequestAddLayer
+   * @see RequestAddGroupLayer
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/addLayer", method = RequestMethod.POST)
-  public Response addLayer(@PathVariable String projectID,
-      @RequestBody RequestAddLayer request) {
+  @RequestMapping(value = "/{projectID}/addGroupLayer", method = RequestMethod.POST)
+  public Response addGroupLayer(@PathVariable String projectID,
+      @RequestBody RequestAddGroupLayer request) {
 
     try {
 
@@ -117,10 +116,10 @@ public class RESTHandler {
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/addLayer; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/addGroupLayer; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-           "/" + projectID + "/addLayer");
+           "/" + projectID + "/addGroupLayer");
 
     }
 
@@ -231,31 +230,31 @@ public class RESTHandler {
   /**
    * Modifies the properties of a shape within a certain layer.
    *
-   * @param projectID The ID the client has been assigned in createProject().
-   * @param request The HTTP POST request body, which specifies the layer which the user wishes to access and the modified shape attributes.
-   * @return If successfully called, it returns a canvas with an updated version of the shape specified in the request.
-   * @see RequestEditShape
+   * @param projectID The project ID.
+   * @param request The request body.
+   * @return A server response including the ID and canvas of the modified project, or an error response if the modification failed.
+   * @see RequestModifyShape
    * @see ServerResponse
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/editShape", method = RequestMethod.POST)
+  @RequestMapping(value = "/{projectID}/modifyShape", method = RequestMethod.POST)
   public Response editShape(@PathVariable String projectID,
-      @RequestBody RequestEditShape request) {
+      @RequestBody RequestModifyShape request) {
 
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.editShape(project.getProjectID(), request.getLayerIndex(), request.getShapeIndex(), request.getShape());
+      projectService.modifyShape(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/editShape; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/modifyShape; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/" + projectID + "/editShape");
+          "/" + projectID + "/modifyShape");
 
     }
 
@@ -272,23 +271,24 @@ public class RESTHandler {
    * @see ErrorResponse
    */
   @CrossOrigin()
-  @RequestMapping(value = "/{projectID}/transformShape", method = RequestMethod.POST)
-  public Response transformShape(@PathVariable String projectID,
-      @RequestBody String request) {
+  @RequestMapping(value = "/{projectID}/transformElement", method = RequestMethod.POST)
+  public Response transformElement(@PathVariable String projectID,
+      @RequestBody RequestTransformElement request) {
 
+    // AddTransformation, RemoveTransformation, ClearTransformations
     try {
 
       Project project = projectService.getProject(projectID);
-      projectService.transformShape(project.getProjectID());
+      projectService.transformElement(project, request);
 
       return new ServerResponse(project.getProjectID(), project.getCanvas());
 
     } catch (Exception e) {
 
-      restHandlerLogger.error("Error in /" + projectID + "/transformShape; returning ErrorResponse");
+      restHandlerLogger.error("Error in /" + projectID + "/transformElement; returning ErrorResponse");
       return new ErrorResponse(
           e.getMessage(),
-          "/" + projectID + "/transformShape");
+          "/" + projectID + "/transformElement");
 
     }
 

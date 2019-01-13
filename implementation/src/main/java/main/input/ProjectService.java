@@ -1,12 +1,16 @@
 package main.input;
 
 import canvas.Canvas;
+import canvas.CanvasElement;
+import canvas.CanvasLayer;
 import download.CanvasToJPGConverter;
 import download.CanvasToPNGConverter;
 import download.CanvasToSVGConverter;
 import download.CanvasToImageConverter;
 import download.DownloadFormat;
+import facilitators.Colour;
 import facilitators.Hasher;
+import facilitators.RGBColour;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +21,9 @@ import java.util.Map;
 import java.util.StringJoiner;
 import messages.RequestAddShape;
 import messages.RequestEditCanvas;
+import messages.RequestModifyShape;
+import messages.RequestTransformElement;
+import messages.modifiers.shapes.ShapeModifier;
 import observer.Observer;
 import observer.Subject;
 import org.apache.batik.transcoder.TranscoderException;
@@ -32,6 +39,8 @@ import persistence.ProjectSerializer;
 import project.LoadedProject;
 import project.Project;
 import shapes.Shape;
+import shapes.ShapeType;
+import shapes.transform.Transformation;
 
 /**
  * This class provides the logic which {@link RESTHandler} calls upon to deliver its functionality.
@@ -142,7 +151,7 @@ public class ProjectService implements Subject {
    * @param project The Project to add a layer to.
    */
   public void addLayer(Project project) {
-    //TODO: main.input.ProjectService.addLayer(Project): Rework after integration of new layer structure
+    //TODO: main.input.ProjectService.addGroupLayer(Project): Rework after integration of new layer structure
 
     String operationToLog = "Project " + project.getProjectID() + ": Add new Layer";
 
@@ -154,7 +163,6 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    //TODO: implement addLayer
 //    projectCanvas.getCanvasElements().add(new CanvasLayer());
     projectServiceLogger.error("Operation failed: " + operationToLog);
 
@@ -177,8 +185,8 @@ public class ProjectService implements Subject {
 
     String operationToLog = "Project " + project.getProjectID() + ": Add new Shape of type "
         + request.getShapeType() +
-        (request.getInsertAfterID().isPresent()
-            ? " after Element " + request.getInsertAfterID().get()
+        (request.getInsertAfterElementID().isPresent()
+            ? " after Element " + request.getInsertAfterElementID().get()
             : " at default position");
 
     Canvas projectCanvas;
@@ -189,8 +197,8 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    if (request.getInsertAfterID().isPresent()) {
-      projectCanvas.addShape(request.getShapeType(), request.getInsertAfterID().get());
+    if (request.getInsertAfterElementID().isPresent()) {
+      projectCanvas.addShape(request.getShapeType(), request.getInsertAfterElementID().get());
     } else {
       projectCanvas.addShape(request.getShapeType());
     }
@@ -279,38 +287,67 @@ public class ProjectService implements Subject {
   /**
    * Modifies a shape within a given layer of the canvas.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
-   * @param layerIndex Is used to retrieve the desired layer from within the canvas.
-   * @param shapeIndex Is used to retrieve the desired shape from within the layer.
-   * @param shape Passes the modified shape to the function
+   * @param project The Project to modify.
+   * @param request The {@link RequestModifyShape} object containing the values for the modification.
    */
-  public void editShape(String projectID, int layerIndex, int shapeIndex, Shape shape) {
-    //TODO: main.input.ProjectService.editShape(String, int, int, Shape): Rework after integration of new layer structure
-    throw new IllegalArgumentException("This function is not yet implemented!");
-    /*
-    if (!projects.containsKey(projectID)) {
-      throw new IndexOutOfBoundsException("Project ID " + projectID + " does not exist!");
+  public void modifyShape(Project project, RequestModifyShape request) {
+
+    String operationToLog = "Project " + project.getProjectID() + ": Modify Shape";
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
     }
 
-    projectServiceLogger.info("editShape - " + shape.getHTML());
+    CanvasElement element = projectCanvas.findElementByID(request.getElementID());
 
-    projects.get(projectID).getCanvasElements().get(layerIndex).getShapes()
-        .set(shapeIndex, shape);
+    if (!(element instanceof CanvasLayer)) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new IllegalArgumentException("Element with ID " + request.getElementID() + " is not a single shape!");
+    }
 
-    notifyObservers();
-    return projects.get(projectID);
-    */
+    ShapeModifier shapeModifier = request.getShapeModifier();
+    Shape shapeToModify = ((CanvasLayer) element).getShape();
+    shapeToModify = shapeModifier.apply(shapeToModify);
+    ((CanvasLayer) element).setShape(shapeToModify);
+
+    projectServiceLogger.info("Operation successful: " + operationToLog);
   }
 
 
   /**
    * Modifies the visual representation of a shape within a certain layer using the SVG format's inbuilt transform parameters.
    *
-   * @param projectID Is used to retrieve the canvas based on the ID.
+   * @param project The Project to modify.
+   * @param request The {@link RequestTransformElement} object containing the values for the modification.
    */
-  public void transformShape(String projectID) {
-    //TODO: main.input.ProjectService.transformShape(String): Rework after integration of new layer structure
-    throw new IllegalArgumentException("This function is not yet implemented!");
+  public void transformElement(Project project, RequestTransformElement request) {
+
+    String operationToLog = "Project " + project.getProjectID() + ": Transform Element";
+
+    Canvas projectCanvas;
+    try {
+      projectCanvas = project.getCanvas();
+    } catch (Exception e) {
+      projectServiceLogger.error("Operation failed: " + operationToLog);
+      throw new RuntimeException(e);
+    }
+
+    if (request.getClearAll().isPresent() && request.getClearAll().get()) {
+      projectCanvas.transformElementByID(request.getElementID(), new Transformation());
+    }
+
+    if (request.getTransformation().isPresent()) {
+      Transformation transformation = new Transformation();
+      transformation.addTransformation(request.getTransformation().get());
+      projectCanvas.transformElementByID(request.getElementID(), transformation);
+    }
+
+    projectServiceLogger.info("Operation successful: " + operationToLog);
+
   }
 
 

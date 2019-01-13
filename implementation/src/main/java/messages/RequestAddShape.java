@@ -15,20 +15,20 @@ import shapes.ShapeType;
 public class RequestAddShape {
 
   private final ShapeType shapeType;
-  private final Optional<Long> insertAfterID;
+  private final Optional<Long> insertAfterElementID;
 
   /**
    * The constructor assigns the properties of the JSON object to the class attributes. The constructor gets called when the addShape method from the {@link main.input.RESTHandler} gets called.
-   * @param insertAfterID ({@link Optional}) The ID of the element after which to insert the new Shape.
+   * @param insertAfterElementID ({@link Optional}) The ID of the element after which to insert the new Shape.
    * @param shapeType The type of shape which should get added.
    */
   @JsonCreator
   RequestAddShape(
       @JsonProperty("shapeType") ShapeType shapeType,
-      @JsonProperty("insertAfterID") Optional<Long> insertAfterID
+      @JsonProperty("insertAfterElementID") Optional<Long> insertAfterElementID
   ) {
     this.shapeType = shapeType;
-    this.insertAfterID = insertAfterID;
+    this.insertAfterElementID = insertAfterElementID;
   }
 
   /**
@@ -45,8 +45,8 @@ public class RequestAddShape {
    *
    * @return An {@link Optional} containing the ID of the element after which to insert the new Shape, if present.
    */
-  public Optional<Long> getInsertAfterID() {
-    return insertAfterID;
+  public Optional<Long> getInsertAfterElementID() {
+    return insertAfterElementID;
   }
 
 }
