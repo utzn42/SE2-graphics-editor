@@ -144,7 +144,27 @@ class CanvasTest {
         "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"150.0\" cy=\"50.0\" r=\"50.0\"></circle>",
         testCEA.getHTML());
     canvasTestLogger.info("Successfully transformed shapes within test object.");
-    canvasTestLogger.info("canvasElementAggregate tests have been passed successfully!" + '\n');
+
+    canvasTestLogger.info("Testing transformations and clearing them...");
+    CanvasLayer testLayer5 = new TransformableShapeFactory()
+        .createShape(testID++, ShapeType.CIRCLE);
+    testLayer5.clearTransformations();
+    assertEquals(
+        "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"50.0\" cy=\"50.0\" r=\"50.0\"></circle>",
+        testLayer5.getHTML());
+    testCEA.clearTransformations();
+    assertEquals(
+        "<circle fill=\"#FFFFFF\" fill-opacity=\"0.0\" stroke=\"#000000\" stroke-opacity=\"1.0\" stroke-width=\"1.0\" opacity=\"1.0\" cx=\"150.0\" cy=\"50.0\" r=\"50.0\"></circle>",
+        testCEA.getHTML());
+    canvasTestLogger.info("Success!");
+
+    exception =
+        assertThrows(UnsupportedOperationException.class,
+            () -> testCEA.getItem(0).addItem(new CanvasLayer(666)));
+    assertEquals(
+        "Cant add an item to a Canvas!",
+        exception.getMessage());
+
   }
 
   @Test

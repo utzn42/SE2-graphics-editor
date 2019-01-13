@@ -75,6 +75,14 @@ public abstract class CanvasElement implements Serializable {
     this.visible = visible;
   }
 
+  public void setShape(Shape shape) {
+    throw new UnsupportedOperationException("Can't set shape in a CanvasElementAggregate!");
+  }
+
+  public void addItem(CanvasElement canvasElement) {
+    throw new UnsupportedOperationException("Cant add an item to a Canvas!");
+  }
+
   /**
    * Transforms the CanvasElement using a {@link Transformation}.
    *
