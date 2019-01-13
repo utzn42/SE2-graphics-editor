@@ -2,6 +2,7 @@ package messages.modifiers.shapes;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import facilitators.Coordinate;
 import java.util.List;
 import java.util.Optional;
 import messages.modifiers.facilitators.ColourModifier;
@@ -60,8 +61,14 @@ public class LineModifier extends ShapeModifier {
     if (unpackedObject instanceof Line) {
       Line line = (Line) unpackedObject;
       coordinates.ifPresent(newCoordinates -> {
-        for (int i = 0; i < newCoordinates.size(); ++i) {
-          line.getCoordinates().set(i, newCoordinates.get(i).apply(line.getCoordinates().get(i)));
+        for (int i = 0; i < newCoordinates.size() || i < line.getCoordinates().size(); ++i) {
+          if (i < line.getCoordinates().size() && i < newCoordinates.size()) {
+            line.getCoordinates().set(i, newCoordinates.get(i).apply(line.getCoordinates().get(i)));
+          } else if (i < newCoordinates.size()) {
+            line.getCoordinates().add(newCoordinates.get(i).apply(new Coordinate(0, 0)));
+          } else {
+            line.getCoordinates().remove(i--);
+          }
         }
       });
     }
