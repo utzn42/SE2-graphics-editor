@@ -75,20 +75,17 @@ public abstract class CanvasElement implements Serializable {
     this.visible = visible;
   }
 
-  public abstract void setShape(Shape shape);
-
-  public void addItem(CanvasElement item) {
-    throw new UnsupportedOperationException("Can't add an item in CanvasElement!");
-  }
-
-  ;
-
   /**
    * Transforms the CanvasElement using a {@link Transformation}.
    *
    * @param transformation The transformation to be applied to the CanvasElement.
    */
   public abstract void transform(Transformation transformation);
+
+  /**
+   * Clears all transformations from the CanvasElement.
+   */
+  public abstract void clearTransformations();
 
   /**
    * Returns the HTML Code of the element.

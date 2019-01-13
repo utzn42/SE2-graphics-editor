@@ -339,7 +339,7 @@ public class ProjectService implements Subject {
     }
 
     if (request.getClearAll().isPresent() && request.getClearAll().get()) {
-      projectCanvas.transformElementByID(request.getElementID(), new Transformation());
+      projectCanvas.clearTransformationsOnElement(request.getElementID());
     }
 
     if (request.getTransformation().isPresent()) {

@@ -433,4 +433,12 @@ public class Canvas implements Serializable {
     findElementByID(id).transform(transformation);
   }
 
+  /**
+   * Clears all transformations from the wanted element.
+   * @param id The ID of the element to clear all transformations for.
+   */
+  public void clearTransformationsOnElement(long id) {
+    findElementByID(id).clearTransformations();
+  }
+
 }

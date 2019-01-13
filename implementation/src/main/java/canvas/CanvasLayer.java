@@ -83,4 +83,10 @@ public class CanvasLayer extends CanvasElement {
     }
   }
 
+  @Override
+  public void clearTransformations() {
+    if (shape instanceof ShapeWithTransformAttribute) {
+      ((ShapeWithTransformAttribute) shape).clearTransformation();
+    }
+  }
 }

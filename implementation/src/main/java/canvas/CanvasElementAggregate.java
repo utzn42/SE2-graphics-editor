@@ -34,11 +34,6 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
    * @param item The item to add to the Aggregate
    */
   @Override
-  public void setShape(Shape shape) {
-    throw new UnsupportedOperationException("Can't set shape in a CanvasElementAggregate!");
-  }
-
-  @Override
   public void addItem(CanvasElement item) {
     elements.add(item);
   }
@@ -177,4 +172,8 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
     elements.forEach(element -> element.transform(transformation));
   }
 
+  @Override
+  public void clearTransformations() {
+    elements.forEach(CanvasElement::clearTransformations);
+  }
 }

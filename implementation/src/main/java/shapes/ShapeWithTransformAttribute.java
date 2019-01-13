@@ -101,4 +101,11 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
     return transformation;
   }
 
+  /**
+   * Resets the transformation to a null transformation.
+   */
+  public void clearTransformation() {
+    transformation = new Transformation();
+  }
+
 }

@@ -3,6 +3,7 @@ package shapes;
 import facilitators.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.transform.atomic.UniformScaleTransformation;
 
 /**
  * Represents a Star on the canvas.
@@ -80,6 +81,12 @@ public class Star extends RegularPolygon {
       coordinates.add(new Coordinate(xInner, yInner));
     }
     return coordinates;
+  }
+
+  @Override
+  public void uniformScale(UniformScaleTransformation transformation) {
+    super.uniformScale(transformation);
+    innerRadius *= transformation.getScale();
   }
 
   @Override
