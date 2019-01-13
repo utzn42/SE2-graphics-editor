@@ -24,7 +24,7 @@ class ProjectTest {
 
   @AfterAll
   static void testSuccess() {
-    projectTestLogger.info("All tests have been passed successfully!" + '\n');
+    projectTestLogger.info("All Project tests have been passed successfully!" + '\n');
   }
 
   @BeforeEach
@@ -95,5 +95,6 @@ class ProjectTest {
         "projects\\non-existent testID\\non-existent testID.ser (The system cannot find the path specified)",
         exception.getMessage());
     projectTestLogger.info("Successfully provoked exception while loading non-existing project.");
+    projectTestLogger.info("projectProxyTest passed successfully!" + '\n');
   }
 }

@@ -1,7 +1,6 @@
-package canvas;
+package facilitators;
 
-import facilitators.Aggregate;
-import facilitators.Iterator;
+import canvas.CanvasElement;
 
 /**
  * An iterator which iterates over all children of an aggregate.

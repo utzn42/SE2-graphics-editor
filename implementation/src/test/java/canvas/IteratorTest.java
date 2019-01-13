@@ -1,19 +1,8 @@
 package canvas;
 
-import facilitators.Iterator;
 import org.junit.jupiter.api.Test;
 
 class IteratorTest {
-
-  @Test
-  void nullIteratorTest() {
-
-  }
-
-  @Test
-  void listIteratorTest() {
-
-  }
 
   @Test
   void canvasElementIteratorTest() {
@@ -24,16 +13,10 @@ class IteratorTest {
     CanvasElement layerElement2 = new CanvasLayer(testID++);
     CanvasElement layerElement3 = new CanvasLayer(testID++);
 
-    ((CanvasElementAggregate) testCollection).addItem(coll1);
-    ((CanvasElementAggregate) testCollection).addItem(layerElement1);
-    ((CanvasElementAggregate) testCollection).addItem(layerElement2);
-    ((CanvasElementAggregate) ((CanvasElementAggregate) testCollection).getItem(0)).addItem(layerElement3);
-
-    Iterator<CanvasElement> testIterator = ((CanvasElementAggregate) testCollection).createIterator();
-    System.out.println(testIterator.hasNext());
-    CanvasElement coll1Copy = testIterator.next();
-    CanvasElement testIterItem = testIterator.currentItem();
-    testIterator.remove();
+    //testCollection.addItem(coll1);
+    //testCollection.addItem(layerElement1);
+    //testCollection.addItem(layerElement2);
+    //testCollection.getItem(0).addItem(layerElement3);
   }
 
 }

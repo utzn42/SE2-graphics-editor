@@ -2,9 +2,11 @@ package canvas;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import facilitators.Aggregate;
+import facilitators.CanvasElementIterator;
 import facilitators.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.Shape;
 import shapes.transform.Transformation;
 
 /**
@@ -31,6 +33,11 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
    *
    * @param item The item to add to the Aggregate
    */
+  @Override
+  public void setShape(Shape shape) {
+    throw new UnsupportedOperationException("Can't set shape in a CanvasElementAggregate!");
+  }
+
   @Override
   public void addItem(CanvasElement item) {
     elements.add(item);

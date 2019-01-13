@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import facilitators.Iterator;
 import java.io.Serializable;
+import shapes.Shape;
 import shapes.transform.Transformation;
 
 /**
@@ -74,6 +74,8 @@ public abstract class CanvasElement implements Serializable {
   public void setVisible(boolean visible) {
     this.visible = visible;
   }
+
+  public abstract void setShape(Shape shape);
 
   /**
    * Transforms the CanvasElement using a {@link Transformation}.

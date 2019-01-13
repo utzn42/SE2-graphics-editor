@@ -46,6 +46,10 @@ public class ProjectSerializer {
     }
   }
 
+  public static void setProxyProjects(boolean val) {
+    proxyProjects = val;
+  }
+
   private static void initializeProjects() {
 
     createDirectories(baseDirectory);
