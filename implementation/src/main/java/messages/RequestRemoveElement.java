@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is used to store data of the request from the client if removeElement in {@link main.input.RESTHandler} gets called and the user wants to delete a {@link canvas.Layer}.
+ * This class is used to store data of the request from the client if removeElement in {@link main.input.RESTHandler} gets called and the user wants to delete a {@link canvas.CanvasElement}.
  * It is necessary to access the data of the JSON object/body which the server receives from the client.
  *
  * @see main.input.RESTHandler

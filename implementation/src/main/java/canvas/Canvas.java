@@ -21,7 +21,6 @@ import shapes.transform.Transformation;
  * Every object is "registered" in the canvas.
  *
  * @see Shape
- * @see Layer
  */
 @JsonIgnoreProperties({"shapeFactory"})
 public class Canvas implements Serializable {
@@ -86,10 +85,10 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * Returns a {@link List} of the {@link Layer} which are in the canvas. This gets called when the
+   * Returns a {@link List} of the {@link CanvasElement} which are in the canvas. This gets called when the
    * canvas gets parsed into json to send it to the client.
    *
-   * @return a {@link List} of {@link Layer}
+   * @return a {@link List} of {@link CanvasElement}
    */
   @JsonProperty("elements")
   public List<CanvasElement> getCanvasElements() {
@@ -208,37 +207,39 @@ public class Canvas implements Serializable {
     }
   }
 
-  public void addShape(ShapeType shapeType) {
-    canvasElements.add(shapeFactory.createShape(shapeIDCount++, shapeType));
+  public void addElement(CanvasElement element) {
+    canvasElements.add(element);
   }
 
-  public void addShape(ShapeType shapeType, long elementID) {
+  public void addElement(CanvasElement element, long addBeforeElementID) {
     for (int i = 0; i < canvasElements.size(); ++i) {
-      if (canvasElements.get(i).getId() == elementID) {
-        canvasElements.add(i, shapeFactory.createShape(shapeIDCount++, shapeType));
+      if (canvasElements.get(i).getId() == addBeforeElementID) {
+        canvasElements.add(i, element);
         return;
       }
       if (canvasElements.get(i) instanceof CanvasElementAggregate) {
         Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i)).createIterator();
         while (iterator.hasNext()) {
           CanvasElement currentElement = iterator.next();
-          if (currentElement.getId() == elementID) {
-            iterator.insert(shapeFactory.createShape(shapeIDCount++, shapeType));
+          if (currentElement.getId() == addBeforeElementID) {
+            iterator.insert(element);
             return;
           }
         }
       }
     }
+    throw new IllegalArgumentException("Cannot add before element: " + addBeforeElementID + "; Element does not exist!");
   }
 
-  public void addShapeIntoElement(ShapeType shapeType, long elementID) {
+  public void addElementIntoElement(CanvasElement element, long addIntoElementID) {
     for (CanvasElement canvasElement : canvasElements) {
-      if (canvasElement.getId() == elementID) {
+      if (canvasElement.getId() == addIntoElementID) {
         if (canvasElement instanceof CanvasElementAggregate) {
           ((CanvasElementAggregate) canvasElement)
-              .addItem(shapeFactory.createShape(shapeIDCount++, shapeType));
-        } else {
+              .addItem(element);
           return;
+        } else {
+          throw new IllegalArgumentException("Cannot add into element " + addIntoElementID + "; Not a layer group!");
         }
       }
       if (canvasElement instanceof CanvasElementAggregate) {
@@ -246,68 +247,49 @@ public class Canvas implements Serializable {
             .createIterator();
         while (iterator.hasNext()) {
           CanvasElement currentElement = iterator.next();
-          if (currentElement.getId() == elementID) {
+          if (currentElement.getId() == addIntoElementID) {
             if (currentElement instanceof CanvasElementAggregate) {
               ((CanvasElementAggregate) currentElement)
-                  .addItem(shapeFactory.createShape(shapeIDCount++, shapeType));
-            } else {
+                  .addItem(element);
               return;
+            } else {
+              throw new IllegalArgumentException("Cannot add into element " + addIntoElementID + "; Not a layer group!");
             }
           }
         }
       }
     }
+    throw new IllegalArgumentException("Cannot add into element " + addIntoElementID + "; Element does not exist!");
+  }
+
+  public void addShape(ShapeType shapeType) {
+    addElement(shapeFactory.createShape(shapeIDCount, shapeType));
+    shapeIDCount++;
+  }
+
+  public void addShape(ShapeType shapeType, long addBeforeElementID) {
+    addElement(shapeFactory.createShape(shapeIDCount, shapeType), addBeforeElementID);
+    shapeIDCount++;
+  }
+
+  public void addShapeIntoElement(ShapeType shapeType, long addIntoElementID) {
+    addElementIntoElement(shapeFactory.createShape(shapeIDCount, shapeType), addIntoElementID);
+    shapeIDCount++;
   }
 
   public void addGroupLayer() {
-    canvasElements.add(new CanvasElementAggregate(shapeIDCount++));
+    addElement(new CanvasElementAggregate(shapeIDCount));
+    shapeIDCount++;
   }
 
-  public void addGroupLayer(long elementID) {
-    for (int i = 0; i < canvasElements.size(); ++i) {
-      if (canvasElements.get(i).getId() == elementID) {
-        canvasElements.add(i, new CanvasElementAggregate(shapeIDCount++));
-        return;
-      }
-      if (canvasElements.get(i) instanceof CanvasElementAggregate) {
-        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElements.get(i)).createIterator();
-        while (iterator.hasNext()) {
-          CanvasElement currentElement = iterator.next();
-          if (currentElement.getId() == elementID) {
-            iterator.insert(new CanvasElementAggregate(shapeIDCount++));
-            return;
-          }
-        }
-      }
-    }
+  public void addGroupLayer(long addBeforeElementID) {
+    addElement(new CanvasElementAggregate(shapeIDCount), addBeforeElementID);
+    shapeIDCount++;
   }
 
-  public void addGroupLayerIntoElement(long elementID) {
-    for (CanvasElement canvasElement : canvasElements) {
-      if (canvasElement.getId() == elementID) {
-        if (canvasElement instanceof CanvasElementAggregate) {
-          ((CanvasElementAggregate) canvasElement)
-              .addItem(new CanvasElementAggregate(shapeIDCount++));
-        } else {
-          return;
-        }
-      }
-      if (canvasElement instanceof CanvasElementAggregate) {
-        Iterator<CanvasElement> iterator = ((CanvasElementAggregate) canvasElement)
-            .createIterator();
-        while (iterator.hasNext()) {
-          CanvasElement currentElement = iterator.next();
-          if (currentElement.getId() == elementID) {
-            if (currentElement instanceof CanvasElementAggregate) {
-              ((CanvasElementAggregate) currentElement)
-                  .addItem(new CanvasElementAggregate(shapeIDCount++));
-            } else {
-              return;
-            }
-          }
-        }
-      }
-    }
+  public void addGroupLayerIntoElement(long addIntoElementID) {
+    addElementIntoElement(new CanvasElementAggregate(shapeIDCount), addIntoElementID);
+    shapeIDCount++;
   }
 
   public CanvasElement findElementByID(long id){
