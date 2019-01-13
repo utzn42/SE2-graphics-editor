@@ -1,6 +1,11 @@
 package canvas;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import facilitators.Iterator;
 import java.io.Serializable;
 import shapes.transform.Transformation;
@@ -10,6 +15,15 @@ import shapes.transform.Transformation;
  * needs to have.
  */
 @JsonIgnoreProperties({"html"})
+@JsonTypeInfo(
+    use = Id.NAME,
+    include = As.PROPERTY,
+    property = "elementType"
+)
+@JsonSubTypes({
+    @Type(value = CanvasLayer.class, name = "LAYER"),
+    @Type(value = CanvasElementAggregate.class, name = "LAYER_GROUP")
+})
 public abstract class CanvasElement implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -27,29 +41,8 @@ public abstract class CanvasElement implements Serializable {
     this.visible = visible;
   }
 
-  public void addItem(CanvasElement item) {
-    throw new UnsupportedOperationException(
-        "addItem() cannot be called directly from CanvasElement!");
-  }
-
-  public CanvasElement getItem(int index) {
-    throw new UnsupportedOperationException(
-        "getItem() cannot be called directly from CanvasElement!");
-  }
-
-  public boolean deleteItem(int index) {
-    throw new UnsupportedOperationException(
-        "deleteItem() cannot be called directly from CanvasElement!");
-  }
-
-  public boolean deleteItem(CanvasElement item) {
-    throw new UnsupportedOperationException(
-        "addItem() cannot be called directly from CanvasElement!");
-  }
-
-  public void addItem() {
-    throw new UnsupportedOperationException(
-        "addItem() cannot be called directly from CanvasElement!");
+  public long getId() {
+    return id;
   }
 
   public boolean isVisible() {
@@ -72,14 +65,6 @@ public abstract class CanvasElement implements Serializable {
    */
   public abstract void transform(Transformation transformation);
 
-  public abstract Iterator<CanvasElement> createIterator();
-
-  public void resetIterator() {
-  }
-
   public abstract String getHTML();
 
-  public long getId() {
-    return id;
-  }
 }

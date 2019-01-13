@@ -71,8 +71,16 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
 
   @Override
   public String getHTML() {
-    return "<" + getShapeType().toString().toLowerCase() + " " + getHTMLAttributes() + "></"
-        + getShapeType().toString().toLowerCase() + ">";
+    switch (getShapeType()) {
+      case REGULAR_POLYGON:
+      case STAR:
+        return "<polygon " + getHTMLAttributes() + "></polygon>";
+      case TEXT:
+        return "<text " + getHTMLAttributes() + ">" + ((Text) getShape()).getDisplayText() + "</text>";
+      default:
+        return "<" + getShapeType().toString().toLowerCase() + " " + getHTMLAttributes() + "></"
+            + getShapeType().toString().toLowerCase() + ">";
+    }
   }
 
   @Override

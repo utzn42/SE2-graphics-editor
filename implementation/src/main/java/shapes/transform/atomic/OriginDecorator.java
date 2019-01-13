@@ -1,5 +1,6 @@
 package shapes.transform.atomic;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import facilitators.Coordinate;
 
 /**
@@ -7,6 +8,7 @@ import facilitators.Coordinate;
  * attribute by translating the Object before and after the transformation, so the transformation
  * is performed in respect to the given origin instead of the default origin (0, 0)
  */
+@JsonIgnoreProperties({"beforeTransformation", "afterTransformation", "htmlattribute"})
 public class OriginDecorator extends AtomicTransformationDecorator {
 
   private static final long serialVersionUID = 1L;

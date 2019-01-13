@@ -1,5 +1,6 @@
 package shapes.transform.atomic;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.io.Serializable;
 
 /**
@@ -28,6 +29,7 @@ public class AtomicTransformationDecorator implements AtomicTransformation, Seri
    *
    * @return The decorated transformation.
    */
+  @JsonUnwrapped
   public AtomicTransformation getTransformation() {
     return transformation;
   }
