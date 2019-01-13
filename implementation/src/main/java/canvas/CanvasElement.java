@@ -70,6 +70,9 @@ public abstract class CanvasElement {
 
   public abstract Iterator<CanvasElement> createIterator();
 
+  public void resetIterator() {
+  }
+
   public abstract String getHTML();
 
   public long getId() {

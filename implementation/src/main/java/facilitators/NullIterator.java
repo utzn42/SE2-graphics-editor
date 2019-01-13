@@ -1,9 +1,9 @@
 package facilitators;
 
-public class NullIterator<T> implements Iterator<T> {
+public class NullIterator<CanvasElement> implements Iterator<CanvasElement> {
 
   @Override
-  public T next() {
+  public CanvasElement next() {
     return null;
   }
 
@@ -13,12 +13,12 @@ public class NullIterator<T> implements Iterator<T> {
   }
 
   @Override
-  public T get() {
+  public CanvasElement get() {
     return null;
   }
 
   @Override
-  public void set(T item) {
+  public void set(CanvasElement item) {
     throw new UnsupportedOperationException("Can't set a NullIterator!");
   }
 

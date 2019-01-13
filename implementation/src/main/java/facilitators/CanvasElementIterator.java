@@ -1,6 +1,6 @@
-package canvas;
+package facilitators;
 
-import facilitators.Iterator;
+import canvas.CanvasElement;
 import java.util.Stack;
 
 /**
@@ -64,9 +64,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   }
 
   @Override
-  public Object get() {
+  public CanvasElement get() {
     Iterator iterator = stack.peek();
-    return iterator.get();
+    return (CanvasElement) iterator.get();
   }
 
   @Override
@@ -77,7 +77,10 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
 
   @Override
   public void remove() {
-    Iterator<CanvasElement> iterator = stack.peek();
+    while (!(stack.peek() instanceof ListIterator)) {
+      stack.pop();
+    }
+    Iterator iterator = stack.peek();
     iterator.remove();
   }
 }
