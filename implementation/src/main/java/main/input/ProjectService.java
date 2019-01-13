@@ -291,7 +291,6 @@ public class ProjectService implements Subject {
    * @param request The {@link RequestModifyShape} object containing the values for the modification.
    */
   public void modifyShape(Project project, RequestModifyShape request) {
-    //TODO: main.input.ProjectService.modifyShape(String, int, int, Shape): Rework after integration of new layer structure
 
     String operationToLog = "Project " + project.getProjectID() + ": Modify Shape";
 
@@ -303,10 +302,7 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    // TODO: main.input.ProjectService.modifyShape(): Get actual Shape from Canvas
-    CanvasElement element = projectCanvas.getShapeFactory().createShape(request.getElementID(),
-        ShapeType.CIRCLE);
-    // CanvasElement element = projectCanvas.getElementForID(request.getElementID());
+    CanvasElement element = projectCanvas.findElementByID(request.getElementID());
 
     if (!(element instanceof CanvasLayer)) {
       projectServiceLogger.error("Operation failed: " + operationToLog);
@@ -317,7 +313,8 @@ public class ProjectService implements Subject {
     Shape shapeToModify = ((CanvasLayer) element).getShape();
     shapeToModify = shapeModifier.apply(shapeToModify);
     ((CanvasLayer) element).setShape(shapeToModify);
-    projectServiceLogger.info(element.getHTML());
+
+    projectServiceLogger.info("Operation successful: " + operationToLog);
   }
 
 
@@ -339,19 +336,18 @@ public class ProjectService implements Subject {
       throw new RuntimeException(e);
     }
 
-    // TODO: main.input.ProjectService.transformElement(): Get actual Shape from Canvas
-    CanvasElement element = projectCanvas.getShapeFactory().createShape(request.getElementID(),
-        ShapeType.CIRCLE);
-    // CanvasElement element = projectCanvas.getElementForID(request.getElementID());
-
-    // request.getClearAll().ifPresent(projectCanvas.clearAllTransformationsFromID(request.getElementID()));
+    if (request.getClearAll().isPresent() && request.getClearAll().get()) {
+      projectCanvas.transformElementByID(request.getElementID(), new Transformation());
+    }
 
     if (request.getTransformation().isPresent()) {
       Transformation transformation = new Transformation();
       transformation.addTransformation(request.getTransformation().get());
-      // projectCanvas.transformID(request.getElementID());
-      projectServiceLogger.info(transformation.getHTMLAttribute());
+      projectCanvas.transformElementByID(request.getElementID(), transformation);
     }
+
+    projectServiceLogger.info("Operation successful: " + operationToLog);
+
   }
 
 

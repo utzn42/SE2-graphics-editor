@@ -19,6 +19,7 @@ public abstract class CanvasElement implements Serializable {
 
   public CanvasElement(long id) {
     this.id = id;
+    this.visible = true;
   }
 
   public CanvasElement(long id, boolean visible) {

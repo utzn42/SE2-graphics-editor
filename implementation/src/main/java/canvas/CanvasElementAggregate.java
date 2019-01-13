@@ -5,6 +5,7 @@ import facilitators.Iterator;
 import facilitators.ListIterator;
 import java.util.ArrayList;
 import java.util.List;
+import shapes.ShapeWithTransformAttribute;
 import shapes.transform.Transformation;
 
 /**
@@ -106,7 +107,7 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
    */
   @Override
   public void transform(Transformation transformation) {
-    //TODO: Implement canvas.CanvasElementAggregate#transform(Transformation) - xandi
+    elements.forEach(element -> element.transform(transformation));
   }
 
 }
