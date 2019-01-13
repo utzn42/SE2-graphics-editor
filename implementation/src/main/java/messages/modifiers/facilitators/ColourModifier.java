@@ -12,7 +12,7 @@ import messages.modifiers.Modifier;
  */
 public class ColourModifier implements Modifier<Colour> {
 
-  private final Optional<String> hex;
+  private final Optional<String> rgbColour;
   private final Optional<Integer> red;
   private final Optional<Integer> green;
   private final Optional<Integer> blue;
@@ -21,7 +21,7 @@ public class ColourModifier implements Modifier<Colour> {
   /**
    * Creates a Colour object with the given values.
    *
-   * @param hex (Optional) Hex string of the new Colour value.
+   * @param rgbColour (Optional) Hex string of the new Colour value.
    * Should take precedence over individual RGB values if given.
    * @param red (Optional) The red value. Range: 0-255.
    * @param green (Optional) The green value. Range: 0-255.
@@ -30,13 +30,13 @@ public class ColourModifier implements Modifier<Colour> {
    */
   @JsonCreator
   public ColourModifier(
-      @JsonProperty("hex") Optional<String> hex,
+      @JsonProperty("rgbColour") Optional<String> rgbColour,
       @JsonProperty("red") Optional<Integer> red,
       @JsonProperty("green") Optional<Integer> green,
       @JsonProperty("blue") Optional<Integer> blue,
       @JsonProperty("opacity") Optional<Float> opacity
   ) {
-    this.hex = hex;
+    this.rgbColour = rgbColour;
     this.red = red.map(integer -> Math.min(Math.max(0, integer), 255));
     this.green = green.map(integer -> Math.min(Math.max(0, integer), 255));
     this.blue = blue.map(integer -> Math.min(Math.max(0, integer), 255));
@@ -44,12 +44,12 @@ public class ColourModifier implements Modifier<Colour> {
   }
 
   /**
-   * (Optional) Returns the hex string of the new Colour value.
+   * (Optional) Returns the rgbColour string of the new Colour value.
    *
-   * @return (Optional) The hex string of the new Colour value.
+   * @return (Optional) The rgbColour string of the new Colour value.
    */
-  public Optional<String> getHex() {
-    return hex;
+  public Optional<String> getRgbColour() {
+    return rgbColour;
   }
 
   /**
@@ -91,8 +91,8 @@ public class ColourModifier implements Modifier<Colour> {
   @Override
   public Colour apply(Colour objectToModify) {
     getOpacity().ifPresent(objectToModify::setOpacity);
-    if (getHex().isPresent()) {
-      objectToModify.setRgbColour(new RGBColour(getHex().get()));
+    if (getRgbColour().isPresent()) {
+      objectToModify.setRgbColour(new RGBColour(getRgbColour().get()));
     } else {
       byte red = objectToModify.getRgbColour().getRed();
       if (getRed().isPresent()) {

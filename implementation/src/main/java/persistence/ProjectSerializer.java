@@ -25,18 +25,35 @@ public class ProjectSerializer {
   private static Map<String, Project> projects = null;
   private static Long seedCounter = null;
 
+  /**
+   * Deletes all projects.
+   */
   public static void deleteProjects() {
     projects = null;
   }
 
+  /**
+   * Returns the path of the directory of the project.
+   * @param projectID The ID of the project.
+   * @return The path of the directory in {@link String}
+   */
   private static String getProjectDirectoryPath(String projectID) {
     return baseDirectory + "/" + projectID;
   }
 
+  /**
+   * Returns the path of the file.
+   * @param projectID The ID of the project.
+   * @return The path of the file in {@link String}
+   */
   private static String getProjectFilePath(String projectID) {
     return getProjectDirectoryPath(projectID) + "/" + projectID + ".ser";
   }
 
+  /**
+   * Creates the directory where the projects get saved.
+   * @param directoryPath The path where the directory should get created.
+   */
   private static void createDirectories(String directoryPath) {
     boolean createdDirs = new File(directoryPath).mkdirs();
     if (createdDirs) {
@@ -50,6 +67,9 @@ public class ProjectSerializer {
     proxyProjects = val;
   }
 
+  /**
+   * Initializes the IDs of the saved projects.
+   */
   private static void initializeProjects() {
 
     createDirectories(baseDirectory);
