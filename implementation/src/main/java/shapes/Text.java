@@ -163,9 +163,9 @@ public class Text extends Shape implements Translatable, UniformScalable {
   }
 
   /**
-   * Scales the Text element using a {@link UniformScaleTransformation}
+   * Scales the Text element using a {@link UniformScaleTransformation}.
    *
-   * @param transformation The transformation to apply to the Text element
+   * @param transformation The transformation to apply to the Text element.
    */
   @Override
   public void uniformScale(UniformScaleTransformation transformation) {

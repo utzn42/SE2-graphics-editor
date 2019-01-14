@@ -10,6 +10,9 @@ import java.util.Optional;
 import messages.creators.Creator;
 import shapes.transform.atomic.AtomicTransformation;
 
+/**
+ * {@link messages.creators.Creator} for an {@link AtomicTransformation}.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,6 +28,11 @@ public abstract class AtomicTransformationCreator implements Creator<AtomicTrans
 
   private final Optional<Coordinate> origin;
 
+  /**
+   * Constructs a {@link messages.creators.Creator} for an {@link AtomicTransformation} from the given parameters.
+   *
+   * @param origin (Optional) The origin for the transformation.
+   */
   @JsonCreator
   public AtomicTransformationCreator(
       @JsonProperty("origin") Optional<Coordinate> origin
@@ -32,6 +40,11 @@ public abstract class AtomicTransformationCreator implements Creator<AtomicTrans
     this.origin = origin;
   }
 
+  /**
+   * (Optional) Returns the origin for the transformation.
+   *
+   * @return (Optional) The origin for the transformation.
+   */
   public Optional<Coordinate> getOrigin() {
     return origin;
   }

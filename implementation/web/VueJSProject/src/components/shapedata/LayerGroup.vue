@@ -57,7 +57,7 @@
       },
 
       unselectIfNotThis: function(element) {
-        if (element.id !== this.id) {
+        if (element === null || element === undefined || !element.hasOwnProperty("id") || element.id !== this.id) {
           this.isSelected = false;
         }
       }

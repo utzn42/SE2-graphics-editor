@@ -13,6 +13,9 @@ import project.LoadedProject;
 import project.Project;
 import project.ProjectProxy;
 
+/**
+ * Static class responsible for serializing and deserializing {@link Project Projects}.
+ */
 public class ProjectSerializer {
 
   private static final Logger projectSerializerLogger = LoggerFactory
@@ -63,8 +66,13 @@ public class ProjectSerializer {
     }
   }
 
-  public static void setProxyProjects(boolean val) {
-    proxyProjects = val;
+  /**
+   * Sets whether projects should be {@link ProjectProxy proxied} on program start and loaded on demand at runtime.
+   *
+   * @param proxyProjects Set to <code>true</code> to enable proxying, <code>false</code> to disable.
+   */
+  public static void setProxyProjects(boolean proxyProjects) {
+    ProjectSerializer.proxyProjects = proxyProjects;
   }
 
   /**

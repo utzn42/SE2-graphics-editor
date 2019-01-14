@@ -4,18 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is used to store data of the request from the client if removeElement in {@link main.input.RESTHandler} gets called and the user wants to delete a {@link canvas.CanvasElement}.
- * It is necessary to access the data of the JSON object/body which the server receives from the client.
+ * Request parameter object for POST {projectID}/removeElement.
  *
  * @see main.input.RESTHandler
- * @see main.input.ProjectService
  */
 public class RequestRemoveElement {
 
   private final long elementID;
 
   /**
-   * The constructor assigns the JSON Property to the class attribute elementID, which indicates the element which should get removed.
+   * Creates a Request from the given parameters.
    *
    * @param elementID The ID of the element to be removed.
    */
@@ -27,9 +25,9 @@ public class RequestRemoveElement {
   }
 
   /**
-   * Returns the ID of the element which should get deleted. Gets called when the removeElement method in {@link main.input.ProjectService} gets called.
+   * Returns the ID of the element to be removed.
    *
-   * @return returns the element ID
+   * @return The ID of the element to be removed.
    */
   public long getElementID() {
     return this.elementID;

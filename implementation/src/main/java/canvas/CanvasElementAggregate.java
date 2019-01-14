@@ -18,9 +18,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   private List<CanvasElement> elements;
 
   /**
-   * Creates a {@link CanvasElementAggregate}
+   * Creates a {@link CanvasElementAggregate}.
    *
-   * @param id The ID which gets assigned to the {@link CanvasElementAggregate}
+   * @param id The ID which gets assigned to the {@link CanvasElementAggregate}.
    */
   public CanvasElementAggregate(long id) {
     super(id);
@@ -28,9 +28,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Adds an item to the Aggregate
+   * Adds an item to the Aggregate.
    *
-   * @param item The item to add to the Aggregate
+   * @param item The item to add to the Aggregate.
    */
   @Override
   public void addItem(CanvasElement item) {
@@ -60,11 +60,11 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Returns the item at the specified index
+   * Returns the item at the specified index.
    *
-   * @param index The index of the item to get
-   * @return The item at the specified index
-   * @throws IndexOutOfBoundsException If the specified index does not exist
+   * @param index The index of the item to get.
+   * @return The item at the specified index.
+   * @throws IndexOutOfBoundsException If the specified index does not exist.
    */
   @Override
   public CanvasElement getItem(int index) throws IndexOutOfBoundsException {
@@ -95,10 +95,10 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Removes the item at the specified index
+   * Removes the item at the specified index.
    *
-   * @param index The index of the item to be removed
-   * @return <code>true</code> if a deletion occurred, <code>false</code> otherwise
+   * @param index The index of the item to be removed.
+   * @return <code>true</code> if a deletion occurred, <code>false</code> otherwise.
    */
   @Override
   public boolean deleteItem(int index) {
@@ -110,10 +110,10 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Removes the given item from the Aggregate
+   * Removes the given item from the Aggregate.
    *
-   * @param item The item to be removed
-   * @return <code>true</code> if a deletion occurred, <code>false</code> otherwise
+   * @param item The item to be removed.
+   * @return <code>true</code> if a deletion occurred, <code>false</code> otherwise.
    */
   @Override
   public boolean deleteItem(CanvasElement item) {
@@ -135,9 +135,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
   }
 
   /**
-   * Returns an {@link Iterator} over the Aggregate
+   * Returns an {@link Iterator} over the Aggregate.
    *
-   * @return An {@link Iterator} over the Aggregate
+   * @return An {@link Iterator} over the Aggregate.
    */
   @Override
   public Iterator<CanvasElement> createIterator() {
@@ -162,9 +162,9 @@ public class CanvasElementAggregate extends CanvasElement implements Aggregate<C
 
 
   /**
-   * Transforms each {@link CanvasElement} within the aggregate using a {@link Transformation}
+   * Transforms each {@link CanvasElement} within the aggregate using a {@link Transformation}.
    *
-   * @param transformation the transformation to be applied to each {@link CanvasElement}
+   * @param transformation the transformation to be applied to each {@link CanvasElement}.
    */
   @Override
   public void transform(Transformation transformation) {

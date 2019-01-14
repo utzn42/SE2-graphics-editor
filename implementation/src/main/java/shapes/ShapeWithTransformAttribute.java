@@ -29,6 +29,11 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
   @JsonProperty("transformations")
   private Transformation transformation;
 
+  /**
+   * Creates a ShapeWithTransformAttribute decorator around the given {@link Shape}.
+   *
+   * @param shape The Shape to wrap in the decorator.
+   */
   public ShapeWithTransformAttribute(Shape shape) {
     super(shape);
     transformation = new Transformation();
@@ -99,12 +104,17 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
 
   }
 
+  /**
+   * Returns the Transformation that has to be applied to the contained Shape through an HTML "transform" attribute.
+   *
+   * @return The Transformation that has to be applied to the contained Shape through an HTML "transform" attribute.
+   */
   public Transformation getTransformation() {
     return transformation;
   }
 
   /**
-   * Resets the transformation to a null transformation.
+   * Resets the Transformation to a null Transformation.
    */
   public void clearTransformation() {
     transformation = new Transformation();

@@ -11,16 +11,16 @@ import java.io.IOException;
 public interface Project {
 
   /**
-   * Returns the project ID
+   * Returns the project ID.
    *
-   * @return the project ID
+   * @return The project ID.
    */
   String getProjectID();
 
   /**
-   * Returns the working canvas
+   * Returns the working canvas.
    *
-   * @return the working canvas
+   * @return The working canvas.
    * @throws IOException If an I/O error occurs while loading the canvas.
    * @throws ClassNotFoundException If the Canvas class is not found.
    */

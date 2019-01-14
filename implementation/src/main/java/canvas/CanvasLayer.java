@@ -18,6 +18,7 @@ public class CanvasLayer extends CanvasElement {
 
   /**
    * Creates a {@link CanvasLayer} and assignes an id and a shape.
+   *
    * @param id The ID which will get assigned to the Layer.
    * @param shape The {@link Shape} which will get assigned to the Layer.
    */
@@ -27,31 +28,38 @@ public class CanvasLayer extends CanvasElement {
   }
 
   /**
-   * Creates a {@link CanvasLayer} and assignes an id.
-   * @param id The ID which will get assigned to the Layer.
+   * Creates a CanvasLayer and assigns an id.
+   *
+   * @param id The ID which will get assigned to the CanvasLayer.
    */
   public CanvasLayer(long id) {
     super(id);
     this.shape = null;
   }
 
+  /**
+   * Creates a CanvasLayer, assigns an id and sets the visibility.
+   *
+   * @param id The ID which will get assigned to the CanvasLayer.
+   * @param visible <code>true</code> if the CanvasLayer should be visible, <code>false</code> otherwise.
+   */
   public CanvasLayer(long id, boolean visible) {
     super(id, visible);
   }
 
   /**
-   * Returns the {@link Shape} this CanvasLayer is holding
+   * Returns the {@link Shape} this CanvasLayer is holding.
    *
-   * @return The {@link Shape} this CanvasLayer is holding
+   * @return The {@link Shape} this CanvasLayer is holding.
    */
   public Shape getShape() {
     return shape;
   }
 
   /**
-   * Sets a {@link Shape} for this CanvasLayer to hold
+   * Sets a {@link Shape} for this CanvasLayer to hold.
    *
-   * @param shape The {@link Shape} this CanvasLayer should hold
+   * @param shape The {@link Shape} this CanvasLayer should hold.
    */
   public void setShape(Shape shape) {
     this.shape = shape;
@@ -59,6 +67,7 @@ public class CanvasLayer extends CanvasElement {
 
   /**
    * Returns the HTML Code of the element.
+   *
    * @return HTML Code of the element.
    */
   @Override

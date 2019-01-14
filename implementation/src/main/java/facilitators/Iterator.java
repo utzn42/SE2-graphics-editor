@@ -1,30 +1,30 @@
 package facilitators;
 
 /**
- * An iterator over a collection of objects
+ * An iterator over a collection of objects.
  *
- * @param <T> The type of objects contained in the collection
+ * @param <T> The type of objects contained in the collection.
  */
 public interface Iterator<T> {
 
   /**
-   * Returns the next object in the collection
+   * Returns the next object in the collection.
    *
-   * @return The next object in the collection, or <code>null</code> if such an object does not exist
+   * @return The next object in the collection, or <code>null</code> if such an object does not exist.
    */
   T next();
 
   /**
-   * Returns <code>true</code> if the iterator has traversed the whole collection
+   * Returns <code>true</code> if the iterator has traversed the whole collection.
    *
-   * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise
+   * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise.
    */
   boolean hasNext();
 
   /**
-   * Returns the current object
+   * Returns the current object.
    *
-   * @return The current object
+   * @return The current object.
    */
   T currentItem();
 
