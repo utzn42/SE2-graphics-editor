@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is used to store data of the request from the client if editElement in {@link main.input.RESTHandler} gets called and the user wants to toggle the visibility.
- * It is necessary to access the data of the JSON object/body which the server receives from the client.
+ * Request parameter object for POST {projectID}/editElement.
  *
  * @see main.input.RESTHandler
- * @see main.input.ProjectService
  */
 public class RequestEditElement {
 
@@ -16,10 +14,10 @@ public class RequestEditElement {
   private final boolean visible;
 
   /**
-   * The constructor assigns the JSON Property to the class attributes elementID and visible, which indicates which element should get set visible or invisible.
+   * Creates a Request from the given parameters.
    *
    * @param elementID The ID of the element to edit.
-   * @param visible <code>true</code> if Element should be visible, <code>false</code> otherwise.
+   * @param visible <code>true</code> if the element should be set to visible, <code>false</code> if it should be set to invisible.
    */
   @JsonCreator
   RequestEditElement(
@@ -40,9 +38,9 @@ public class RequestEditElement {
   }
 
   /**
-   * Returns <code>true</code> if Element should be visible.
+   * Returns <code>true</code> if the element should be set to visible.
    *
-   * @return <code>true</code> if Element should be visible, <code>false</code> otherwise.
+   * @return <code>true</code> if the element should be set to visible, <code>false</code> if it should be set to invisible.
    */
   public boolean isVisible() {
     return visible;

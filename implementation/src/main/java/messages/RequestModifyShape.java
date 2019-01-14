@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import messages.modifiers.shapes.ShapeModifier;
 
 /**
- * Request parameter object for POST {projectID}/modifyShape
+ * Request parameter object for POST {projectID}/modifyShape.
  *
  * @see main.input.RESTHandler
  */
@@ -17,6 +17,8 @@ public class RequestModifyShape {
   private final ShapeModifier shapeModifier;
 
   /**
+   * Creates a Request from the given parameters.
+   *
    * @param elementID The ID of the element to modify.
    * @param shapeModifier A {@link ShapeModifier} object containing the parameters to modify.
    */
@@ -39,9 +41,9 @@ public class RequestModifyShape {
   }
 
   /**
-   * Returns the Shape object containing the parameters to modify.
+   * Returns the ShapeModifier object containing the parameters to modify.
    *
-   * @return The Shape object containing the parameters to modify.
+   * @return The ShapeModifier object containing the parameters to modify.
    */
   public ShapeModifier getShapeModifier() {
     return shapeModifier;

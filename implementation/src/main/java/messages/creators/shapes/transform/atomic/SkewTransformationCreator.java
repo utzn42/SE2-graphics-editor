@@ -7,13 +7,22 @@ import java.util.Optional;
 import shapes.transform.atomic.AtomicTransformation;
 import shapes.transform.atomic.OriginDecorator;
 import shapes.transform.atomic.SkewTransformation;
-import shapes.transform.atomic.UniformScaleTransformation;
 
+/**
+ * {@link messages.creators.Creator} for a {@link SkewTransformation}.
+ */
 public class SkewTransformationCreator extends AtomicTransformationCreator {
 
   private final double skewAngle;
   private final String skewAxis;
 
+  /**
+   * Constructs a {@link messages.creators.Creator} for a {@link SkewTransformation} from the given parameters.
+   *
+   * @param origin (Optional) The origin for the transformation.
+   * @param skewAngle The skew angle for the transformation.
+   * @param skewAxis The skew axis for the transformation.
+   */
   @JsonCreator
   public SkewTransformationCreator(
       @JsonProperty("origin")Optional<Coordinate> origin,

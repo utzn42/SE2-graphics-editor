@@ -4,6 +4,14 @@ facilitators
 main
 main.input
 messages
+messages.creators
+messages.creators.shapes.transform.atomic
+messages.modifiers
+messages.modifiers.facilitators
+messages.modifiers.shapes
 observer
 persistence
+project
 shapes
+shapes.transform
+shapes.transform.atomic

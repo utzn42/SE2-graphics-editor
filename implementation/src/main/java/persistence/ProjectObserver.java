@@ -3,6 +3,9 @@ package persistence;
 import observer.Observer;
 import project.Project;
 
+/**
+ * {@link Observer} that passes any {@link Project} it receives via its {@link #update(Object)} function to the {@link ProjectSerializer} class.
+ */
 public class ProjectObserver implements Observer {
 
   /**

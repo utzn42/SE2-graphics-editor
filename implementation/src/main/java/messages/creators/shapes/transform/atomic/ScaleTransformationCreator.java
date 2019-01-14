@@ -8,10 +8,19 @@ import shapes.transform.atomic.AtomicTransformation;
 import shapes.transform.atomic.OriginDecorator;
 import shapes.transform.atomic.ScaleTransformation;
 
+/**
+ * {@link messages.creators.Creator} for a {@link ScaleTransformation}.
+ */
 public class ScaleTransformationCreator extends AtomicTransformationCreator {
 
   private final Coordinate scale;
 
+  /**
+   * Constructs a {@link messages.creators.Creator} for a {@link ScaleTransformation} from the given parameters.
+   *
+   * @param origin (Optional) The origin for the transformation.
+   * @param scale The x- and y-scale factors for the transformation.
+   */
   @JsonCreator
   public ScaleTransformationCreator(
       @JsonProperty("origin") Optional<Coordinate> origin,

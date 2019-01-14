@@ -44,6 +44,13 @@ public class Hasher {
 
   }
 
+  /**
+   * Creates a Hasher that creates a hash from the given seed using the given algorithm.
+   *
+   * @param l The seed to create the hash from.
+   * @param hashingAlgorithm The algorithm to use, as specified in {@link MessageDigest}.
+   * @see MessageDigest
+   */
   public Hasher(long l, String hashingAlgorithm) {
     try {
       MessageDigest messageDigest = MessageDigest.getInstance(hashingAlgorithm);
@@ -74,6 +81,11 @@ public class Hasher {
     return b;
   }
 
+  /**
+   * Returns the generated hash.
+   *
+   * @return The generated hash.
+   */
   public String getHash() {
     return hashValue;
   }

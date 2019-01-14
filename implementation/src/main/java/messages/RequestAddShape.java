@@ -6,11 +6,9 @@ import java.util.Optional;
 import shapes.ShapeType;
 
 /**
- * This class is used to store data of the request from the client if addShape in {@link main.input.RESTHandler} gets called and the user wants to add a {@link shapes.Shape}.
- * It is necessary to access the data of the JSON object/body which the server receives from the client.
+ * Request parameter object for POST {projectID}/addShape.
  *
  * @see main.input.RESTHandler
- * @see main.input.ProjectService
  */
 public class RequestAddShape {
 
@@ -19,10 +17,11 @@ public class RequestAddShape {
   private final Optional<Long> placeIntoElementID;
 
   /**
-   * The constructor assigns the properties of the JSON object to the class attributes. The constructor gets called when the addShape method from the {@link main.input.RESTHandler} gets called.
-   * @param placeBeforeElementID ({@link Optional}) The ID of the element after which to insert the new Shape.
-   * @param shapeType The type of shape which should get added.
-   * @param placeIntoElementID ({@link Optional}) The ID of the element into which to insert the new Shape.
+   * Creates a Request from the given parameters.
+   *
+   * @param shapeType The type of shape to add.
+   * @param placeBeforeElementID (Optional) The ID of the element before which to place the new shape.
+   * @param placeIntoElementID (Optional) The ID of the element into which to place the new shape. Takes precedence over placeBeforeElementID.
    */
   @JsonCreator
   RequestAddShape(
@@ -36,28 +35,27 @@ public class RequestAddShape {
   }
 
   /**
-   * Returns the desired shape type. Gets called when the addShape method in {@link main.input.ProjectService} gets called.
-   * @return returns the shape type.
+   * Returns the type of shape to add.
+   *
+   * @return The type of shape to add.
    */
   public ShapeType getShapeType() {
     return shapeType;
   }
 
   /**
-   * Returns an {@link Optional} containing the ID of the element after which to insert the new Shape, if present.
-   * Gets called when the addShape method in {@link main.input.ProjectService} gets called.
+   * (Optional) Returns the ID of the element before which to place the new shape.
    *
-   * @return An {@link Optional} containing the ID of the element after which to insert the new Shape, if present.
+   * @return (Optional) The ID of the element before which to place the new shape.
    */
   public Optional<Long> getPlaceBeforeElementID() {
     return placeBeforeElementID;
   }
 
   /**
-   * Returns an {@link Optional} containing the ID of the element into which to insert the new Shape, if present.
-   * Gets called when the addShape method in {@link main.input.ProjectService} gets called.
+   * (Optional) Returns the ID of the element into which to place the new shape.
    *
-   * @return An {@link Optional} containing the ID of the element into which to insert the new Shape, if present.
+   * @return (Optional) The ID of the element into which to place the new shape.
    */
   public Optional<Long> getPlaceIntoElementID() {
     return placeIntoElementID;

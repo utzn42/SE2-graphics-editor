@@ -14,6 +14,11 @@ public class ShapeDecorator extends Shape{
   @JsonUnwrapped
   private final Shape shape;
 
+  /**
+   * Creates a ShapeDecorator around the given {@link Shape}.
+   *
+   * @param shape The Shape to wrap in the decorator.
+   */
   public ShapeDecorator(Shape shape){
     this.shape = shape;
   }
@@ -88,6 +93,11 @@ public class ShapeDecorator extends Shape{
     return shape.getShapeType();
   }
 
+  /**
+   * Returns the {@link Shape} wrapped by this ShapeDecorator.
+   *
+   * @return The Shape wrapped by this ShapeDecorator.
+   */
   public Shape getShape(){
     return shape;
   }

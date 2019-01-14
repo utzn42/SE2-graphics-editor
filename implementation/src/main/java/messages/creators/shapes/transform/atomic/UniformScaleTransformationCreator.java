@@ -8,10 +8,19 @@ import shapes.transform.atomic.AtomicTransformation;
 import shapes.transform.atomic.OriginDecorator;
 import shapes.transform.atomic.UniformScaleTransformation;
 
+/**
+ * {@link messages.creators.Creator} for a {@link UniformScaleTransformation}.
+ */
 public class UniformScaleTransformationCreator extends AtomicTransformationCreator {
 
   private final double scale;
 
+  /**
+   * Constructs a {@link messages.creators.Creator} for a {@link UniformScaleTransformation} from the given parameters.
+   *
+   * @param origin (Optional) The origin for the transformation.
+   * @param scale The scale factor for the transformation.
+   */
   @JsonCreator
   public UniformScaleTransformationCreator(
       @JsonProperty("origin")Optional<Coordinate> origin,

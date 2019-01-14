@@ -34,7 +34,7 @@ public class SkewTransformation implements AtomicTransformation, Serializable {
   }
 
   /**
-   * Returns the skew angle
+   * Returns the skew angle.
    *
    * @return The skew angle.
    */
