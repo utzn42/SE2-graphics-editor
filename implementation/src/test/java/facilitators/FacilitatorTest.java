@@ -1,5 +1,8 @@
 package facilitators;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterAll;
@@ -45,11 +48,49 @@ class FacilitatorTest {
 
   @Test
   void coordinateTest() {
-
+    facilitatorTestLogger.info("Starting coordinate test...");
+    Coordinate testCoord = new Coordinate(0, 0);
+    assertEquals(0, testCoord.getX());
+    assertEquals(0, testCoord.getY());
+    facilitatorTestLogger.info("Success!");
   }
 
   @Test
   void coordinateMathTest() {
+    facilitatorTestLogger.info("Starting coordinate math tests...");
+    Coordinate testCoord = new Coordinate(100, 100);
+    Coordinate translator = new Coordinate(-100, -100);
+    assertEquals(new Coordinate(0, 0).getX(),
+        CoordinateMath.translateByCoordinate(testCoord, translator).getX());
+    assertEquals(new Coordinate(0, 0).getY(),
+        CoordinateMath.translateByCoordinate(testCoord, translator).getY());
+    facilitatorTestLogger.info("Translation successful!");
+
+    Coordinate testCoord2 = new Coordinate(100, 0);
+    testCoord2 = CoordinateMath
+        .rotateAroundCoordinate(testCoord2, 45, new Coordinate(0, 0));
+    assertTrue(abs((100 / Math.sqrt(2) - testCoord2.getX())) < 0.0000000001);
+    assertTrue(abs((100 / Math.sqrt(2) - testCoord2.getY())) < 0.0000000001);
+    facilitatorTestLogger.info("Rotation successful!");
+
+    testCoord2 = CoordinateMath
+        .scaleVector(testCoord2, new Coordinate(sqrt(2), sqrt(2)), new Coordinate(0, 0));
+    assertTrue(abs((100 - testCoord2.getX()))
+        < 0.0000000001);
+    assertTrue(abs((100 - testCoord2.getY()))
+        < 0.0000000001);
+    facilitatorTestLogger.info("Scaling successful!");
+
+    testCoord2 = CoordinateMath.skewX(testCoord2, 90, new Coordinate(0, 0));
+    testCoord2 = CoordinateMath.skewY(testCoord2, 90, new Coordinate(0, 0));
+
+    testCoord2 = CoordinateMath.skewX(testCoord2, 45, new Coordinate(0, 0));
+    testCoord2 = CoordinateMath.skewY(testCoord2, 45, new Coordinate(0, 0));
+    assertTrue(abs((200 - testCoord2.getX()))
+        < 0.0000000001);
+    assertTrue(abs((300 - testCoord2.getY()))
+        < 0.0000000001);
+    facilitatorTestLogger.info("Skewing successful!");
 
   }
 
