@@ -1,30 +1,14 @@
-# Deadline Cheat Sheet
+# HowTo
 
-## Deadline report document
-[Click me (Google docs)](https://docs.google.com/document/d/1giVYf8zheo_p9spFaeQ0Py_6l9_OwKBESeWITqjDuj4/edit)
+API Specification can be found in ```implementation/apidoc/index.html```
+The JavaDoc can be found in: ```implementation/javadoc/index.html```
 
-## Add JUnit 5 dependencies to Maven
+## Start the Server
 
-Add the following lines to your ```pom.xml```:
-```xml
-<dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.2.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.2.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-runner</artifactId>
-      <version>1.1.1</version>
-      <scope>test</scope>
-    </dependency>
-```
-In case of problems, replace 5.2.0 with 5.1.1.
+1) From the root directory, navigate to ```./implementation```.
+2) Start the server with ```java -jar se2-server-0304.jar```
 
+## Open the Web Client
+
+1) From the root directory, navigate to ```./implementation/web/dist```.
+2) Open ```index.html``` in a browser.
