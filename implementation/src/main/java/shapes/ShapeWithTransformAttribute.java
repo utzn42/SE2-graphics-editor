@@ -77,6 +77,8 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
         return "<polygon " + getHTMLAttributes() + "></polygon>";
       case TEXT:
         return "<text " + getHTMLAttributes() + ">" + ((Text) getShape()).getDisplayText() + "</text>";
+      case LINE:
+        return "<polyline " + getHTMLAttributes() + "></polyline>";
       default:
         return "<" + getShapeType().toString().toLowerCase() + " " + getHTMLAttributes() + "></"
             + getShapeType().toString().toLowerCase() + ">";
