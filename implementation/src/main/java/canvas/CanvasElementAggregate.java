@@ -6,7 +6,6 @@ import facilitators.CanvasElementIterator;
 import facilitators.Iterator;
 import java.util.ArrayList;
 import java.util.List;
-import shapes.Shape;
 import shapes.transform.Transformation;
 
 /**
