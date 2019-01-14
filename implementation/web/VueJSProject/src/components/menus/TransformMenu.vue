@@ -17,9 +17,9 @@
         Transformation Origin:
         <br />
         <label>x: </label>
-        <input type="text" v-model="originX" />
+        <input type="text" v-model="originX" v-on:keyup.enter="transform()" />
         <label>y: </label>
-        <input type="text" v-model="originY" />
+        <input type="text" v-model="originY" v-on:keyup.enter="transform()" />
       </li>
     </ul>
 
@@ -28,9 +28,9 @@
         Move by:
         <br />
         <label>x: </label>
-        <input type="text" v-model="translateX" />
+        <input type="text" v-model="translateX" v-on:keyup.enter="transform()" />
         <label>y: </label>
-        <input type="text" v-model="translateY" />
+        <input type="text" v-model="translateY" v-on:keyup.enter="transform()" />
       </li>
     </ul>
 
@@ -38,7 +38,7 @@
       <li>
         <label>Rotate by angle (in degrees):</label>
         <br />
-        <input type="text" v-model="rotationAngle" />
+        <input type="text" v-model="rotationAngle" v-on:keyup.enter="transform()" />
       </li>
     </ul>
 
@@ -47,9 +47,9 @@
         Scale by factors:
         <br />
         <label>x: </label>
-        <input type="text" v-model="scaleX" />
+        <input type="text" v-model="scaleX" v-on:keyup.enter="transform()" />
         <label>y: </label>
-        <input type="text" v-model="scaleY" />
+        <input type="text" v-model="scaleY" v-on:keyup.enter="transform()" />
       </li>
     </ul>
 
@@ -57,14 +57,14 @@
       <li>
         <label>Scale by factor:</label>
         <br />
-        <input type="text" v-model="scaleX" />
+        <input type="text" v-model="scaleX" v-on:keyup.enter="transform()" />
       </li>
     </ul>
 
     <ul v-if="transformationType==='SKEW'">
       <li>
         <label>Skew by angle (in degrees): </label>
-        <input type="text" v-model="skewAngle" />
+        <input type="text" v-model="skewAngle" v-on:keyup.enter="transform()" />
         <label>Skew axis: </label>
         <select v-model="skewAxis">
           <option value="x">X</option>
@@ -209,6 +209,8 @@
             console.log("Unkown transformation");
 
         }
+
+        dataBus.$emit("pushElement", null);
 
         if (this.modal) {
           this.close();
