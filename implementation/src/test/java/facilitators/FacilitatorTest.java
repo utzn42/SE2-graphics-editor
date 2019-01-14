@@ -37,6 +37,9 @@ class FacilitatorTest {
         rgbcolour = new RGBColour(one = (byte) 255, two = (byte) 255, three = (byte) 255));
     assertEquals(rgbcolour, testColour.getRgbColour());
     assertEquals(opacity, testColour.getOpacity());
+    assertEquals((byte) 255, rgbcolour.getRed());
+    assertEquals((byte) 255, rgbcolour.getGreen());
+    assertEquals((byte) 255, rgbcolour.getBlue());
     facilitatorTestLogger.info("Successfully called getters and setters.");
   }
 
@@ -52,12 +55,9 @@ class FacilitatorTest {
 
   @Test
   void hasherTest() {
-
+    facilitatorTestLogger.info("Starting Hasher test...");
+    assertEquals("af5570", new Hasher(0).getHash());
+    assertEquals("7dea36", new Hasher(0, "MD5").getHash());
+    facilitatorTestLogger.info("Done testing Hasher!");
   }
-
-  @Test
-  void rgbColourTest() {
-
-  }
-
 }

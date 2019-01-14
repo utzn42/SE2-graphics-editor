@@ -19,6 +19,7 @@ public class Hasher {
   private static Logger hasherLogger = LoggerFactory.getLogger(Hasher.class);
   private String hashValue;
 
+
   /**
    * The constructor does the actual calculation. It is called from the {@link main.input.ProjectService} class whenever a client opens the
    * index.html.
@@ -41,6 +42,24 @@ public class Hasher {
       e.printStackTrace();
     }
 
+  }
+
+  public Hasher(long l, String hashingAlgorithm) {
+    try {
+      MessageDigest messageDigest = MessageDigest.getInstance(hashingAlgorithm);
+      byte[] rawHash = messageDigest.digest(byteArrayConverter(l));
+
+      //The following code is taken from https://www.geeksforgeeks.org/sha-256-hash-in-java/
+      BigInteger bigIntHash = new BigInteger(1, rawHash);
+      String fullHashValue = bigIntHash.toString(16);
+      //The code above is taken from https://www.geeksforgeeks.org/sha-256-hash-in-java/
+
+      hashValue = fullHashValue.substring(0, 6);
+
+    } catch (NoSuchAlgorithmException e) {
+      hasherLogger.error("Invalid hashing algorithm: " + hashingAlgorithm + '\n');
+      e.printStackTrace();
+    }
   }
 
   /**
