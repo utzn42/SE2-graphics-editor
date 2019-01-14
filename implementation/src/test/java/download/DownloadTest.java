@@ -1,6 +1,7 @@
 package download;
 
 import canvas.Canvas;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,11 @@ class DownloadTest {
 
     private static final Logger downloadTestLogger = LoggerFactory
             .getLogger(DownloadTest.class);
+
+    @AfterAll
+    static void successMessage() {
+        downloadTestLogger.info("All download tests passed successfully!");
+    }
 
     @Test
     void canvasToJPGConverterTest() {
