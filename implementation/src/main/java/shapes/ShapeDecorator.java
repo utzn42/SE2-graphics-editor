@@ -11,6 +11,8 @@ import facilitators.Coordinate;
  */
 public class ShapeDecorator extends Shape{
 
+  private static final long serialVersionUID = 1L;
+
   @JsonUnwrapped
   private final Shape shape;
 

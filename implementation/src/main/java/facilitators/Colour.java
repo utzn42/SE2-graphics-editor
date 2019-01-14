@@ -13,6 +13,8 @@ import java.io.Serializable;
  */
 public class Colour implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+
   private RGBColour rgbColour;
   private float opacity;
 

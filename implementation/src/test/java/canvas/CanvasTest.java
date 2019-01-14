@@ -173,7 +173,7 @@ class CanvasTest {
         canvasTestLogger.info("Success!" + '\n');
         Throwable exception =
                 assertThrows(UnsupportedOperationException.class,
-                        () -> testObjects.asList());
+                    testObjects::asList);
         assertEquals(
                 "Can't view List of a non Aggregate object!",
                 exception.getMessage());

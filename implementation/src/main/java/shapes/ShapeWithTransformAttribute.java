@@ -25,6 +25,8 @@ public class ShapeWithTransformAttribute extends ShapeDecorator implements Rotat
     Translatable,
     UniformScalable {
 
+  private static final long serialVersionUID = 1L;
+
   @JsonUnwrapped
   @JsonProperty("transformations")
   private Transformation transformation;

@@ -59,7 +59,7 @@ class PersistenceTest {
   void idListTest() {
     persistenceTestLogger.info("idListTest() started.");
     persistenceTestLogger.info("Starting IDList creation test...");
-    ArrayList<String> idStringList = new ArrayList<String>();
+    ArrayList<String> idStringList = new ArrayList<>();
     idStringList.add(new Hasher(0).getHash());
     idStringList.add(new Hasher(1).getHash());
     idStringList.add(new Hasher(2).getHash());
@@ -159,7 +159,7 @@ class PersistenceTest {
     Project testLoadedProject = new LoadedProject(loadedProjectHash);
     testProjectList.put((loadedProjectHash), testLoadedProject);
     ProjectSerializer.putProject(testLoadedProject);
-    Map<String, Project> testProjectList2 = new HashMap<>();
+    Map<String, Project> testProjectList2;
     testProjectList2 = ProjectSerializer.getProjects();
 
     try {

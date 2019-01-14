@@ -25,6 +25,8 @@ import shapes.transform.Transformation;
 @JsonIgnoreProperties({"shapeFactory"})
 public class Canvas implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+
   private double width;
   private double height;
   private List<CanvasElement> canvasElements;
