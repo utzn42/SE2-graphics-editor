@@ -95,7 +95,8 @@
         dataBus.$emit('transformElement', {
           elementID: this.selectedElement.id,
           clearAll: true
-        })
+        });
+        dataBus.$emit('pushElement', null);
       }
 
     },

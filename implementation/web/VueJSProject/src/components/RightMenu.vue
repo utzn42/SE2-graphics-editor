@@ -58,6 +58,7 @@
         if (element === null) {
           this.showElementEditMenu = false;
           this.showShapeEditMenu = false;
+          this.currentMenu = 'canvas';
         } else if (element.hasOwnProperty("shape")) {
           this.showElementEditMenu = true;
           this.showShapeEditMenu = true;

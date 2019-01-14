@@ -71,6 +71,7 @@
       toggleAllowTransform: function() {
         this.canvas.allowTransformAttribute = !this.canvas.allowTransformAttribute;
         this.editCanvas();
+        dataBus.$emit('pushElement', null);
       }
 
     },
