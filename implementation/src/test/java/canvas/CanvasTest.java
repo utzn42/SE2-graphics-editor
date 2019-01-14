@@ -177,6 +177,12 @@ class CanvasTest {
     CanvasElement testObjects = new CanvasLayer(0, false);
     testObjects.setVisible(true);
     canvasTestLogger.info("Success!" + '\n');
+    Throwable exception =
+        assertThrows(UnsupportedOperationException.class,
+            () -> testObjects.asList());
+    assertEquals(
+        "Can't view List of a non Aggregate object!",
+        exception.getMessage());
   }
 
   @Test
