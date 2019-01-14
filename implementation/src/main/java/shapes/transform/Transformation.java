@@ -26,14 +26,16 @@ public class Transformation implements Serializable {
   private final List<AtomicTransformation> transformations;
 
   /**
-   * Creates a null transformation.
+   * Creates a null Transformation.
    */
   public Transformation() {
     transformations = new ArrayList<>();
   }
 
   /**
-   * Creates a transformation with the provided {@link AtomicTransformation AtomicTransformations}.
+   * Creates a Transformation with the provided {@link AtomicTransformation AtomicTransformations}.
+   *
+   * @param transformations The AtomicTransformations the Transformation should contain.
    */
   public Transformation(List<AtomicTransformation> transformations) {
     this.transformations = transformations;

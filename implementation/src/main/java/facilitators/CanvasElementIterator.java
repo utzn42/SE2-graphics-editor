@@ -14,6 +14,11 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   private boolean done;
   private boolean invalidated;
 
+  /**
+   * Creates a new CanvasElementIterator over the given {@link Aggregate} of {@link CanvasElement CanvasElements}.
+   *
+   * @param aggregate The Aggregate this CanvasElementIterator should iterate over.
+   */
   public CanvasElementIterator(Aggregate<CanvasElement> aggregate) {
     childIterator = null;
     this.aggregate = aggregate;
@@ -28,9 +33,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   }
 
   /**
-   * Returns <code>true</code> if the iterator has traversed the whole collection
+   * Returns <code>true</code> if the iterator has traversed the whole collection.
    *
-   * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise
+   * @return <code>true</code> if the iterator has traversed the whole collection, <code>false</code> otherwise.
    */
   public boolean hasNext() {
     if (currentIndex + 1 >= aggregate.size() && (childIterator == null || !childIterator.hasNext())) {
@@ -40,9 +45,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   }
 
   /**
-   * Returns the next object in the collection
+   * Returns the next object in the collection.
    *
-   * @return The next object in the collection, or <code>null</code> if such an object does not exist
+   * @return The next object in the collection, or <code>null</code> if such an object does not exist.
    */
   @Override
   public CanvasElement next() {
@@ -72,9 +77,9 @@ public class CanvasElementIterator implements Iterator<CanvasElement> {
   }
 
   /**
-   * Returns the current object
+   * Returns the current object.
    *
-   * @return The current object
+   * @return The current object.
    */
   @Override
   public CanvasElement currentItem() {

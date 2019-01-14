@@ -266,8 +266,7 @@ public class Canvas implements Serializable {
     for (CanvasElement canvasElement : canvasElements) {
       if (canvasElement.getId() == addIntoElementID) {
         if (canvasElement instanceof CanvasElementAggregate) {
-          ((CanvasElementAggregate) canvasElement)
-              .addItem(element);
+          canvasElement.addItem(element);
           return;
         } else {
           throw new IllegalArgumentException(
@@ -281,8 +280,7 @@ public class Canvas implements Serializable {
           CanvasElement currentElement = iterator.next();
           if (currentElement.getId() == addIntoElementID) {
             if (currentElement instanceof CanvasElementAggregate) {
-              ((CanvasElementAggregate) currentElement)
-                  .addItem(element);
+              currentElement.addItem(element);
               return;
             } else {
               throw new IllegalArgumentException(
@@ -346,8 +344,10 @@ public class Canvas implements Serializable {
   }
 
   /**
-   * Adds a layerGroup beneath another element if it's possible. If it's not possible it throws an {@link IllegalArgumentException}
+   * Adds a layerGroup beneath another element if it's possible. If it's not possible it throws an {@link IllegalArgumentException}.
+   *
    * @param addIntoElementID The ID of the element where the other element should get added.
+   * @throws IllegalArgumentException If an element with the specified ID does not exist or if the element to add into is not a {@link CanvasElementAggregate}.
    */
   public void addGroupLayerIntoElement(long addIntoElementID) {
     addElementIntoElement(new CanvasElementAggregate(shapeIDCount), addIntoElementID);
@@ -358,6 +358,7 @@ public class Canvas implements Serializable {
    * Returns the {@link CanvasElement} with the ID in the parameter.
    *
    * @param id The ID of the CanvasElement.
+   * @return The {@link CanvasElement} with the given ID.
    */
   public CanvasElement findElementByID(long id) {
     for (CanvasElement element : canvasElements) {
@@ -379,8 +380,9 @@ public class Canvas implements Serializable {
   /**
    * Updates the {@link CanvasElement} with the given parameter to the new {@link CanvasElement}
    * given in the parameter.
-   * @param id The ID of the {@link CanvasElement}
-   * @param canvasElement The new {@link CanvasElement}
+   *
+   * @param id The ID of the {@link CanvasElement}.
+   * @param canvasElement The new {@link CanvasElement}.
    */
   public void updateElementByID(long id, CanvasElement canvasElement) {
     for (int i = 0; i < canvasElements.size(); ++i) {
@@ -402,6 +404,7 @@ public class Canvas implements Serializable {
 
   /**
    * Removes the Element with the given ID.
+   *
    * @param id The ID of the element which should get removed.
    */
   public void removeElementByID(long id) {
@@ -426,6 +429,7 @@ public class Canvas implements Serializable {
 
   /**
    * Applies a transformation to the wanted element.
+   *
    * @param id The ID of the element which should get transformed.
    * @param transformation The transformation
    */
@@ -435,6 +439,7 @@ public class Canvas implements Serializable {
 
   /**
    * Clears all transformations from the wanted element.
+   *
    * @param id The ID of the element to clear all transformations for.
    */
   public void clearTransformationsOnElement(long id) {

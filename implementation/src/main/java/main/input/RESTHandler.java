@@ -35,6 +35,11 @@ public class RESTHandler {
 
   private final ProjectService projectService;
 
+  /**
+   * Creates a RESTHandler instance and sets it up to use the {@link ProjectService} class.
+   *
+   * @param projectService The project service used by the handler to process requests.
+   */
   @Autowired
   public RESTHandler(ProjectService projectService) {
     this.projectService = projectService;

@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Optional;
 
 /**
- * This class is used to store data of the request from the client if editProject in {@link main.input.RESTHandler} gets called and the user wants to edit the {@link canvas.Canvas}.
- * It is necessary to access the data of the JSON object/body which the server receives from the client.
+ * Request parameter object for POST {projectID}/editProject.
  *
  * @see main.input.RESTHandler
- * @see main.input.ProjectService
  */
 public class RequestEditProject {
 
@@ -18,14 +16,11 @@ public class RequestEditProject {
   private final Optional<Boolean> allowTransformAttribute;
 
   /**
-   * The constructor assigns the JSON Property to the class attributes width and height, which indicate the new desired values of the canvas.
-   * Also allows setting whether to allow the HTML "transform" attribute.
+   * Creates a Request from the given parameters.
    *
-   * @param width Optional width in {@link Double}.
-   * @param height Optional height in {@link Double}.
-   * @param allowTransformAttribute Optional boolean value that determines whether the "transform"
-   * attribute should be allowed or not.
-   * @see Optional
+   * @param width (Optional) The desired width for the project canvas.
+   * @param height (Optional) The desired height for the project canvas.
+   * @param allowTransformAttribute (Optional) <code>true</code> if the HTML "transform" attribute should be allowed for the project, <code>false</code> if it should be disallowed.
    */
   @JsonCreator()
   public RequestEditProject(
@@ -39,28 +34,27 @@ public class RequestEditProject {
   }
 
   /**
-   * Returns an {@link Optional} field containing the new desired width of the canvas if set.
-   * Gets called when editProject in {@link main.input.ProjectService} gets called.
-   * @return Returns an {@link Optional} object containing the width in {@link Double} if set.
+   * (Optional) Returns the desired width for the project canvas.
+   *
+   * @return (Optional) The desired width for the project canvas.
    */
   public Optional<Double> getWidth() {
     return width;
   }
 
   /**
-   * Returns an {@link Optional} field containing the new desired height of the canvas if set.
-   * Gets called when editProject in {@link main.input.ProjectService} gets called.
-   * @return Returns an {@link Optional} object containing the height in {@link Double} if set.
+   * (Optional) Returns the desired height for the project canvas.
+   *
+   * @return (Optional) The desired height for the project canvas.
    */
   public Optional<Double> getHeight() {
     return height;
   }
 
   /**
-   * Returns an {@link Optional} field that, if set, contains the value <code>true</code> if the
-   * HTML "transform" attribute should be allowed.
-   * @return An {@link Optional} field that, if set, contains the value <code>true</code> if the
-   * HTML "transform" attribute should be allowed, <code>false</code> otherwise.
+   * (Optional) Returns <code>true</code> if the HTML "transform" attribute should be allowed for the project.
+   *
+   * @return (Optional) <code>true</code> if the HTML "transform" attribute should be allowed for the project, <code>false</code> if it should be disallowed.
    */
   public Optional<Boolean> doesAllowTransformAttribute() {
     return allowTransformAttribute;

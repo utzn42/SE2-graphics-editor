@@ -76,10 +76,22 @@ public abstract class CanvasElement implements Serializable {
     this.visible = visible;
   }
 
+  /**
+   * Sets the {@link Shape} for this CanvasElement to hold.
+   *
+   * @param shape The Shape for this CanvasElement to hold.
+   * @throws UnsupportedOperationException If this element can not hold a Shape.
+   */
   public void setShape(Shape shape) {
     throw new UnsupportedOperationException("Can't set shape in a CanvasElementAggregate!");
   }
 
+  /**
+   * Adds a CanvasElement to this CanvasElement.
+   *
+   * @param canvasElement The element to add to this CanvasElement.
+   * @throws UnsupportedOperationException If this element can not hold any CanvasElements.
+   */
   public void addItem(CanvasElement canvasElement) {
     throw new UnsupportedOperationException("Cant add an item to a Canvas!");
   }
@@ -102,6 +114,12 @@ public abstract class CanvasElement implements Serializable {
    */
   public abstract String getHTML();
 
+  /**
+   * Returns all CanvasElements this CanvasElement holds as a {@link List}.
+   *
+   * @return All CanvasElements this CanvasElement holds as a {@link List}.
+   * @throws UnsupportedOperationException If this CanvasElement can not hold any CanvasElements.
+   */
   public List<CanvasElement> asList() {
     throw new UnsupportedOperationException("Can't view List of a non Aggregate object!");
   }

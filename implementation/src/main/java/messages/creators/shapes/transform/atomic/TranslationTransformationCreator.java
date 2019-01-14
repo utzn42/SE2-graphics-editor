@@ -8,10 +8,19 @@ import shapes.transform.atomic.AtomicTransformation;
 import shapes.transform.atomic.OriginDecorator;
 import shapes.transform.atomic.TranslationTransformation;
 
+/**
+ * {@link messages.creators.Creator} for a {@link TranslationTransformation}.
+ */
 public class TranslationTransformationCreator extends AtomicTransformationCreator {
 
   private final Coordinate translation;
 
+  /**
+   * Constructs a {@link messages.creators.Creator} for a {@link TranslationTransformation} from the given parameters.
+   *
+   * @param origin (Optional) The origin for the transformation.
+   * @param translation The x- and y-translation for the transformation.
+   */
   @JsonCreator
   public TranslationTransformationCreator(
       @JsonProperty("origin") Optional<Coordinate> origin,

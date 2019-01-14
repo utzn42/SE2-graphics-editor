@@ -23,8 +23,9 @@ public interface Subject {
 
   /**
    * Notifies all {@link Observer Observers} that the Subject has changed.
-   *
    * Should call {@link Observer#update(Object)} on the Observers.
+   *
+   * @param obj The Object that has changed (does not need to be the Subject itself).
    */
   void notifyObservers(Object obj);
 

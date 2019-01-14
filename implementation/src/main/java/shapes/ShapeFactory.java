@@ -8,9 +8,10 @@ import canvas.CanvasLayer;
 public interface ShapeFactory {
 
   /**
-   * Creates a {@link CanvasLayer} which holds a shape.
+   * Creates a {@link CanvasLayer} which holds a {@link Shape}.
    *
-   * @param shapeType decides which shape gets created in {@link CanvasLayer}
+   * @param id The id to assign to the new {@link CanvasLayer}.
+   * @param shapeType Decides which shape gets created in the {@link CanvasLayer}.
    * @return The created {@link CanvasLayer}.
    */
   CanvasLayer createShape(long id, ShapeType shapeType);

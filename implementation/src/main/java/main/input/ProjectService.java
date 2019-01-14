@@ -187,7 +187,7 @@ public class ProjectService implements Subject {
    * after which to insert the Shape does not exist.
    */
   public void addShape(Project project, RequestAddShape request)
-      throws IllegalArgumentException, IndexOutOfBoundsException {
+      throws IllegalArgumentException {
 
     String operationToLog = "Project " + project.getProjectID() + ": Add new Shape of type "
         + request.getShapeType() +
@@ -313,7 +313,7 @@ public class ProjectService implements Subject {
     ShapeModifier shapeModifier = request.getShapeModifier();
     Shape shapeToModify = ((CanvasLayer) element).getShape();
     shapeToModify = shapeModifier.apply(shapeToModify);
-    ((CanvasLayer) element).setShape(shapeToModify);
+    element.setShape(shapeToModify);
 
     putProject(project);
     projectServiceLogger.info("Operation successful: " + operationToLog);
